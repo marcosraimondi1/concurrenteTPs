@@ -23,7 +23,7 @@ public class Contenedor {
      * @return Imagen que satisface la condicion
      */
     public Imagen getImage(ImageCondition condicion) {
-        return contenedor.stream().map(imagen -> condicion.verificar(imagen)).findFirst().get();
+        return contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
     }
 
     public void addImage(Imagen imagen) {
