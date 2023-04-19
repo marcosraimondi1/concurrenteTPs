@@ -3,7 +3,7 @@ package Procesos;
 import Util.Contenedor;
 
 public class ProcesoCuatro extends Proceso {
-    private Contenedor contenedorFinal;
+    private final Contenedor contenedorFinal;
 
     public ProcesoCuatro(Contenedor contenedor, Contenedor contenedorFinal, long demora) {
         super(contenedor, demora);
