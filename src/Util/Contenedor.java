@@ -1,4 +1,7 @@
+package Util;
+
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class Contenedor {
     private final int maxSize;
@@ -22,7 +25,7 @@ public class Contenedor {
      * @param condicion Condicion a satisfacer por la imagen buscada
      * @return Imagen que satisface la condicion
      */
-    public Imagen getImage(ImageCondition condicion) {
+    public Imagen getImage(ImageCondition condicion) throws NoSuchElementException {
         return contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
     }
 

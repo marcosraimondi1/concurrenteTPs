@@ -1,3 +1,5 @@
+package Util;
+
 public class Imagen {
     private final int id;
     private int improvements = 0;

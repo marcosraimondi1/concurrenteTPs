@@ -1,3 +1,5 @@
+package Util;
+
 /**
  * Interfaz Funcional para crear condiciones a cumplir
  * por una imagen a buscar.
