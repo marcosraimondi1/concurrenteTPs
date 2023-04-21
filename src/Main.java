@@ -1,8 +1,6 @@
 import Util.*;
 import Procesos.*;
 
-import java.util.NoSuchElementException;
-
 public class Main {
     public static void main(String[] args) {
         Contenedor contenedor = new Contenedor(100);
@@ -11,8 +9,16 @@ public class Main {
         Thread procesoUnoHiloUno = new Thread(new ProcesoUno(contenedor, 50));
         Thread procesoUnoHiloDos = new Thread(new ProcesoUno(contenedor, 100));
 
+        Thread procesoDosHiloUno = new Thread(new ProcesoDos(contenedor, 50));
+        Thread procesoDosHiloDos = new Thread(new ProcesoDos(contenedor, 50));
+        Thread procesoDosHiloTres = new Thread(new ProcesoDos(contenedor, 50));
+
         procesoUnoHiloUno.start();
         procesoUnoHiloDos.start();
+
+        procesoDosHiloUno.start();
+        procesoDosHiloDos.start();
+        procesoDosHiloTres.start();
 
     }
 }

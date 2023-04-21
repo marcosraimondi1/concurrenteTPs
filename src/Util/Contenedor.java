@@ -31,9 +31,11 @@ public class Contenedor {
      * @return Imagen que satisface la condicion
      */
     public Imagen getImage(ImageCondition condicion) throws NoSuchElementException {
-        Imagen image = contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
-        contenedor.remove(image);
-        return image;
+        synchronized (this) {
+            Imagen image = contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
+            contenedor.remove(image);
+            return image;
+        }
     }
 
     /**
@@ -52,8 +54,8 @@ public class Contenedor {
             newImageId++;
 
             contenedor.add(imagen);
+            System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
         }
-
         return true;
     }
 
