@@ -1,24 +1,18 @@
 import Util.*;
+import Procesos.*;
 
 import java.util.NoSuchElementException;
 
 public class Main {
     public static void main(String[] args) {
         Contenedor contenedor = new Contenedor(100);
-        for (int i = 0; i < 100; i++) {
-            Imagen imagen = new Imagen(i);
-//            if (i == 10) imagen.ajustar();
 
-            contenedor.addImage(imagen);
-        }
+        // --------- HILOS ---------
+        Thread procesoUnoHiloUno = new Thread(new ProcesoUno(contenedor, 50));
+        Thread procesoUnoHiloDos = new Thread(new ProcesoUno(contenedor, 100));
 
-        ImageCondition ajustada = Imagen::isAjustada;
+        procesoUnoHiloUno.start();
+        procesoUnoHiloDos.start();
 
-        try {
-            Imagen image = contenedor.getImage(ajustada);
-            System.out.println(image.getId());
-        } catch (NoSuchElementException ex) {
-            System.out.println("No hay ajustada");
-        }
     }
 }

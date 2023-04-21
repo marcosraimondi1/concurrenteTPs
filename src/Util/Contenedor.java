@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 public class Contenedor {
     private final int maxSize;
+    private int newImageId = 0;
     private ArrayList<Imagen> contenedor;
 
     public Contenedor(int maxSize) {
@@ -19,6 +20,10 @@ public class Contenedor {
         return contenedor.remove(0);
     }
 
+    public Imagen getImage(int index) {
+        return contenedor.remove(index);
+    }
+
     /**
      * Busca una imagen que satisfaga la condicion dada
      *
@@ -26,11 +31,30 @@ public class Contenedor {
      * @return Imagen que satisface la condicion
      */
     public Imagen getImage(ImageCondition condicion) throws NoSuchElementException {
-        return contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
+        Imagen image = contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
+        contenedor.remove(image);
+        return image;
     }
 
-    public void addImage(Imagen imagen) {
-        contenedor.add(imagen);
+    /**
+     * Agrega una imagen, si el contenedor no esta lleno
+     *
+     * @param imagen Imagen a agregar
+     * @return false si no pudo agregar la imagen, true c.c.
+     */
+    public boolean addImage(Imagen imagen) {
+
+        synchronized (this) {
+            if (isFull())
+                return false;
+
+            imagen.setId(newImageId);
+            newImageId++;
+
+            contenedor.add(imagen);
+        }
+
+        return true;
     }
 
     public boolean isEmpty() {
@@ -38,6 +62,7 @@ public class Contenedor {
     }
 
     public boolean isFull() {
+
         return contenedor.size() == maxSize;
     }
 }

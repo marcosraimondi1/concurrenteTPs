@@ -1,12 +1,15 @@
 package Util;
 
 public class Imagen {
-    private final int id;
+    private int id = -1;
     private int improvements = 0;
     private boolean ajustada = false;
 
+    public Imagen() {
+    }
+
     public Imagen(int id) {
-        this.id = id;
+        setId(id);
     }
 
     public void improve() {
@@ -27,5 +30,10 @@ public class Imagen {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        if (this.id == -1)
+            this.id = id;
     }
 }
