@@ -19,6 +19,7 @@ public class Main {
         procesoDosHiloUno.start();
         procesoDosHiloDos.start();
         procesoDosHiloTres.start();
+        // se puede hacer push
 
     }
 }
