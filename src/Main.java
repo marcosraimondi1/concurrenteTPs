@@ -24,9 +24,9 @@ public class Main {
         Thread procesoDosHiloTres = new Thread(new ProcesoDos(contenedor, 20));
 
         // PROCESO TRES
-        Thread procesoTresHiloUno = new Thread(new ProcesoTres(contenedor, 30));
-        Thread procesoTresHiloDos = new Thread(new ProcesoTres(contenedor, 30));
-        Thread procesoTresHiloTres = new Thread(new ProcesoTres(contenedor, 30));
+        Thread procesoTresHiloUno = new Thread(new ProcesoTres(contenedor, 100));
+        Thread procesoTresHiloDos = new Thread(new ProcesoTres(contenedor, 100));
+        Thread procesoTresHiloTres = new Thread(new ProcesoTres(contenedor, 100));
 
         // PROCESO CUATRO
         Thread procesoCuatroHiloUno = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, 100));
@@ -49,11 +49,6 @@ public class Main {
 
         try(FileWriter file = new FileWriter(".\\data\\log.txt"); PrintWriter pw = new PrintWriter(file);) {
 
-            // Write the status of the threads
-            for (int i = 0; i < 10; i++) {
-                pw.println("Main : Status of Thread " + i + " : " + threads[i].getState());
-            }
-
             // Start the ten threads
             for (int i = 0; i < 10; i++) {
                 threads[i].start();
@@ -63,16 +58,13 @@ public class Main {
             // the threads and only write the status if it changes.
             boolean finish = false;
             while (!finish) {
-                for (int i = 0; i < 10; i++) {
                     try {
                         Thread.sleep(500);
                         } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                         }
-                    writeThreadInfo(pw, threads[i],contenedor);
+                    writeThreadInfo(pw, threads,contenedor);
 
-
-                }
 
                 finish = true;
                 for (int i = 0; i < 10; i++) {
@@ -109,15 +101,16 @@ public class Main {
      * @param state
      *            : Old state of the thread
      */
-    private static void writeThreadInfo(PrintWriter pw, Thread thread,Contenedor contenedor) {
+    private static void writeThreadInfo(PrintWriter pw, Thread threads[],Contenedor contenedor) {
         pw.printf("Main : ************\n");
         pw.printf("Main :Cantidad de imagenes insertadas: %d\n",contenedor.getContadorCreadas());
         pw.printf("Main :Cantidad de imagenes mejoradas: %d\n",contenedor.getContadorMejoradas());
         pw.printf("Main :Cantidad de imagenes ajustadas: %d\n",contenedor.getContadorAjustadas());
         pw.printf("Main :Cantidad de imagenes copiadas: %d\n",contenedor.getContadorCopiadas());
-        pw.printf("Main : %s", thread.getName());
-        pw.printf(": New State: %s\n", thread.getState());
-        pw.printf("Main : ************\n");
+        for (int i = 0; i < 10; i++) {
+            pw.printf("Main : %s", threads[i].getName());
+            pw.printf(": New State: %s\n", threads[i].getState());
+        }
     }
 
 
