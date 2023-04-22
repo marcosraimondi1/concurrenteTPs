@@ -7,10 +7,10 @@ public class Main {
 
         // --------- HILOS ---------
         Thread procesoUnoHiloUno = new Thread(new ProcesoUno(contenedor, 50));
-        Thread procesoUnoHiloDos = new Thread(new ProcesoUno(contenedor, 100));
+        Thread procesoUnoHiloDos = new Thread(new ProcesoUno(contenedor, 50));
 
-        Thread procesoDosHiloUno = new Thread(new ProcesoDos(contenedor, 50));
-        Thread procesoDosHiloDos = new Thread(new ProcesoDos(contenedor, 50));
+        Thread procesoDosHiloUno = new Thread(new ProcesoDos(contenedor, 100));
+        Thread procesoDosHiloDos = new Thread(new ProcesoDos(contenedor, 100));
         Thread procesoDosHiloTres = new Thread(new ProcesoDos(contenedor, 50));
 
         procesoUnoHiloUno.start();

@@ -5,10 +5,8 @@ import java.util.NoSuchElementException;
 
 public class Contenedor {
     private final int maxSize;
-
-    private int cantCreada = 0;
-    private int newImageId = 0;
-    private ArrayList<Imagen> contenedor;
+    private final ArrayList<Imagen> contenedor;
+    private int contadorCreadas = 0;
 
     public Contenedor(int maxSize) {
         this.maxSize = maxSize;
@@ -20,10 +18,6 @@ public class Contenedor {
      */
     public Imagen getImage() {
         return contenedor.remove(0);
-    }
-
-    public Imagen getImage(int index) {
-        return contenedor.remove(index);
     }
 
     /**
@@ -47,26 +41,18 @@ public class Contenedor {
      * @param imagen Imagen a agregar
      * @return false si no pudo agregar la imagen, true c.c.
      */
-    public boolean addImage(Imagen imagen) {
+    public boolean addImage(Imagen imagen, boolean nueva) {
 
         synchronized (this) {
-            if (isFull())
-                return false;
+            if (nueva) {
+                if (isFull())
+                    return false;
 
-            imagen.setId(newImageId);
-            newImageId++;
-            cantCreada++;
-            contenedor.add(imagen);
-            System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
-        }
-        return true;
-    }
+                imagen.setId(contadorCreadas);
+                contadorCreadas++;
+                System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
+            }
 
-    public boolean addImageProcesoDos(Imagen imagen) {
-
-        synchronized (this) {
-            if (isFull())
-                return false;
             contenedor.add(imagen);
         }
         return true;
@@ -76,8 +62,14 @@ public class Contenedor {
         return contenedor.isEmpty();
     }
 
+    /**
+     * Determina si ya se han creado todas las imagenes
+     * que pueden entrar al contenedor, independientemente
+     * si se removieron despues para mejorarlas, ajustarlas, etc
+     *
+     * @return boolean
+     */
     public boolean isFull() {
-
-        return cantCreada == maxSize;
+        return contadorCreadas == maxSize;
     }
 }

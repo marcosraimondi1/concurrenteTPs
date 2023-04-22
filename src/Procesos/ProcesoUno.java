@@ -16,7 +16,7 @@ public class ProcesoUno extends Proceso {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return contenedor.addImage(new Imagen());
+        return contenedor.addImage(new Imagen(), true);
     }
 
     @Override

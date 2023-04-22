@@ -43,22 +43,29 @@ public class ProcesoDos extends Proceso {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.printf("\nHilo %s mejoro %d imagenes", Thread.currentThread().getName(), mejoradas.size());
+
+            // agrego mejora a la imagen
+            imagen.improve();
+
             //Añado a lista de visitadas por el Thread
             mejoradas.add(imagen.getId());
+
+            System.out.printf("\n%s mejoro imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), mejoradas.size());
+
             // la guarda
-            contenedor.addImageProcesoDos(imagen);
+            contenedor.addImage(imagen, false);
 
         } catch (NoSuchElementException ex) {
             // NO ENCONTRO IMAGENES PARA MEJORAR
-            System.out.printf("\n%s no pudo mejorar, va a dormir 500ms", Thread.currentThread().getName());
+
+//            System.out.printf("\n%s no pudo mejorar, va a dormir 500ms, mejoro %d imagenes", Thread.currentThread().getName(), mejoradas.size());
 
 
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
         }
 
 
