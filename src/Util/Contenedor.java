@@ -10,7 +10,7 @@ public class Contenedor {
 
     public Contenedor(int maxSize) {
         this.maxSize = maxSize;
-        contenedor = new ArrayList<Imagen>();
+        contenedor = new ArrayList<>();
     }
 
     /**
@@ -71,5 +71,9 @@ public class Contenedor {
      */
     public boolean isFull() {
         return contadorCreadas == maxSize;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
     }
 }

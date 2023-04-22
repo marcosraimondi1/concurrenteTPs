@@ -10,9 +10,21 @@ import java.util.NoSuchElementException;
 public class ProcesoDos extends Proceso {
     private final ArrayList<Integer> mejoradas;
 
+    private final ImageCondition condicionDeMejora;
+
     public ProcesoDos(Contenedor contenedor, long demora) {
         super(contenedor, demora);
         mejoradas = new ArrayList<>();
+
+        condicionDeMejora = imagen -> {
+            if (imagen.isImproved())
+                return false;
+
+            if (mejoradas.contains(imagen.getId()))
+                return false;
+
+            return true;
+        };
     }
 
     /**
@@ -23,19 +35,9 @@ public class ProcesoDos extends Proceso {
      */
     private boolean mejorar() {
 
-        ImageCondition sePuedeMejorar = imagen -> {
-            if (imagen.isImproved())
-                return false;
-
-            if (mejoradas.contains(imagen.getId()))
-                return false;
-
-            return true;
-        };
-
         try {
             // toma la imagen
-            Imagen imagen = contenedor.getImage(sePuedeMejorar);
+            Imagen imagen = contenedor.getImage(condicionDeMejora);
 
             // la mejora
             try {
@@ -58,7 +60,9 @@ public class ProcesoDos extends Proceso {
         } catch (NoSuchElementException ex) {
             // NO ENCONTRO IMAGENES PARA MEJORAR
 
-//            System.out.printf("\n%s no pudo mejorar, va a dormir 500ms, mejoro %d imagenes", Thread.currentThread().getName(), mejoradas.size());
+            // Si ya mejoro todas las imagenes del contenedor, se detiene
+            if (mejoradas.size() == contenedor.getMaxSize())
+                return false;
 
 
 //            try {
@@ -78,6 +82,6 @@ public class ProcesoDos extends Proceso {
             if (!mejorar())
                 break;
         }
-
+        System.out.printf("\n%s mejoro %d imagenes - finalizo", Thread.currentThread().getName(), mejoradas.size());
     }
 }
