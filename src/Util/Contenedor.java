@@ -8,11 +8,14 @@ public class Contenedor {
     private final ArrayList<Imagen> contenedor;
 
     // KEYS ---------------------------------------
+    private final Object keyCreadas = new Object();
+    private final Object keyMejoradas = new Object();
     private final Object keyAjuste = new Object();
     private final Object keyCopia = new Object();
 
     // CONTADORES ---------------------------------
     private int contadorCreadas = 0;
+    private int contadorMejoradas = 0;
     private int contadorAjustadas = 0;
     private int contadorCopiadas = 0;
 
@@ -50,7 +53,7 @@ public class Contenedor {
                     return false;
 
                 imagen.setId(contadorCreadas);
-                contadorCreadas++;
+                aumentarContadorCreadas();
                 System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
             }
 
@@ -72,6 +75,28 @@ public class Contenedor {
 
     public int getMaxSize() {
         return maxSize;
+    }
+    public int getContadorCreadas() {
+        synchronized (keyCreadas) {
+            return contadorCreadas;
+        }
+    }
+
+    public void aumentarContadorCreadas() {
+        synchronized (keyCreadas) {
+            contadorCreadas++;
+        }
+    }
+    public int getContadorMejoradas() {
+        synchronized (keyMejoradas) {
+            return contadorMejoradas;
+        }
+    }
+
+    public void aumentarContadorMejoradas() {
+        synchronized (keyMejoradas) {
+            contadorMejoradas++;
+        }
     }
 
     public int getContadorAjustadas() {

@@ -7,11 +7,11 @@ import java.lang.Thread.State;
 import java.util.ArrayList;
 
 public class Main {
+
     public static void main(String[] args) {
         Contenedor contenedor = new Contenedor(100);
         Contenedor contenedorFinal = new Contenedor(100);
         Thread threads[] = new Thread[10]; //declaracion de un arreglo de hilos
-        Thread.State status[] = new State[10];//declaracion de un arreglo de estados de hilos
 
         // --------- HILOS ---------
         // PROCESO UNO
@@ -52,7 +52,6 @@ public class Main {
             // Write the status of the threads
             for (int i = 0; i < 10; i++) {
                 pw.println("Main : Status of Thread " + i + " : " + threads[i].getState());
-                status[i] = threads[i].getState();
             }
 
             // Start the ten threads
@@ -65,10 +64,14 @@ public class Main {
             boolean finish = false;
             while (!finish) {
                 for (int i = 0; i < 10; i++) {
-                    if (threads[i].getState() != status[i]) {
-                        writeThreadInfo(pw, threads[i], status[i]);
-                        status[i] = threads[i].getState();
-                    }
+                    try {
+                        Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                        }
+                    writeThreadInfo(pw, threads[i],contenedor);
+
+
                 }
 
                 finish = true;
@@ -96,10 +99,6 @@ public class Main {
         procesoCuatroHiloDos.start();*/
 
     }
-
-
-
-
     /**
      * This method writes the state of a thread in a file
      *
@@ -110,12 +109,21 @@ public class Main {
      * @param state
      *            : Old state of the thread
      */
-    private static void writeThreadInfo(PrintWriter pw, Thread thread, State state) {
-        pw.printf("Main : %s\n", thread.getName());
-        pw.printf("Main : Old State: %s\n", state);
-        pw.printf("Main : New State: %s\n", thread.getState());
+    private static void writeThreadInfo(PrintWriter pw, Thread thread,Contenedor contenedor) {
+        pw.printf("Main : ************\n");
+        pw.printf("Main :Cantidad de imagenes insertadas: %d\n",contenedor.getContadorCreadas());
+        pw.printf("Main :Cantidad de imagenes mejoradas: %d\n",contenedor.getContadorMejoradas());
+        pw.printf("Main :Cantidad de imagenes ajustadas: %d\n",contenedor.getContadorAjustadas());
+        pw.printf("Main :Cantidad de imagenes copiadas: %d\n",contenedor.getContadorCopiadas());
+        pw.printf("Main : %s", thread.getName());
+        pw.printf(": New State: %s\n", thread.getState());
         pw.printf("Main : ************\n");
     }
+
+
+
+
+
 
 }
 

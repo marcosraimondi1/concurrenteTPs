@@ -17,8 +17,9 @@ public class ProcesoDos extends Proceso {
         mejoradas = new ArrayList<>();
 
         condicionDeMejora = imagen -> {
-            if (imagen.isImproved())
+            if (imagen.isImproved()) {
                 return false;
+            }
 
             if (mejoradas.contains(imagen.getId()))
                 return false;
@@ -59,7 +60,9 @@ public class ProcesoDos extends Proceso {
 
             // agrego mejora a la imagen
             imagen.improve();
-
+            if (imagen.isImproved()) {
+                contenedor.aumentarContadorMejoradas();
+            }
             //Añado a lista de visitadas por el Thread
             mejoradas.add(imagen.getId());
 
