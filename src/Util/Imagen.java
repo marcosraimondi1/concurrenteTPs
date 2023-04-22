@@ -8,10 +8,6 @@ public class Imagen {
     public Imagen() {
     }
 
-    public Imagen(int id) {
-        setId(id);
-    }
-
     public void improve() {
         improvements += 1;
     }

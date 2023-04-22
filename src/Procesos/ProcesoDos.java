@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class ProcesoDos extends Proceso {
-    private final ArrayList<Integer> mejoradas;
+    private final ArrayList<Integer> mejoradas; // arreglo con los ids de las imagenes mejoradas
 
     private final ImageCondition condicionDeMejora;
 
@@ -25,13 +25,24 @@ public class ProcesoDos extends Proceso {
 
             return true;
         };
+        /*
+         public boolean nombreFuncion (Imagen imagen) {
+            if (imagen.isImproved())
+                return false;
+
+            if (mejoradas.contains(imagen.getId()))
+                return false;
+
+            return true;
+         }
+         */
     }
 
     /**
      * Busca una imagen para mejorar simepre y cuando no la haya mejorado antes
      * y la imagen no tenga 3 mejoras acumuladas
      *
-     * @return true si pudo mejorar
+     * @return false si termino con todas las imagenes
      */
     private boolean mejorar() {
 

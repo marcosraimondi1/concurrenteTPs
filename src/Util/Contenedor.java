@@ -21,7 +21,7 @@ public class Contenedor {
     }
 
     /**
-     * Busca una imagen que satisfaga la condicion dada
+     * Busca y remueve del contenedor una imagen que satisfaga la condicion dada
      *
      * @param condicion Condicion a satisfacer por la imagen buscada
      * @return Imagen que satisface la condicion
