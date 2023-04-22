@@ -6,20 +6,19 @@ import java.util.NoSuchElementException;
 public class Contenedor {
     private final int maxSize;
     private final ArrayList<Imagen> contenedor;
+
+    // KEYS ---------------------------------------
     private final Object keyAjuste = new Object();
+    private final Object keyCopia = new Object();
+
+    // CONTADORES ---------------------------------
     private int contadorCreadas = 0;
     private int contadorAjustadas = 0;
+    private int contadorCopiadas = 0;
 
     public Contenedor(int maxSize) {
         this.maxSize = maxSize;
         contenedor = new ArrayList<>();
-    }
-
-    /**
-     * Busca una imagen
-     */
-    public Imagen getImage() {
-        return contenedor.remove(0);
     }
 
     /**
@@ -60,10 +59,6 @@ public class Contenedor {
         return true;
     }
 
-    public boolean isEmpty() {
-        return contenedor.isEmpty();
-    }
-
     /**
      * Determina si ya se han creado todas las imagenes
      * que pueden entrar al contenedor, independientemente
@@ -88,6 +83,18 @@ public class Contenedor {
     public void aumentarContadorAjustadas() {
         synchronized (keyAjuste) {
             contadorAjustadas++;
+        }
+    }
+
+    public int getContadorCopiadas() {
+        synchronized (keyCopia) {
+            return contadorCopiadas;
+        }
+    }
+
+    public void aumentarContadorCopiadas() {
+        synchronized (keyCopia) {
+            contadorCopiadas++;
         }
     }
 
