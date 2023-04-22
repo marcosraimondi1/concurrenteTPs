@@ -6,12 +6,19 @@ public class Main {
         Contenedor contenedor = new Contenedor(100);
 
         // --------- HILOS ---------
+        // PROCESO UNO
         Thread procesoUnoHiloUno = new Thread(new ProcesoUno(contenedor, 50));
         Thread procesoUnoHiloDos = new Thread(new ProcesoUno(contenedor, 50));
 
-        Thread procesoDosHiloUno = new Thread(new ProcesoDos(contenedor, 100));
-        Thread procesoDosHiloDos = new Thread(new ProcesoDos(contenedor, 100));
+        // PROCESO DOS
+        Thread procesoDosHiloUno = new Thread(new ProcesoDos(contenedor, 50));
+        Thread procesoDosHiloDos = new Thread(new ProcesoDos(contenedor, 50));
         Thread procesoDosHiloTres = new Thread(new ProcesoDos(contenedor, 50));
+
+        // PROCESO TRES
+        Thread procesoTresHiloUno = new Thread(new ProcesoTres(contenedor, 100));
+        Thread procesoTresHiloDos = new Thread(new ProcesoTres(contenedor, 100));
+        Thread procesoTresHiloTres = new Thread(new ProcesoTres(contenedor, 50));
 
         procesoUnoHiloUno.start();
         procesoUnoHiloDos.start();
@@ -19,6 +26,10 @@ public class Main {
         procesoDosHiloUno.start();
         procesoDosHiloDos.start();
         procesoDosHiloTres.start();
+
+        procesoTresHiloUno.start();
+        procesoTresHiloDos.start();
+        procesoTresHiloTres.start();
 
     }
 }

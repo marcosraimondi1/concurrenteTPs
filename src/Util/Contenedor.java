@@ -6,7 +6,9 @@ import java.util.NoSuchElementException;
 public class Contenedor {
     private final int maxSize;
     private final ArrayList<Imagen> contenedor;
+    private final Object keyAjuste = new Object();
     private int contadorCreadas = 0;
+    private int contadorAjustadas = 0;
 
     public Contenedor(int maxSize) {
         this.maxSize = maxSize;
@@ -76,4 +78,17 @@ public class Contenedor {
     public int getMaxSize() {
         return maxSize;
     }
+
+    public int getContadorAjustadas() {
+        synchronized (keyAjuste) {
+            return contadorAjustadas;
+        }
+    }
+
+    public void aumentarContadorAjustadas() {
+        synchronized (keyAjuste) {
+            contadorAjustadas++;
+        }
+    }
+
 }
