@@ -5,6 +5,8 @@ import java.util.NoSuchElementException;
 
 public class Contenedor {
     private final int maxSize;
+
+    private int cantCreada = 0;
     private int newImageId = 0;
     private ArrayList<Imagen> contenedor;
 
@@ -38,6 +40,7 @@ public class Contenedor {
         }
     }
 
+
     /**
      * Agrega una imagen, si el contenedor no esta lleno
      *
@@ -52,9 +55,19 @@ public class Contenedor {
 
             imagen.setId(newImageId);
             newImageId++;
-
+            cantCreada++;
             contenedor.add(imagen);
             System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
+        }
+        return true;
+    }
+
+    public boolean addImageProcesoDos(Imagen imagen) {
+
+        synchronized (this) {
+            if (isFull())
+                return false;
+            contenedor.add(imagen);
         }
         return true;
     }
@@ -65,6 +78,6 @@ public class Contenedor {
 
     public boolean isFull() {
 
-        return contenedor.size() == maxSize;
+        return cantCreada == maxSize;
     }
 }

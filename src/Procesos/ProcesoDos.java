@@ -43,14 +43,16 @@ public class ProcesoDos extends Proceso {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
+            System.out.printf("\nHilo %s mejoro %d imagenes", Thread.currentThread().getName(), mejoradas.size());
+            //Añado a lista de visitadas por el Thread
+            mejoradas.add(imagen.getId());
             // la guarda
-            contenedor.addImage(imagen);
+            contenedor.addImageProcesoDos(imagen);
 
         } catch (NoSuchElementException ex) {
             // NO ENCONTRO IMAGENES PARA MEJORAR
             System.out.printf("\n%s no pudo mejorar, va a dormir 500ms", Thread.currentThread().getName());
-            System.out.printf("\nHilo %s mejoro %d imagenes", Thread.currentThread().getName(), mejoradas.size());
+
 
             try {
                 Thread.sleep(500);
