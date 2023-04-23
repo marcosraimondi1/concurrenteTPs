@@ -30,33 +30,12 @@ public class Main {
         threads[0] = new Thread(new ProcesoUno(contenedor, demoraUno));
         threads[1] = new Thread(new ProcesoUno(contenedor, demoraUno));
 
-//        threads[0].start();
-//        threads[1].start();
-//
-//        try {
-//            threads[0].join();
-//            threads[1].join();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
 
         // PROCESO DOS - MEJORAS
         long demoraDos = 100;
         threads[2] = new Thread(new ProcesoDos(contenedor, demoraDos));
         threads[3] = new Thread(new ProcesoDos(contenedor, demoraDos));
         threads[4] = new Thread(new ProcesoDos(contenedor, demoraDos));
-
-//        threads[2].start();
-//        threads[3].start();
-//        threads[4].start();
-//
-//        try {
-//            threads[2].join();
-//            threads[3].join();
-//            threads[4].join();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
 
 
         // PROCESO TRES - AJUSTES
@@ -65,32 +44,11 @@ public class Main {
         threads[6] = new Thread(new ProcesoTres(contenedor, demoraTres));
         threads[7] = new Thread(new ProcesoTres(contenedor, demoraTres));
 
-//        threads[5].start();
-//        threads[6].start();
-//        threads[7].start();
-//
-//        try {
-//            threads[5].join();
-//            threads[6].join();
-//            threads[7].join();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
 
         // PROCESO CUATRO - COPIA
         long demoraCuatro = 100;
         threads[8] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, demoraCuatro));
         threads[9] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, demoraCuatro));
-
-//        threads[8].start();
-//        threads[9].start();
-//        try {
-//            threads[8].join();
-//            threads[9].join();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
 
         // -------------------------------------------------------
         // ------             START THREADS                 ------
@@ -100,6 +58,37 @@ public class Main {
             thread.start();
         }
 
+
+//    Para que se ejecuten secuencialmente cada proceso
+/*
+        try {
+            threads[0].start();
+            threads[1].start();
+            threads[0].join();
+            threads[1].join();
+
+            threads[2].start();
+            threads[3].start();
+            threads[4].start();
+            threads[2].join();
+            threads[3].join();
+            threads[4].join();
+
+            threads[5].start();
+            threads[6].start();
+            threads[7].start();
+            threads[5].join();
+            threads[6].join();
+            threads[7].join();
+
+            threads[8].start();
+            threads[9].start();
+            threads[8].join();
+            threads[9].join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+*/
         // -------------------------------------------------------
         // ------           START STATUS PRINTER            ------
         // -------------------------------------------------------
