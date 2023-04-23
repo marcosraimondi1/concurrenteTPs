@@ -46,7 +46,6 @@ public class ProcesoDos extends Proceso {
      * @return false si termino con todas las imagenes
      */
     private boolean mejorar() {
-
         try {
             // toma la imagen
             Imagen imagen = contenedor.getImage(condicionDeMejora);
@@ -60,9 +59,12 @@ public class ProcesoDos extends Proceso {
 
             // agrego mejora a la imagen
             imagen.improve();
+
             if (imagen.isImproved()) {
+                // verifico si la imagen fue mejorada al maximo
                 contenedor.aumentarContadorMejoradas();
             }
+
             //Añado a lista de visitadas por el Thread
             mejoradas.add(imagen.getId());
 
@@ -77,13 +79,6 @@ public class ProcesoDos extends Proceso {
             // Si ya mejoro todas las imagenes del contenedor, se detiene
             if (mejoradas.size() == contenedor.getMaxSize())
                 return false;
-
-
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
         }
 
 
