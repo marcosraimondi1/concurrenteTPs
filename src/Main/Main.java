@@ -56,9 +56,6 @@ public class Main {
         // -------------------------------------------------------
 
         startStatusPrinter(contenedor, threads);
-
-        System.out.printf("\n\nTOTAL RUN TIME: %.2f [s]\n\n", (double) (System.currentTimeMillis() - startTime) / 1000);
-
     }
 
     private static void startStatusPrinter(Contenedor contenedor, Thread[] threads) {
@@ -79,12 +76,14 @@ public class Main {
                 writeThreadInfo(pw, threads, contenedor);
 
                 finish = true;
-                for (int i = 0; i < 10; i++) {
-                    finish = finish && (threads[i].getState() == State.TERMINATED);
+
+                for (Thread thread : threads) {
+                    finish = finish && (thread.getState() == State.TERMINATED);
                 }
             }
 
             pw.printf("\n\nTOTAL RUN TIME: %.2f [s]\n\n", (double) (System.currentTimeMillis() - startTime) / 1000);
+            System.out.printf("\n\nTOTAL RUN TIME: %.2f [s]\n\n", (double) (System.currentTimeMillis() - startTime) / 1000);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,15 +102,15 @@ public class Main {
 
         pw.printf("\nCONTAINER STATUS: \n\n");
 
-        pw.printf("\t- Cantidad de imagenes insertadas: %d\n", contenedor.getContadorCreadas());
-        pw.printf("\t- Cantidad de imagenes mejoradas: %d\n", contenedor.getContadorMejoradas());
-        pw.printf("\t- Cantidad de imagenes ajustadas: %d\n", contenedor.getContadorAjustadas());
-        pw.printf("\t- Cantidad de imagenes copiadas: %d\n", contenedor.getContadorCopiadas());
+        pw.printf("\t- Cantidad de imagenes insertadas: \t%d\n", contenedor.getContadorCreadas());
+        pw.printf("\t- Cantidad de imagenes mejoradas: \t%d\n", contenedor.getContadorMejoradas());
+        pw.printf("\t- Cantidad de imagenes ajustadas: \t%d\n", contenedor.getContadorAjustadas());
+        pw.printf("\t- Cantidad de imagenes copiadas: \t%d\n", contenedor.getContadorCopiadas());
 
         pw.printf("\nTHREADS STATUS: \n\n");
 
         for (Thread thread : threads) {
-            pw.printf("\t- %s  State: %s\n", thread.getName(), thread.getState());
+            pw.printf("\t- %s  State: \t%s\n", thread.getName(), thread.getState());
         }
 
         pw.printf("\ntime since start: %d [ms]\n\n", System.currentTimeMillis() - startTime);
