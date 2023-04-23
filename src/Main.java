@@ -7,8 +7,10 @@ import java.io.PrintWriter;
 import java.lang.Thread.State;
 
 public class Main {
+    private static long startTime;
 
     public static void main(String[] args) {
+        startTime = System.currentTimeMillis();
 
         // contenedores de imagenes
         Contenedor contenedor = new Contenedor(100);
@@ -19,34 +21,48 @@ public class Main {
         // -------------------------------------------------------
         Thread[] threads = new Thread[10]; //declaracion de un arreglo de hilos
 
-        // PROCESO UNO
-        threads[0] = new Thread(new ProcesoUno(contenedor, 10));
-        threads[1] = new Thread(new ProcesoUno(contenedor, 10));
+        // PROCESO UNO - CARGA
+        threads[0] = new Thread(new ProcesoUno(contenedor, 110));
+        threads[1] = new Thread(new ProcesoUno(contenedor, 110));
 
-        // PROCESO DOS
-        threads[2] = new Thread(new ProcesoDos(contenedor, 20));
-        threads[3] = new Thread(new ProcesoDos(contenedor, 20));
-        threads[4] = new Thread(new ProcesoDos(contenedor, 20));
+        // PROCESO DOS - MEJORAS
+        threads[2] = new Thread(new ProcesoDos(contenedor, 100));
+        threads[3] = new Thread(new ProcesoDos(contenedor, 100));
+        threads[4] = new Thread(new ProcesoDos(contenedor, 100));
 
-        // PROCESO TRES
-        threads[5] = new Thread(new ProcesoTres(contenedor, 100));
-        threads[6] = new Thread(new ProcesoTres(contenedor, 100));
-        threads[7] = new Thread(new ProcesoTres(contenedor, 100));
+        // PROCESO TRES - AJUSTES
+        threads[5] = new Thread(new ProcesoTres(contenedor, 200));
+        threads[6] = new Thread(new ProcesoTres(contenedor, 200));
+        threads[7] = new Thread(new ProcesoTres(contenedor, 200));
 
-        // PROCESO CUATRO
+        // PROCESO CUATRO - COPIA
         threads[8] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, 100));
         threads[9] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, 100));
 
-        // START THREADS
+
+        // -------------------------------------------------------
+        // ------             START THREADS                 ------
+        // -------------------------------------------------------
+
         for (Thread thread : threads) {
             thread.start();
         }
 
+        // -------------------------------------------------------
+        // ------           START STATUS PRINTER            ------
+        // -------------------------------------------------------
 
+        startStatusPrinter(contenedor, threads);
+
+        System.out.printf("\n\nTOTAL RUN TIME: %.2f [s]\n\n", (double) (System.currentTimeMillis() - startTime) / 1000);
+
+    }
+
+    private static void startStatusPrinter(Contenedor contenedor, Thread[] threads) {
         // Wait for the finalization of the threads. Meanwhile,
         // write the status of those threads in a file
 
-        try (FileWriter file = new FileWriter(".\\data\\log.txt"); PrintWriter pw = new PrintWriter(file);) {
+        try (FileWriter file = new FileWriter(".\\data\\log.txt"); PrintWriter pw = new PrintWriter(file)) {
 
 
             // Wait for the finalization of the threads. We save the status of
@@ -68,6 +84,8 @@ public class Main {
                 }
             }
 
+            pw.printf("\n\nTOTAL RUN TIME: %.2f [s]\n\n", (double) (System.currentTimeMillis() - startTime) / 1000);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,15 +99,23 @@ public class Main {
      * @param contenedor Contenedor de imagenes
      */
     private static void writeThreadInfo(PrintWriter pw, Thread[] threads, Contenedor contenedor) {
-        pw.printf("Main : ************\n");
-        pw.printf("Main :Cantidad de imagenes insertadas: %d\n", contenedor.getContadorCreadas());
-        pw.printf("Main :Cantidad de imagenes mejoradas: %d\n", contenedor.getContadorMejoradas());
-        pw.printf("Main :Cantidad de imagenes ajustadas: %d\n", contenedor.getContadorAjustadas());
-        pw.printf("Main :Cantidad de imagenes copiadas: %d\n", contenedor.getContadorCopiadas());
-        for (int i = 0; i < 10; i++) {
-            pw.printf("%s", threads[i].getName());
-            pw.printf(": New State: %s\n", threads[i].getState());
+        pw.printf("---------------------------------------------\n");
+
+        pw.printf("\nCONTAINER STATUS: \n\n");
+
+        pw.printf("\t- Cantidad de imagenes insertadas: %d\n", contenedor.getContadorCreadas());
+        pw.printf("\t- Cantidad de imagenes mejoradas: %d\n", contenedor.getContadorMejoradas());
+        pw.printf("\t- Cantidad de imagenes ajustadas: %d\n", contenedor.getContadorAjustadas());
+        pw.printf("\t- Cantidad de imagenes copiadas: %d\n", contenedor.getContadorCopiadas());
+
+        pw.printf("\nTHREADS STATUS: \n\n");
+
+        for (Thread thread : threads) {
+            pw.printf("\t- %s  State: %s\n", thread.getName(), thread.getState());
         }
+
+        pw.printf("\ntime since start: %d [ms]\n\n", System.currentTimeMillis() - startTime);
+
     }
 
 
