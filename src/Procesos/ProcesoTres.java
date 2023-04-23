@@ -2,6 +2,7 @@ package Procesos;
 
 import java.util.NoSuchElementException;
 
+import Main.Main;
 import Util.*;
 
 public class ProcesoTres extends Proceso {
@@ -31,7 +32,8 @@ public class ProcesoTres extends Proceso {
             contenedor.aumentarContadorAjustadas();
             ajustadas++;
 
-            System.out.printf("\n%s ajusto imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), ajustadas);
+            if (Main.showPrints[2])
+                System.out.printf("\n%s ajusto imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), ajustadas);
 
             // guardar la imagen
             contenedor.addImage(imagen, false);
@@ -54,7 +56,7 @@ public class ProcesoTres extends Proceso {
                 break;
         }
 
-        System.out.printf("\n%s ajusto %d imagenes - finalizo", Thread.currentThread().getName(), ajustadas);
+        System.out.printf("\n%s ajusto %d imagenes --------------------", Thread.currentThread().getName(), ajustadas);
 
     }
 }

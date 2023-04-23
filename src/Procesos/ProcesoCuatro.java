@@ -1,5 +1,6 @@
 package Procesos;
 
+import Main.Main;
 import Util.Contenedor;
 import Util.ImageCondition;
 import Util.Imagen;
@@ -36,7 +37,8 @@ public class ProcesoCuatro extends Proceso {
             copiadas++;
             contenedor.aumentarContadorCopiadas();
 
-            System.out.printf("\n%s copio imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), copiadas);
+            if (Main.showPrints[3])
+                System.out.printf("\n%s copio imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), copiadas);
 
 
         } catch (NoSuchElementException ex) {
@@ -56,7 +58,7 @@ public class ProcesoCuatro extends Proceso {
                 break;
         }
 
-        System.out.printf("\nHilo %s copio %d imagenes", Thread.currentThread().getName(), copiadas);
+        System.out.printf("\nHilo %s copio %d imagenes --------------------", Thread.currentThread().getName(), copiadas);
 
     }
 }

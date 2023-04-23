@@ -24,6 +24,6 @@ public class ProcesoUno extends Proceso {
         while (cargar()) {
             loaded++;
         }
-        System.out.printf("\nHilo %s cargo %d imagenes", Thread.currentThread().getName(), loaded);
+        System.out.printf("\nHilo %s cargo %d imagenes --------------------", Thread.currentThread().getName(), loaded);
     }
 }

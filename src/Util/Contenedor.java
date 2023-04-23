@@ -1,5 +1,7 @@
 package Util;
 
+import Main.Main;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -54,7 +56,9 @@ public class Contenedor {
 
                 imagen.setId(contadorCreadas);
                 aumentarContadorCreadas();
-                System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
+
+                if (Main.showPrints[0])
+                    System.out.printf("\n%s agrego imagen %d", Thread.currentThread().getName(), imagen.getId());
             }
 
             contenedor.add(imagen);
@@ -76,6 +80,7 @@ public class Contenedor {
     public int getMaxSize() {
         return maxSize;
     }
+
     public int getContadorCreadas() {
         synchronized (keyCreadas) {
             return contadorCreadas;
@@ -87,6 +92,7 @@ public class Contenedor {
             contadorCreadas++;
         }
     }
+
     public int getContadorMejoradas() {
         synchronized (keyMejoradas) {
             return contadorMejoradas;

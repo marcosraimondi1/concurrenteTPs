@@ -1,3 +1,5 @@
+package Main;
+
 import Util.*;
 import Procesos.*;
 
@@ -7,6 +9,7 @@ import java.io.PrintWriter;
 import java.lang.Thread.State;
 
 public class Main {
+    public static final boolean[] showPrints = {true, true, true, true};
     private static long startTime;
 
     public static void main(String[] args) {

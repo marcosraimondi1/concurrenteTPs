@@ -1,5 +1,6 @@
 package Procesos;
 
+import Main.Main;
 import Util.Contenedor;
 import Util.ImageCondition;
 import Util.Imagen;
@@ -68,7 +69,8 @@ public class ProcesoDos extends Proceso {
             //Añado a lista de visitadas por el Thread
             mejoradas.add(imagen.getId());
 
-            System.out.printf("\n%s mejoro imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), mejoradas.size());
+            if (Main.showPrints[1])
+                System.out.printf("\n%s mejoro imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), mejoradas.size());
 
             // la guarda
             contenedor.addImage(imagen, false);
@@ -91,6 +93,6 @@ public class ProcesoDos extends Proceso {
             if (!mejorar())
                 break;
         }
-        System.out.printf("\n%s mejoro %d imagenes - finalizo", Thread.currentThread().getName(), mejoradas.size());
+        System.out.printf("\n%s mejoro %d imagenes ---------------------", Thread.currentThread().getName(), mejoradas.size());
     }
 }
