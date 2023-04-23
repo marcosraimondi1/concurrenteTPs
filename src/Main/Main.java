@@ -16,32 +16,81 @@ public class Main {
         startTime = System.currentTimeMillis();
 
         // contenedores de imagenes
-        Contenedor contenedor = new Contenedor(100);
-        Contenedor contenedorFinal = new Contenedor(100);
+        int maxSize = 100;
+        Contenedor contenedor = new Contenedor(maxSize);
+        Contenedor contenedorFinal = new Contenedor(maxSize);
 
         // -------------------------------------------------------
         // ------             CREACION DE HILOS             ------
         // -------------------------------------------------------
-        Thread[] threads = new Thread[10]; //declaracion de un arreglo de hilos
+        Thread[] threads = new Thread[10];
 
         // PROCESO UNO - CARGA
-        threads[0] = new Thread(new ProcesoUno(contenedor, 110));
-        threads[1] = new Thread(new ProcesoUno(contenedor, 110));
+        long demoraUno = 110;
+        threads[0] = new Thread(new ProcesoUno(contenedor, demoraUno));
+        threads[1] = new Thread(new ProcesoUno(contenedor, demoraUno));
+
+//        threads[0].start();
+//        threads[1].start();
+//
+//        try {
+//            threads[0].join();
+//            threads[1].join();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 
         // PROCESO DOS - MEJORAS
-        threads[2] = new Thread(new ProcesoDos(contenedor, 100));
-        threads[3] = new Thread(new ProcesoDos(contenedor, 100));
-        threads[4] = new Thread(new ProcesoDos(contenedor, 100));
+        long demoraDos = 100;
+        threads[2] = new Thread(new ProcesoDos(contenedor, demoraDos));
+        threads[3] = new Thread(new ProcesoDos(contenedor, demoraDos));
+        threads[4] = new Thread(new ProcesoDos(contenedor, demoraDos));
+
+//        threads[2].start();
+//        threads[3].start();
+//        threads[4].start();
+//
+//        try {
+//            threads[2].join();
+//            threads[3].join();
+//            threads[4].join();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+
 
         // PROCESO TRES - AJUSTES
-        threads[5] = new Thread(new ProcesoTres(contenedor, 200));
-        threads[6] = new Thread(new ProcesoTres(contenedor, 200));
-        threads[7] = new Thread(new ProcesoTres(contenedor, 200));
+        long demoraTres = 200;
+        threads[5] = new Thread(new ProcesoTres(contenedor, demoraTres));
+        threads[6] = new Thread(new ProcesoTres(contenedor, demoraTres));
+        threads[7] = new Thread(new ProcesoTres(contenedor, demoraTres));
+
+//        threads[5].start();
+//        threads[6].start();
+//        threads[7].start();
+//
+//        try {
+//            threads[5].join();
+//            threads[6].join();
+//            threads[7].join();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+
 
         // PROCESO CUATRO - COPIA
-        threads[8] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, 100));
-        threads[9] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, 100));
+        long demoraCuatro = 100;
+        threads[8] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, demoraCuatro));
+        threads[9] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, demoraCuatro));
 
+//        threads[8].start();
+//        threads[9].start();
+//        try {
+//            threads[8].join();
+//            threads[9].join();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 
         // -------------------------------------------------------
         // ------             START THREADS                 ------
