@@ -67,9 +67,6 @@ public class Main {
 
         try (FileWriter file = new FileWriter(".\\data\\log.txt"); PrintWriter pw = new PrintWriter(file)) {
 
-
-            // Wait for the finalization of the threads. We save the status of
-            // the threads and only write the status if it changes.
             boolean finish = false;
 
             while (!finish) {
