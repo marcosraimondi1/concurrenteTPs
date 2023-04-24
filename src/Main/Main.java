@@ -29,26 +29,33 @@ public class Main {
         long demoraUno = 110;
         threads[0] = new Thread(new ProcesoUno(contenedor, demoraUno));
         threads[1] = new Thread(new ProcesoUno(contenedor, demoraUno));
-
+        threads[0].setName(threads[0].getName() + " P1");
+        threads[1].setName(threads[1].getName() + " P1");
 
         // PROCESO DOS - MEJORAS
         long demoraDos = 100;
         threads[2] = new Thread(new ProcesoDos(contenedor, demoraDos));
         threads[3] = new Thread(new ProcesoDos(contenedor, demoraDos));
         threads[4] = new Thread(new ProcesoDos(contenedor, demoraDos));
-
+        threads[2].setName(threads[2].getName() + " P2");
+        threads[3].setName(threads[3].getName() + " P2");
+        threads[4].setName(threads[4].getName() + " P2");
 
         // PROCESO TRES - AJUSTES
         long demoraTres = 200;
         threads[5] = new Thread(new ProcesoTres(contenedor, demoraTres));
         threads[6] = new Thread(new ProcesoTres(contenedor, demoraTres));
         threads[7] = new Thread(new ProcesoTres(contenedor, demoraTres));
-
+        threads[5].setName(threads[5].getName() + " P3");
+        threads[6].setName(threads[6].getName() + " P3");
+        threads[7].setName(threads[7].getName() + " P3");
 
         // PROCESO CUATRO - COPIA
         long demoraCuatro = 100;
         threads[8] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, demoraCuatro));
         threads[9] = new Thread(new ProcesoCuatro(contenedor, contenedorFinal, demoraCuatro));
+        threads[8].setName(threads[8].getName() + " P4");
+        threads[9].setName(threads[9].getName() + " P4");
 
         // -------------------------------------------------------
         // ------             START THREADS                 ------
