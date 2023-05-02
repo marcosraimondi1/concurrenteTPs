@@ -7,7 +7,6 @@ import Util.Imagen;
 import Util.ImagenNoEncontradaException;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 public class ProcesoDos extends Proceso {
     private final ArrayList<Integer> mejoradas; // arreglo con los ids de las imagenes mejoradas

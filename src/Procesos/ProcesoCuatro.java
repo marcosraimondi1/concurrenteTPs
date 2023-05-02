@@ -6,8 +6,6 @@ import Util.ImageCondition;
 import Util.Imagen;
 import Util.ImagenNoEncontradaException;
 
-import java.util.NoSuchElementException;
-
 public class ProcesoCuatro extends Proceso {
     private final Contenedor contenedorFinal;
     private final ImageCondition condicionDeCopia;
