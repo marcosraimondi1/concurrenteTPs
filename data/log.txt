@@ -2,39 +2,63 @@
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	6
+	- Cantidad de imagenes insertadas: 	2
 	- Cantidad de imagenes mejoradas: 	0
 	- Cantidad de imagenes ajustadas: 	0
 	- Cantidad de imagenes copiadas: 	0
 
 THREADS STATUS: 
 
-	- Thread-0 P1  State: 	TIMED_WAITING
-	- Thread-1 P1  State: 	TIMED_WAITING
-	- Thread-2 P2  State: 	BLOCKED
-	- Thread-3 P2  State: 	RUNNABLE
-	- Thread-4 P2  State: 	BLOCKED
+	- Thread-0 P1  State: 	BLOCKED
+	- Thread-1 P1  State: 	RUNNABLE
+	- Thread-2 P2  State: 	RUNNABLE
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	RUNNABLE
 	- Thread-5 P3  State: 	BLOCKED
-	- Thread-6 P3  State: 	RUNNABLE
+	- Thread-6 P3  State: 	BLOCKED
 	- Thread-7 P3  State: 	BLOCKED
-	- Thread-8 P4  State: 	RUNNABLE
+	- Thread-8 P4  State: 	BLOCKED
 	- Thread-9 P4  State: 	BLOCKED
 
-time since start: 587 [ms]
+time since start: 584 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	14
+	- Cantidad de imagenes insertadas: 	10
 	- Cantidad de imagenes mejoradas: 	3
-	- Cantidad de imagenes ajustadas: 	3
-	- Cantidad de imagenes copiadas: 	1
+	- Cantidad de imagenes ajustadas: 	1
+	- Cantidad de imagenes copiadas: 	0
 
 THREADS STATUS: 
 
 	- Thread-0 P1  State: 	TIMED_WAITING
-	- Thread-1 P1  State: 	RUNNABLE
+	- Thread-1 P1  State: 	TIMED_WAITING
+	- Thread-2 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	BLOCKED
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	RUNNABLE
+
+time since start: 1099 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	18
+	- Cantidad de imagenes mejoradas: 	4
+	- Cantidad de imagenes ajustadas: 	4
+	- Cantidad de imagenes copiadas: 	3
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TIMED_WAITING
+	- Thread-1 P1  State: 	TIMED_WAITING
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
@@ -42,18 +66,18 @@ THREADS STATUS:
 	- Thread-6 P3  State: 	RUNNABLE
 	- Thread-7 P3  State: 	BLOCKED
 	- Thread-8 P4  State: 	TIMED_WAITING
-	- Thread-9 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	BLOCKED
 
-time since start: 1098 [ms]
+time since start: 1613 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	24
-	- Cantidad de imagenes mejoradas: 	6
-	- Cantidad de imagenes ajustadas: 	5
-	- Cantidad de imagenes copiadas: 	5
+	- Cantidad de imagenes insertadas: 	28
+	- Cantidad de imagenes mejoradas: 	8
+	- Cantidad de imagenes ajustadas: 	7
+	- Cantidad de imagenes copiadas: 	7
 
 THREADS STATUS: 
 
@@ -62,45 +86,21 @@ THREADS STATUS:
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	RUNNABLE
+	- Thread-5 P3  State: 	BLOCKED
 	- Thread-6 P3  State: 	BLOCKED
 	- Thread-7 P3  State: 	TIMED_WAITING
 	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	BLOCKED
+	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 1601 [ms]
-
----------------------------------------------
-
-CONTAINER STATUS: 
-
-	- Cantidad de imagenes insertadas: 	31
-	- Cantidad de imagenes mejoradas: 	10
-	- Cantidad de imagenes ajustadas: 	9
-	- Cantidad de imagenes copiadas: 	8
-
-THREADS STATUS: 
-
-	- Thread-0 P1  State: 	TIMED_WAITING
-	- Thread-1 P1  State: 	TIMED_WAITING
-	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TIMED_WAITING
-	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	RUNNABLE
-	- Thread-7 P3  State: 	BLOCKED
-	- Thread-8 P4  State: 	BLOCKED
-	- Thread-9 P4  State: 	TIMED_WAITING
-
-time since start: 2107 [ms]
+time since start: 2127 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	37
-	- Cantidad de imagenes mejoradas: 	12
-	- Cantidad de imagenes ajustadas: 	10
+	- Cantidad de imagenes insertadas: 	36
+	- Cantidad de imagenes mejoradas: 	13
+	- Cantidad de imagenes ajustadas: 	11
 	- Cantidad de imagenes copiadas: 	10
 
 THREADS STATUS: 
@@ -110,22 +110,22 @@ THREADS STATUS:
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	BLOCKED
 	- Thread-6 P3  State: 	TIMED_WAITING
-	- Thread-7 P3  State: 	RUNNABLE
-	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	BLOCKED
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 2623 [ms]
+time since start: 2641 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	45
+	- Cantidad de imagenes insertadas: 	44
 	- Cantidad de imagenes mejoradas: 	14
-	- Cantidad de imagenes ajustadas: 	13
-	- Cantidad de imagenes copiadas: 	12
+	- Cantidad de imagenes ajustadas: 	14
+	- Cantidad de imagenes copiadas: 	14
 
 THREADS STATUS: 
 
@@ -135,21 +135,21 @@ THREADS STATUS:
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
 	- Thread-5 P3  State: 	BLOCKED
-	- Thread-6 P3  State: 	RUNNABLE
-	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-6 P3  State: 	BLOCKED
+	- Thread-7 P3  State: 	RUNNABLE
 	- Thread-8 P4  State: 	BLOCKED
-	- Thread-9 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	BLOCKED
 
-time since start: 3130 [ms]
+time since start: 3152 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	55
-	- Cantidad de imagenes mejoradas: 	17
-	- Cantidad de imagenes ajustadas: 	16
-	- Cantidad de imagenes copiadas: 	15
+	- Cantidad de imagenes insertadas: 	52
+	- Cantidad de imagenes mejoradas: 	19
+	- Cantidad de imagenes ajustadas: 	17
+	- Cantidad de imagenes copiadas: 	16
 
 THREADS STATUS: 
 
@@ -159,45 +159,21 @@ THREADS STATUS:
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
 	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	BLOCKED
-	- Thread-7 P3  State: 	BLOCKED
-	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	RUNNABLE
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	RUNNABLE
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	BLOCKED
 
-time since start: 3769 [ms]
+time since start: 3667 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	60
-	- Cantidad de imagenes mejoradas: 	21
-	- Cantidad de imagenes ajustadas: 	19
-	- Cantidad de imagenes copiadas: 	17
-
-THREADS STATUS: 
-
-	- Thread-0 P1  State: 	BLOCKED
-	- Thread-1 P1  State: 	BLOCKED
-	- Thread-2 P2  State: 	BLOCKED
-	- Thread-3 P2  State: 	BLOCKED
-	- Thread-4 P2  State: 	BLOCKED
-	- Thread-5 P3  State: 	RUNNABLE
-	- Thread-6 P3  State: 	RUNNABLE
-	- Thread-7 P3  State: 	TIMED_WAITING
-	- Thread-8 P4  State: 	BLOCKED
-	- Thread-9 P4  State: 	TIMED_WAITING
-
-time since start: 4939 [ms]
-
----------------------------------------------
-
-CONTAINER STATUS: 
-
-	- Cantidad de imagenes insertadas: 	70
-	- Cantidad de imagenes mejoradas: 	23
-	- Cantidad de imagenes ajustadas: 	22
-	- Cantidad de imagenes copiadas: 	21
+	- Cantidad de imagenes mejoradas: 	22
+	- Cantidad de imagenes ajustadas: 	21
+	- Cantidad de imagenes copiadas: 	20
 
 THREADS STATUS: 
 
@@ -206,22 +182,46 @@ THREADS STATUS:
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	RUNNABLE
+	- Thread-5 P3  State: 	BLOCKED
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	BLOCKED
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	BLOCKED
+
+time since start: 4183 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	68
+	- Cantidad de imagenes mejoradas: 	24
+	- Cantidad de imagenes ajustadas: 	24
+	- Cantidad de imagenes copiadas: 	23
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TIMED_WAITING
+	- Thread-1 P1  State: 	TIMED_WAITING
+	- Thread-2 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	BLOCKED
+	- Thread-6 P3  State: 	BLOCKED
 	- Thread-7 P3  State: 	BLOCKED
 	- Thread-8 P4  State: 	BLOCKED
 	- Thread-9 P4  State: 	TIMED_WAITING
 
-time since start: 5462 [ms]
+time since start: 4697 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	78
-	- Cantidad de imagenes mejoradas: 	26
-	- Cantidad de imagenes ajustadas: 	25
-	- Cantidad de imagenes copiadas: 	24
+	- Cantidad de imagenes insertadas: 	76
+	- Cantidad de imagenes mejoradas: 	29
+	- Cantidad de imagenes ajustadas: 	26
+	- Cantidad de imagenes copiadas: 	25
 
 THREADS STATUS: 
 
@@ -231,44 +231,44 @@ THREADS STATUS:
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
 	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	RUNNABLE
+	- Thread-9 P4  State: 	TIMED_WAITING
+
+time since start: 5214 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	84
+	- Cantidad de imagenes mejoradas: 	31
+	- Cantidad de imagenes ajustadas: 	31
+	- Cantidad de imagenes copiadas: 	30
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TIMED_WAITING
+	- Thread-1 P1  State: 	TIMED_WAITING
+	- Thread-2 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	BLOCKED
 	- Thread-6 P3  State: 	BLOCKED
 	- Thread-7 P3  State: 	RUNNABLE
 	- Thread-8 P4  State: 	BLOCKED
 	- Thread-9 P4  State: 	TIMED_WAITING
 
-time since start: 5978 [ms]
+time since start: 5729 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
-	- Cantidad de imagenes insertadas: 	88
-	- Cantidad de imagenes mejoradas: 	30
-	- Cantidad de imagenes ajustadas: 	28
-	- Cantidad de imagenes copiadas: 	28
-
-THREADS STATUS: 
-
-	- Thread-0 P1  State: 	TIMED_WAITING
-	- Thread-1 P1  State: 	TIMED_WAITING
-	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TIMED_WAITING
-	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	BLOCKED
-	- Thread-7 P3  State: 	TIMED_WAITING
-	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	BLOCKED
-
-time since start: 6487 [ms]
-
----------------------------------------------
-
-CONTAINER STATUS: 
-
-	- Cantidad de imagenes insertadas: 	96
-	- Cantidad de imagenes mejoradas: 	33
-	- Cantidad de imagenes ajustadas: 	32
+	- Cantidad de imagenes insertadas: 	92
+	- Cantidad de imagenes mejoradas: 	36
+	- Cantidad de imagenes ajustadas: 	35
 	- Cantidad de imagenes copiadas: 	32
 
 THREADS STATUS: 
@@ -278,70 +278,46 @@ THREADS STATUS:
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	RUNNABLE
-	- Thread-7 P3  State: 	BLOCKED
-	- Thread-8 P4  State: 	BLOCKED
-	- Thread-9 P4  State: 	BLOCKED
-
-time since start: 6991 [ms]
-
----------------------------------------------
-
-CONTAINER STATUS: 
-
-	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	36
-	- Cantidad de imagenes ajustadas: 	35
-	- Cantidad de imagenes copiadas: 	34
-
-THREADS STATUS: 
-
-	- Thread-0 P1  State: 	TERMINATED
-	- Thread-1 P1  State: 	TERMINATED
-	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TIMED_WAITING
-	- Thread-4 P2  State: 	TIMED_WAITING
 	- Thread-5 P3  State: 	BLOCKED
-	- Thread-6 P3  State: 	TIMED_WAITING
-	- Thread-7 P3  State: 	RUNNABLE
-	- Thread-8 P4  State: 	RUNNABLE
+	- Thread-6 P3  State: 	RUNNABLE
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
 	- Thread-9 P4  State: 	TIMED_WAITING
 
-time since start: 7500 [ms]
+time since start: 6235 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	39
-	- Cantidad de imagenes ajustadas: 	39
-	- Cantidad de imagenes copiadas: 	38
+	- Cantidad de imagenes mejoradas: 	38
+	- Cantidad de imagenes ajustadas: 	37
+	- Cantidad de imagenes copiadas: 	37
 
 THREADS STATUS: 
 
-	- Thread-0 P1  State: 	TERMINATED
-	- Thread-1 P1  State: 	TERMINATED
+	- Thread-0 P1  State: 	TIMED_WAITING
+	- Thread-1 P1  State: 	TIMED_WAITING
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	RUNNABLE
+	- Thread-5 P3  State: 	TIMED_WAITING
 	- Thread-6 P3  State: 	BLOCKED
 	- Thread-7 P3  State: 	BLOCKED
-	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	RUNNABLE
 	- Thread-9 P4  State: 	BLOCKED
 
-time since start: 8010 [ms]
+time since start: 6749 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	44
-	- Cantidad de imagenes ajustadas: 	42
-	- Cantidad de imagenes copiadas: 	42
+	- Cantidad de imagenes mejoradas: 	42
+	- Cantidad de imagenes ajustadas: 	40
+	- Cantidad de imagenes copiadas: 	39
 
 THREADS STATUS: 
 
@@ -353,19 +329,19 @@ THREADS STATUS:
 	- Thread-5 P3  State: 	TIMED_WAITING
 	- Thread-6 P3  State: 	TIMED_WAITING
 	- Thread-7 P3  State: 	BLOCKED
-	- Thread-8 P4  State: 	BLOCKED
+	- Thread-8 P4  State: 	RUNNABLE
 	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 8511 [ms]
+time since start: 7319 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	47
-	- Cantidad de imagenes ajustadas: 	46
-	- Cantidad de imagenes copiadas: 	45
+	- Cantidad de imagenes mejoradas: 	46
+	- Cantidad de imagenes ajustadas: 	44
+	- Cantidad de imagenes copiadas: 	43
 
 THREADS STATUS: 
 
@@ -374,13 +350,37 @@ THREADS STATUS:
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	BLOCKED
+	- Thread-5 P3  State: 	TIMED_WAITING
 	- Thread-6 P3  State: 	BLOCKED
 	- Thread-7 P3  State: 	TIMED_WAITING
-	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 9014 [ms]
+time since start: 7842 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	100
+	- Cantidad de imagenes mejoradas: 	50
+	- Cantidad de imagenes ajustadas: 	47
+	- Cantidad de imagenes copiadas: 	46
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TERMINATED
+	- Thread-1 P1  State: 	TERMINATED
+	- Thread-2 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	RUNNABLE
+
+time since start: 8375 [ms]
 
 ---------------------------------------------
 
@@ -388,31 +388,31 @@ CONTAINER STATUS:
 
 	- Cantidad de imagenes insertadas: 	100
 	- Cantidad de imagenes mejoradas: 	51
-	- Cantidad de imagenes ajustadas: 	49
-	- Cantidad de imagenes copiadas: 	48
+	- Cantidad de imagenes ajustadas: 	51
+	- Cantidad de imagenes copiadas: 	50
 
 THREADS STATUS: 
 
 	- Thread-0 P1  State: 	TERMINATED
 	- Thread-1 P1  State: 	TERMINATED
 	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	RUNNABLE
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	RUNNABLE
 	- Thread-6 P3  State: 	TIMED_WAITING
-	- Thread-7 P3  State: 	RUNNABLE
-	- Thread-8 P4  State: 	BLOCKED
-	- Thread-9 P4  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	BLOCKED
 
-time since start: 9521 [ms]
+time since start: 8961 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	58
-	- Cantidad de imagenes ajustadas: 	55
+	- Cantidad de imagenes mejoradas: 	55
+	- Cantidad de imagenes ajustadas: 	54
 	- Cantidad de imagenes copiadas: 	53
 
 THREADS STATUS: 
@@ -422,22 +422,46 @@ THREADS STATUS:
 	- Thread-2 P2  State: 	TIMED_WAITING
 	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	RUNNABLE
+	- Thread-6 P3  State: 	RUNNABLE
 	- Thread-7 P3  State: 	TIMED_WAITING
-	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	BLOCKED
 	- Thread-9 P4  State: 	TIMED_WAITING
 
-time since start: 10036 [ms]
+time since start: 9595 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	64
-	- Cantidad de imagenes ajustadas: 	62
-	- Cantidad de imagenes copiadas: 	61
+	- Cantidad de imagenes mejoradas: 	62
+	- Cantidad de imagenes ajustadas: 	59
+	- Cantidad de imagenes copiadas: 	56
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TERMINATED
+	- Thread-1 P1  State: 	TERMINATED
+	- Thread-2 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	TIMED_WAITING
+
+time since start: 10112 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	100
+	- Cantidad de imagenes mejoradas: 	66
+	- Cantidad de imagenes ajustadas: 	65
+	- Cantidad de imagenes copiadas: 	64
 
 THREADS STATUS: 
 
@@ -448,75 +472,27 @@ THREADS STATUS:
 	- Thread-4 P2  State: 	TIMED_WAITING
 	- Thread-5 P3  State: 	TIMED_WAITING
 	- Thread-6 P3  State: 	RUNNABLE
-	- Thread-7 P3  State: 	TIMED_WAITING
-	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	TIMED_WAITING
-
-time since start: 10546 [ms]
-
----------------------------------------------
-
-CONTAINER STATUS: 
-
-	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	69
-	- Cantidad de imagenes ajustadas: 	67
-	- Cantidad de imagenes copiadas: 	66
-
-THREADS STATUS: 
-
-	- Thread-0 P1  State: 	TERMINATED
-	- Thread-1 P1  State: 	TERMINATED
-	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TIMED_WAITING
-	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	TIMED_WAITING
-	- Thread-7 P3  State: 	RUNNABLE
-	- Thread-8 P4  State: 	RUNNABLE
-	- Thread-9 P4  State: 	TIMED_WAITING
-
-time since start: 11047 [ms]
-
----------------------------------------------
-
-CONTAINER STATUS: 
-
-	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	82
-	- Cantidad de imagenes ajustadas: 	73
-	- Cantidad de imagenes copiadas: 	71
-
-THREADS STATUS: 
-
-	- Thread-0 P1  State: 	TERMINATED
-	- Thread-1 P1  State: 	TERMINATED
-	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TIMED_WAITING
-	- Thread-4 P2  State: 	TIMED_WAITING
-	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	TIMED_WAITING
-	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	BLOCKED
 	- Thread-8 P4  State: 	TIMED_WAITING
-	- Thread-9 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 11549 [ms]
+time since start: 10714 [ms]
 
 ---------------------------------------------
 
 CONTAINER STATUS: 
 
 	- Cantidad de imagenes insertadas: 	100
-	- Cantidad de imagenes mejoradas: 	96
-	- Cantidad de imagenes ajustadas: 	80
-	- Cantidad de imagenes copiadas: 	79
+	- Cantidad de imagenes mejoradas: 	73
+	- Cantidad de imagenes ajustadas: 	69
+	- Cantidad de imagenes copiadas: 	68
 
 THREADS STATUS: 
 
 	- Thread-0 P1  State: 	TERMINATED
 	- Thread-1 P1  State: 	TERMINATED
 	- Thread-2 P2  State: 	TIMED_WAITING
-	- Thread-3 P2  State: 	TERMINATED
+	- Thread-3 P2  State: 	TIMED_WAITING
 	- Thread-4 P2  State: 	TIMED_WAITING
 	- Thread-5 P3  State: 	TIMED_WAITING
 	- Thread-6 P3  State: 	TIMED_WAITING
@@ -524,7 +500,55 @@ THREADS STATUS:
 	- Thread-8 P4  State: 	TIMED_WAITING
 	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 12060 [ms]
+time since start: 11243 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	100
+	- Cantidad de imagenes mejoradas: 	87
+	- Cantidad de imagenes ajustadas: 	77
+	- Cantidad de imagenes copiadas: 	75
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TERMINATED
+	- Thread-1 P1  State: 	TERMINATED
+	- Thread-2 P2  State: 	TIMED_WAITING
+	- Thread-3 P2  State: 	TIMED_WAITING
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	TIMED_WAITING
+
+time since start: 11762 [ms]
+
+---------------------------------------------
+
+CONTAINER STATUS: 
+
+	- Cantidad de imagenes insertadas: 	100
+	- Cantidad de imagenes mejoradas: 	99
+	- Cantidad de imagenes ajustadas: 	84
+	- Cantidad de imagenes copiadas: 	82
+
+THREADS STATUS: 
+
+	- Thread-0 P1  State: 	TERMINATED
+	- Thread-1 P1  State: 	TERMINATED
+	- Thread-2 P2  State: 	TERMINATED
+	- Thread-3 P2  State: 	TERMINATED
+	- Thread-4 P2  State: 	TIMED_WAITING
+	- Thread-5 P3  State: 	TIMED_WAITING
+	- Thread-6 P3  State: 	TIMED_WAITING
+	- Thread-7 P3  State: 	TIMED_WAITING
+	- Thread-8 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	TIMED_WAITING
+
+time since start: 12267 [ms]
 
 ---------------------------------------------
 
@@ -532,8 +556,8 @@ CONTAINER STATUS:
 
 	- Cantidad de imagenes insertadas: 	100
 	- Cantidad de imagenes mejoradas: 	100
-	- Cantidad de imagenes ajustadas: 	88
-	- Cantidad de imagenes copiadas: 	86
+	- Cantidad de imagenes ajustadas: 	90
+	- Cantidad de imagenes copiadas: 	89
 
 THREADS STATUS: 
 
@@ -546,9 +570,9 @@ THREADS STATUS:
 	- Thread-6 P3  State: 	TIMED_WAITING
 	- Thread-7 P3  State: 	TIMED_WAITING
 	- Thread-8 P4  State: 	TIMED_WAITING
-	- Thread-9 P4  State: 	TIMED_WAITING
+	- Thread-9 P4  State: 	RUNNABLE
 
-time since start: 12569 [ms]
+time since start: 12782 [ms]
 
 ---------------------------------------------
 
@@ -556,8 +580,8 @@ CONTAINER STATUS:
 
 	- Cantidad de imagenes insertadas: 	100
 	- Cantidad de imagenes mejoradas: 	100
-	- Cantidad de imagenes ajustadas: 	95
-	- Cantidad de imagenes copiadas: 	94
+	- Cantidad de imagenes ajustadas: 	99
+	- Cantidad de imagenes copiadas: 	96
 
 THREADS STATUS: 
 
@@ -567,12 +591,12 @@ THREADS STATUS:
 	- Thread-3 P2  State: 	TERMINATED
 	- Thread-4 P2  State: 	TERMINATED
 	- Thread-5 P3  State: 	TIMED_WAITING
-	- Thread-6 P3  State: 	TIMED_WAITING
-	- Thread-7 P3  State: 	TIMED_WAITING
-	- Thread-8 P4  State: 	RUNNABLE
+	- Thread-6 P3  State: 	RUNNABLE
+	- Thread-7 P3  State: 	RUNNABLE
+	- Thread-8 P4  State: 	TIMED_WAITING
 	- Thread-9 P4  State: 	TIMED_WAITING
 
-time since start: 13070 [ms]
+time since start: 13295 [ms]
 
 ---------------------------------------------
 
@@ -596,9 +620,9 @@ THREADS STATUS:
 	- Thread-8 P4  State: 	TERMINATED
 	- Thread-9 P4  State: 	TERMINATED
 
-time since start: 13579 [ms]
+time since start: 13806 [ms]
 
 
 
-TOTAL RUN TIME: 13.58 [s]
+TOTAL RUN TIME: 13.81 [s]
 

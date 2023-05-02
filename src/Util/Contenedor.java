@@ -10,7 +10,6 @@ public class Contenedor {
     private final ArrayList<Imagen> contenedor;
 
     // KEYS ---------------------------------------
-    private final Object keyCreadas = new Object();
     private final Object keyMejoradas = new Object();
     private final Object keyAjuste = new Object();
     private final Object keyCopia = new Object();
@@ -86,15 +85,11 @@ public class Contenedor {
     }
 
     public int getContadorCreadas() {
-        synchronized (keyCreadas) {
-            return contadorCreadas;
-        }
+        return contadorCreadas;
     }
 
     public void aumentarContadorCreadas() {
-        synchronized (keyCreadas) {
-            contadorCreadas++;
-        }
+        contadorCreadas++;
     }
 
     public int getContadorMejoradas() {

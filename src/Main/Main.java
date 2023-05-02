@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.lang.Thread.State;
 
 public class Main {
-    public static final boolean[] showPrints = {true, true, true, true};
+    public static final boolean[] showPrints = {true, false, false, false};
     private static long startTime;
 
     public static void main(String[] args) {
