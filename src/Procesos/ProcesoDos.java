@@ -4,6 +4,7 @@ import Main.Main;
 import Util.Contenedor;
 import Util.ImageCondition;
 import Util.Imagen;
+import Util.ImagenNoEncontradaException;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -75,7 +76,7 @@ public class ProcesoDos extends Proceso {
             // la guarda
             contenedor.addImage(imagen, false);
 
-        } catch (NoSuchElementException ex) {
+        } catch (ImagenNoEncontradaException ex) {
             // NO ENCONTRO IMAGENES PARA MEJORAR
 
             // Si ya mejoro todas las imagenes del contenedor, se detiene

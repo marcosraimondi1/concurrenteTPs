@@ -3,7 +3,7 @@ package Util;
 import Main.Main;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class Contenedor {
     private final int maxSize;
@@ -32,11 +32,15 @@ public class Contenedor {
      * @param condicion Condicion a satisfacer por la imagen buscada
      * @return Imagen que satisface la condicion
      */
-    public Imagen getImage(ImageCondition condicion) throws NoSuchElementException {
+    public Imagen getImage(ImageCondition condicion) throws ImagenNoEncontradaException {
         synchronized (this) {
-            Imagen image = contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst().get();
-            contenedor.remove(image);
-            return image;
+            Optional<Imagen> imageOpt = contenedor.stream().filter(imagen -> condicion.verificar(imagen)).findFirst();
+            if (imageOpt.isPresent()) {
+                Imagen imagen = imageOpt.get();
+                contenedor.remove(imagen);
+                return imagen;
+            }
+            throw new ImagenNoEncontradaException(Thread.currentThread().getName() + " no pudo conseguir");
         }
     }
 

@@ -4,6 +4,7 @@ import Main.Main;
 import Util.Contenedor;
 import Util.ImageCondition;
 import Util.Imagen;
+import Util.ImagenNoEncontradaException;
 
 import java.util.NoSuchElementException;
 
@@ -41,7 +42,7 @@ public class ProcesoCuatro extends Proceso {
                 System.out.printf("\n%s copio imagen %d - total: %d", Thread.currentThread().getName(), imagen.getId(), copiadas);
 
 
-        } catch (NoSuchElementException ex) {
+        } catch (ImagenNoEncontradaException ex) {
             // NO HAY IMAGENES COPIABLES
 
             if (contenedor.getContadorCopiadas() == contenedor.getMaxSize())

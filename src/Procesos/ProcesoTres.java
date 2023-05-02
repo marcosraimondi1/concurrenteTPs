@@ -39,7 +39,7 @@ public class ProcesoTres extends Proceso {
             contenedor.addImage(imagen, false);
 
 
-        } catch (NoSuchElementException ex) {
+        } catch (ImagenNoEncontradaException ex) {
             // NO HAY IMAGENES AJUSTABLES
 
             if (contenedor.getContadorAjustadas() == contenedor.getMaxSize())
