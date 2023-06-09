@@ -1,4 +1,4 @@
-# TPs de Concurrente
-Trabajos Practicos de la materia Programación Concurrente
-
-- Cada Rama es un tp diferente
+# TRABAJO PRACTICO 2
+- [Enunciado](./EnunciadoTP2.pdf)
+- [Diagrama de Clases]()
+- [Diagrama de Secuencia]()
