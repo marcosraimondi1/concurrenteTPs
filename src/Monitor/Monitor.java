@@ -4,27 +4,20 @@ import java.util.concurrent.Semaphore;
 
 import Politica.Politica;
 import RdP.RdP;
-import Cola.Cola;
+import Cola.Colas;
 
 public class Monitor {
     private final Semaphore mutex;
     private final Politica politica;
     private final RdP red;
-    private final Cola[] colas;
+    private final Colas colas;
     private final boolean[] m;
     public Monitor(RdP red, Politica politica){
         mutex           = new Semaphore(1,true);
         this.politica   = politica;
         this.red        = red;
         this.m          = new boolean[red.getCantidadTransiciones()];
-        this.colas      = new Cola[red.getCantidadTransiciones()];
-
-        // se crea una cola para cada transicion
-        for (int i = 0; i < red.getCantidadTransiciones(); i++) {
-            colas[i] = new Cola();
-        }
-
-
+        this.colas      = new Colas(red.getCantidadTransiciones());
     }
 
     /**
@@ -48,7 +41,7 @@ public class Monitor {
             k = red.disparar(transicion);
             if (k) {
                 boolean[] sensibilizadas        = red.getSensibilizadas();
-                boolean[] transicionesConEspera = hayEsperando();
+                boolean[] transicionesConEspera = colas.hayEsperando();
 
                 // m = sensibilizadas AND transicionesConEspera
                 boolean[] transicionesConEsperaySensibilizadas = new boolean[sensibilizadas.length];
@@ -59,7 +52,7 @@ public class Monitor {
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar elegimos una
                     int indexDisparo = politica.cual(m);
-                    colas[indexDisparo].release();              // debe liberar el hilo que va a disparar
+                    colas.getCola(indexDisparo).release();      // debe liberar el hilo que va a disparar
                     return;                                     //me vuelvo porque termine
                 }else{
                     k = false;
@@ -69,7 +62,7 @@ public class Monitor {
                 mutex.release();
 
                 //me voy a esperar a la cola correspondiente a la transicion que quiero disparar
-                colas[transicion].acquire();
+                colas.getCola(transicion).acquire();
             }
         }
 
@@ -81,17 +74,7 @@ public class Monitor {
 
     }
 
-    /**
-     * Devuelve un array de booleanos que indica si hay hilos esperando en cada cola
-     * @return  boolean[]
-     */
-    private boolean[] hayEsperando(){
-        boolean[] transicionesConEspera = new boolean[colas.length];
-        for (int i = 0; i < colas.length; i++) {
-            transicionesConEspera[i] = colas[i].hayEsperando();
-        }
-        return transicionesConEspera;
-    }
+
 
     /**
      * Devuelve true si el array esta todos en falso
