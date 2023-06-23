@@ -76,4 +76,7 @@ public class RdP {
     }
 
 
+    public int getCantidadTransiciones() {
+        return cantidad_transiciones;
+    }
 }
