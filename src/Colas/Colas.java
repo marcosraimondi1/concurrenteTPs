@@ -15,4 +15,13 @@ public class Colas {
         //array de transiciones con hilos que estan esperando
         return null;
     }
+
+    public Semaphore getCola(int index) {
+        return ColasDeEspera[index];
+    }
+
+    public void setColasDeEspera(Semaphore[] colasDeEspera) {
+        ColasDeEspera = colasDeEspera;
+    }
+
 }
