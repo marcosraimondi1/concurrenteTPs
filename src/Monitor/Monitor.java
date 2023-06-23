@@ -1,6 +1,5 @@
 package Monitor;
 
-import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 import Politica.Politica;
@@ -8,12 +7,11 @@ import RdP.RdP;
 import Cola.Cola;
 
 public class Monitor {
-    private Semaphore mutex;
-    private Politica politica;
-    private RdP red;
-    private Cola[] colas;
-    private boolean k = false;
-    private boolean[] m;
+    private final Semaphore mutex;
+    private final Politica politica;
+    private final RdP red;
+    private final Cola[] colas;
+    private final boolean[] m;
     public Monitor(RdP red, Politica politica){
         mutex           = new Semaphore(1,true);
         this.politica   = politica;
@@ -44,7 +42,8 @@ public class Monitor {
         //--------------------------------------------------------------------------------------------------------------
         //------------------------------------ Seccion Critica ---------------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
-        k = true;
+
+        boolean k = true;
         while (k) {
             k = red.disparar(transicion);
             if (k) {
@@ -52,16 +51,16 @@ public class Monitor {
                 boolean[] transicionesConEspera = hayEsperando();
 
                 // m = sensibilizadas AND transicionesConEspera
-
+                boolean[] transicionesConEsperaySensibilizadas = new boolean[sensibilizadas.length];
                 for (int i = 0; i < sensibilizadas.length; i++) {
-                    m[i] = sensibilizadas[i] && transicionesConEspera[i];
+                    transicionesConEsperaySensibilizadas[i] = sensibilizadas[i] && transicionesConEspera[i];
                 }
 
-                if(!mVacio()){
+                if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar elegimos una
                     int indexDisparo = politica.cual(m);
-                    colas[indexDisparo].release();           // debe liberar el hilo que va a disparar
-                    return; //me vuelvo porque termine
+                    colas[indexDisparo].release();              // debe liberar el hilo que va a disparar
+                    return;                                     //me vuelvo porque termine
                 }else{
                     k = false;
                 }
@@ -95,10 +94,10 @@ public class Monitor {
     }
 
     /**
-     * Devuelve true si el array m no tiene transiciones esperando (si estan todos en false)
+     * Devuelve true si el array esta todos en falso
      * @return boolean
      */
-    private boolean mVacio(){
+    private boolean todoFalso(boolean[] m){
         for (int i = 0 ; i < m.length ; i++) {
             if (m[i]) {
                 return false;
