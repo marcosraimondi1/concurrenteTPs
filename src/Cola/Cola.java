@@ -10,10 +10,10 @@ public class Cola {
     public boolean hayEsperando(){
         return cola.hasQueuedThreads();
     }
-    public void release(){
+    public void sacar(){
         cola.release();
     }
-    public void acquire(){
+    public void hacerCola(){
         try {
             cola.acquire();
         } catch (InterruptedException e) {

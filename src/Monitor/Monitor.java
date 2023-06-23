@@ -52,7 +52,7 @@ public class Monitor {
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar elegimos una
                     int indexDisparo = politica.cual(m);
-                    colas.getCola(indexDisparo).release();      // debe liberar el hilo que va a disparar
+                    colas.getCola(indexDisparo).sacar();      // debe liberar el hilo que va a disparar
                     return;                                     //me vuelvo porque termine
                 }else{
                     k = false;
@@ -62,7 +62,7 @@ public class Monitor {
                 mutex.release();
 
                 //me voy a esperar a la cola correspondiente a la transicion que quiero disparar
-                colas.getCola(transicion).acquire();
+                colas.getCola(transicion).hacerCola();
             }
         }
 
