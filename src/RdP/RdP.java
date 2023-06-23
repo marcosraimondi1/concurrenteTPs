@@ -4,17 +4,14 @@ package RdP;
  * Clase que representa una Red de Petri
  */
 public class RdP {
-    private int[][] plazas_salida_transiciones;      // matriz de incidencia +
-    private int[][] plazas_entrada_transiciones;     // matriz de incidencia -
-    private int[][] marcado_actual;     // estado de la RdP
-    private int[][] marcado_inicial;    // estado inicial de la RdP
-    private final int cantidad_plazas;        // cantidad de plazas de la RdP
-    private final int cantidad_transiciones;  // cantidad de transiciones de la RdP
-    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[][] marcado_inicial) {
-        System.out.println("RdP");
+    private final int[][] plazas_salida_transiciones;      // matriz de incidencia +
+    private final int[][] plazas_entrada_transiciones;     // matriz de incidencia -
+    private int[] marcado_actual;                           // estado de la RdP
+    private final int cantidad_plazas;                      // cantidad de plazas de la RdP
+    private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
+    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial) {
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
-        this.marcado_inicial = marcado_inicial;
         this.marcado_actual = marcado_inicial;
         this.cantidad_plazas = plazas_entrada_transiciones.length;
         this.cantidad_transiciones = plazas_entrada_transiciones[0].length;
@@ -26,7 +23,18 @@ public class RdP {
      * @return true si se pudo disparar, false si no
      */
     public boolean disparar(int transicion) {
-        return false;
+        if (!isSensibilizada(transicion)) {
+            return false;
+        }
+
+        // actualizo el marcado actual
+        // saco tokens de las entradas y agrego a las salidas
+        for (int i = 0; i < cantidad_plazas; i++) {
+            marcado_actual[i] -= plazas_entrada_transiciones[i][transicion];
+            marcado_actual[i] += plazas_salida_transiciones[i][transicion];
+        }
+
+        return true;
     }
 
     /**
@@ -37,10 +45,35 @@ public class RdP {
         boolean[] sensibilizadas = new boolean[cantidad_transiciones];
         
         for (int i = 0; i < cantidad_transiciones; i++) {
-            sensibilizadas[i] = true;
+            // por cada transicion verifico si esta sensibilizada
+            sensibilizadas[i] = isSensibilizada(i);
         }
-        
+
         return sensibilizadas;
     }
+
+    /**
+     * Verifica si una transicion esta sensibilizada
+     * @param transicion transicion a verificar
+     * @return  true si esta sensibilizada, false si no
+     */
+    private boolean isSensibilizada(int transicion) {
+        boolean sensibilizada = true;
+
+        for (int i = 0; i < cantidad_plazas; i++) {
+            // verifico si la plaza i tiene los tokens necesarios en el marcada actual
+            if (marcado_actual[i] < plazas_entrada_transiciones[i][transicion]) {
+                sensibilizada = false;
+                break;
+            }
+        }
+
+        return sensibilizada;
+    }
+
+    public int[] getMarcadoActual() {
+        return marcado_actual;
+    }
+
 
 }
