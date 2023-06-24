@@ -12,12 +12,14 @@ public class Monitor {
     private final RdP red;
     private final Colas colas;
     private final boolean[] m;
+    private boolean k;
     public Monitor(RdP red, Politica politica){
         mutex           = new Semaphore(1,true);
         this.politica   = politica;
         this.red        = red;
         this.m          = new boolean[red.getCantidadTransiciones()];
         this.colas      = new Colas(red.getCantidadTransiciones());
+        k = false;
     }
 
     /**
@@ -36,7 +38,7 @@ public class Monitor {
         //------------------------------------ Seccion Critica ---------------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
 
-        boolean k = true;//Variable de estado
+        k = true;//Variable de estado
         while (k) {
             k = red.disparar(transicion);
             if (k) {
@@ -89,5 +91,8 @@ public class Monitor {
         return true;
     }
 
+    public Semaphore getMutex() {
+        return mutex;
+    }
 
 }
