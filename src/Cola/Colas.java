@@ -1,9 +1,10 @@
 package Cola;
 
 public class Colas {
-    private Cola[] colas;
-    private int cantidad;
+    private final Cola[] colas;
+    private final int cantidad;
     public Colas (int cantidad) {
+        this.cantidad = cantidad;
         colas = new Cola[cantidad];
         for (int i = 0; i < cantidad; i++) {
             colas[i] = new Cola();
