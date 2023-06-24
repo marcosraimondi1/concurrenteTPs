@@ -62,7 +62,7 @@ public class Monitor {
                 mutex.release();
 
                 //me voy a esperar a la cola correspondiente a la transicion que quiero disparar
-                colas.getCola(transicion).hacerCola();
+                colas.getCola(transicion).esperar();
             }
         }
 
