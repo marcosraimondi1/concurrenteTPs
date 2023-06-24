@@ -1,5 +1,9 @@
 package Politica;
 
+/**
+ * Politica1: para cada conflicto, se dispara la transicion que
+ * no se haya disparado antes
+ */
 public class Politica1 implements Politica {
     private boolean c1 = false;     // bandera para conflicto 1
     private boolean c2 = false;     // bandera para conflicto 2
