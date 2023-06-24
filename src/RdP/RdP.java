@@ -6,7 +6,7 @@ package RdP;
 public class RdP {
     private final int[][] plazas_salida_transiciones;      // matriz de incidencia +
     private final int[][] plazas_entrada_transiciones;     // matriz de incidencia -
-    private int[] marcado_actual;                           // estado de la RdP
+    private final int[] marcado_actual;                           // estado de la RdP
     private final int cantidad_plazas;                      // cantidad de plazas de la RdP
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial) {
