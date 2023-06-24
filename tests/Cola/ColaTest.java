@@ -14,7 +14,6 @@ class ColaTest {
         assertFalse(cola.hayEsperando());
         Thread thread = new Thread(cola::hacerCola);
         thread.start();
-
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {

@@ -6,15 +6,17 @@ package RdP;
 public class RdP {
     private final int[][] plazas_salida_transiciones;      // matriz de incidencia +
     private final int[][] plazas_entrada_transiciones;     // matriz de incidencia -
-    private final int[] marcado_actual;                           // estado de la RdP
+    private final int[] marcado_actual;                     // estado de la RdP
     private final int cantidad_plazas;                      // cantidad de plazas de la RdP
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial) {
+        //Las columnas de la matriz de incidencia son transiciones
+        //Las filas de la matriz de incidencia son plazas
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
         this.marcado_actual = marcado_inicial;
-        this.cantidad_plazas = plazas_entrada_transiciones.length;
-        this.cantidad_transiciones = plazas_entrada_transiciones[0].length;
+        this.cantidad_plazas = plazas_entrada_transiciones.length;//Cantidad de filas o arreglos que tiene la matriz
+        this.cantidad_transiciones = plazas_entrada_transiciones[0].length;//Cantidad de columnas
     }
 
     /**
@@ -58,17 +60,15 @@ public class RdP {
      * @return  true si esta sensibilizada, false si no
      */
     private boolean isSensibilizada(int transicion) {
-        boolean sensibilizada = true;
 
         for (int i = 0; i < cantidad_plazas; i++) {
             // verifico si la plaza i tiene los tokens necesarios en el marcada actual
             if (marcado_actual[i] < plazas_entrada_transiciones[i][transicion]) {
-                sensibilizada = false;
-                break;
+               return false;
             }
         }
 
-        return sensibilizada;
+        return true;
     }
 
     public int[] getMarcadoActual() {
