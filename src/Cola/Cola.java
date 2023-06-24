@@ -13,7 +13,7 @@ public class Cola {
     public void sacar(){
         cola.release();
     }
-    public void hacerCola(){
+    public void esperar(){
         try {
             cola.acquire();
         } catch (InterruptedException e) {

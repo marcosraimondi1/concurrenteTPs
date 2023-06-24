@@ -12,7 +12,7 @@ class ColaTest {
     void hayEsperando() {
         Cola cola = new Cola();
         assertFalse(cola.hayEsperando());
-        Thread thread = new Thread(cola::hacerCola);
+        Thread thread = new Thread(cola::esperar);
         thread.start();
 
         try {
@@ -36,11 +36,11 @@ class ColaTest {
     }
 
     @Test
-    void hacerColaySacar() {
+    void esperarySacar() {
         Cola cola = new Cola();
         AtomicBoolean variable = new AtomicBoolean(false);
         Thread thread = new Thread(()->{
-            cola.hacerCola();
+            cola.esperar();
             variable.set(true);
         });
         thread.start();
