@@ -56,7 +56,7 @@ class MonitorTest {
             throw new RuntimeException(e);
         }
 
-        assertEquals(2,monitor.getMutex().availablePermits());
+        assertEquals(1,monitor.getMutex().availablePermits());
 
         //------------------------------Test-3--------------------------------------------------------//
         // Testea cuantos hilos vuelven de una transición que se puede disparar una sola vez
