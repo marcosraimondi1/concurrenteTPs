@@ -21,7 +21,7 @@ class MonitorTest {
 
         int[][] plaza_salida = devuelveMatriz(true); //plazas a la salida de la transición
         int[][] plaza_entrada = devuelveMatriz(false);//plazas a la entrada de la transición
-        int[] marcado = devuelveMarcado(3);//marcado inicial
+        int[] marcado = devuelveMarcado();//marcado inicial
         RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
@@ -133,7 +133,7 @@ class MonitorTest {
 
         return matriz;
     }
-    public int[] devuelveMarcado (int filas){
+    public int[] devuelveMarcado (){
                                //P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14
         int[] marcadito = new int[]{2, 0, 0, 0, 0, 1, 1, 2, 0, 0,  0,  1,  1,  1};
 
