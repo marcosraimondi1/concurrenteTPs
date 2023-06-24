@@ -12,11 +12,11 @@ class ColasTest {
         for (int i = 0; i < 5; i++) {
             assertFalse(colas.hayEsperando()[i]);
         }
-        Thread thread = new Thread(colas.getCola(0)::hacerCola);
+        Thread thread = new Thread(colas.getCola(0)::esperar);
         thread.start();
-        Thread thread1 = new Thread(colas.getCola(1)::hacerCola);
+        Thread thread1 = new Thread(colas.getCola(1)::esperar);
         thread1.start();
-        Thread thread2 = new Thread(colas.getCola(4)::hacerCola);
+        Thread thread2 = new Thread(colas.getCola(4)::esperar);
         thread2.start();
 
         try {
