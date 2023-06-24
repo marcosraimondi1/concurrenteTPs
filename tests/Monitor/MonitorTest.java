@@ -4,34 +4,84 @@ import Politica.Politica1;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MonitorTest {
 
     @Test
     void dispararTransicion() {
+
         //------------------------------Inicio Politica----------------------------------------------//
+
         Politica1 politica = new Politica1();
+
         //------------------------------Inicio RdP---------------------------------------------------//
+
         int[][] plaza_salida = devuelveMatriz(true); //plazas a la salida de la transición
         int[][] plaza_entrada = devuelveMatriz(false);//plazas a la entrada de la transición
         int[] marcado = devuelveMarcado(3);//marcado inicial
         RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
+
         //------------------------------Inicio Monitor-----------------------------------------------//
+
         Monitor monitor = new Monitor(rdp,politica);
-        //------------------------------Tests--------------------------------------------------------//
+
+        //------------------------------Test-1--------------------------------------------------------//
+        //Testea que el hilo tome el mutex y no se quede esperando
 
         Thread thread = new Thread(()->{
-            monitor.dispararTransicion(0);
+            monitor.dispararTransicion(0);//Disparo T1
         });
-
+        thread.start();
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        assertFalse(monitor.getMutex().hasQueuedThreads());
+        assertFalse(monitor.getMutex().hasQueuedThreads());//No espera en la cola de entrada del monitor
+
+        //------------------------------Test-2--------------------------------------------------------//
+        //Testea que el hilo libere el mutex una vez disparado
+
+        thread = new Thread(()->{
+            monitor.dispararTransicion(2);//Disparo T2
+        });
+        thread.start();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(2,monitor.getMutex().availablePermits());
+
+        //------------------------------Test-3--------------------------------------------------------//
+        // Testea cuantos hilos vuelven de una transición que se puede disparar una sola vez
+        AtomicInteger variable = new AtomicInteger();
+
+        Thread[] threads = new Thread[5];
+
+        for(int i =0;i<5;i++){
+            threads[i] = new Thread(()->{
+                monitor.dispararTransicion(4);//Disparo T4
+                variable.getAndIncrement();
+            });
+        }
+
+        for(int i =0;i<5;i++){
+            threads[i].start();
+        }
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        // Como T2 se puede disparar solo una vez, Solo un hilo va a incrementar "variable"
+        assertEquals(1,variable.get());
 
 
     }

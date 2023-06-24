@@ -20,4 +20,7 @@ public class Cola {
             throw new RuntimeException(e);
         }
     }
+    public Semaphore getCola() {
+        return cola;
+    }
 }

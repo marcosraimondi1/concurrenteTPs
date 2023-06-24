@@ -73,7 +73,6 @@ public class Monitor {
         //--------------------------------------------------------------------------------------------------------------
 
         mutex.release();
-
     }
 
 
@@ -93,6 +92,9 @@ public class Monitor {
 
     public Semaphore getMutex() {
         return mutex;
+    }
+    public Colas getColas() {
+        return colas;
     }
 
 }
