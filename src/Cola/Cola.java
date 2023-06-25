@@ -11,6 +11,8 @@ public class Cola {
         return cola.hasQueuedThreads();
     }
     public void sacar(){
+        if (cola.availablePermits() != 0)
+            throw new RuntimeException("Se corrompio la cola");
         cola.release();
     }
     public void esperar(){

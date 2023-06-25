@@ -4,6 +4,8 @@ import Politica.Politica1;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,36 +110,45 @@ class MonitorTest {
 
         Monitor monitor = new Monitor(rdp,politica);
 
-        // disparo el invariante de transicion T1,T2,T4,T6
+        // verifico que se disparen 150 invariantes de transicion con 3 hilos diferentes
         int[] secuencia1 = {0,1,3,5};
-        for (int transicion : secuencia1) {
-            monitor.dispararTransicion(transicion);
-        }
-
-        int[] marcadoEsperado = getMarcadoInicial();
-        int[] marcadoActual = rdp.getMarcadoActual();
-
-        assertArrayEquals(marcadoEsperado,marcadoActual);
-
-        // disparo el invariante de transicion T1,T3,T5,T6
         int[] secuencia2 = {0,2,4,5};
-        for (int transicion : secuencia2) {
-            monitor.dispararTransicion(transicion);
-        }
-
-        marcadoActual = rdp.getMarcadoActual();
-
-        assertArrayEquals(marcadoEsperado,marcadoActual);
-
-        // disparo el invariante de transicion T7,T8,T9,T10
         int[] secuencia3 = {6,7,8,9};
-        for (int transicion : secuencia3) {
-            monitor.dispararTransicion(transicion);
+        int[][] secuencias = {secuencia1,secuencia2,secuencia3};
+
+        CountDownLatch latch = new CountDownLatch(3);
+
+        Thread [] threads = new Thread[3];
+
+        for (int i = 0; i< threads.length; i++)
+        {
+            int finalI = i;
+            threads[i] = new Thread(()->{
+                for(int j = 0;j<50;j++){ // todo no se si con esto estoy asegurando 150 invariantes
+                    int[] secuencia = secuencias[finalI];
+                    for (int w = 0; w< secuencia.length; w++) {
+                        monitor.dispararTransicion(secuencia[w]);
+                    }
+//                    System.out.println("Invariantes Disparados"+rdp.getCuentaInvariantes());
+                }
+                System.out.println("Hilo terminado"+Thread.currentThread().getName());
+                latch.countDown();
+            });
         }
 
-        marcadoActual = rdp.getMarcadoActual();
+        for (int i = 0; i< threads.length; i++)
+        {
+            threads[i].start();
+        }
 
-        assertArrayEquals(marcadoEsperado,marcadoActual);
+        try {
+            latch.await(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        // verifico que la red de petri haya alcanzado los 150 invariantes
+        assertEquals(150,rdp.getCuentaInvariantes());
 
 
     }
@@ -163,6 +174,8 @@ class MonitorTest {
                      {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},//P12
                      {0, 1, 1, 0, 0, 1, 0, 1, 0, 1},//P13
                      {0, 1, 1, 0, 0, 0, 0, 0, 1, 0},//P14
+
+
             };
         }else{
             //W-

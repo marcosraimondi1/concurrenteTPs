@@ -11,13 +11,11 @@ public class Monitor {
     private final Politica politica;
     private final RdP red;
     private final Colas colas;
-    private final boolean[] m;
     private boolean k;
     public Monitor(RdP red, Politica politica){
         mutex           = new Semaphore(1,true);
         this.politica   = politica;
         this.red        = red;
-        this.m          = new boolean[red.getCantidadTransiciones()];
         this.colas      = new Colas(red.getCantidadTransiciones());
         k = false;
     }
@@ -29,7 +27,7 @@ public class Monitor {
     public void dispararTransicion(int transicion){
 
         try {
-            mutex.acquire();                //si no puedo tomar el mutex me voy a esperar a la cola de entrada
+            mutex.acquire();                // si no puedo tomar el mutex me voy a esperar a la cola de entrada
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -38,7 +36,7 @@ public class Monitor {
         //------------------------------------ Seccion Critica ---------------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
 
-        k = true;//Variable de estado
+        k = true; // Variable de estado
         while (k) {
             k = red.disparar(transicion);
             if (k) {
@@ -53,14 +51,17 @@ public class Monitor {
 
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar elegimos una
-                    int indexDisparo = politica.cual(m);
+                    int indexDisparo = politica.cual(transicionesConEsperaySensibilizadas);
                     colas.getCola(indexDisparo).sacar();      // debe liberar el hilo que va a disparar
-                    return;                                     //me vuelvo porque termine
+                    return;                                   // me vuelvo porque termine
                 }else{
                     k = false;
                 }
             } else{
                 // libero el acceso al monitor
+                if (mutex.availablePermits() != 0) {
+                    throw new RuntimeException("Se corrompio el mutex de entrada");
+                }
                 mutex.release();
 
                 //me voy a esperar a la cola correspondiente a la transicion que quiero disparar

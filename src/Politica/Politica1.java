@@ -1,5 +1,7 @@
 package Politica;
 
+import java.util.Arrays;
+
 /**
  * Politica1: para cada conflicto, se dispara la transicion que
  * no se haya disparado antes
@@ -42,6 +44,7 @@ public class Politica1 implements Politica {
 
             return i;
         }
+        System.out.println(Arrays.toString(transiciones));
         throw new RuntimeException("No hay transiciones para disparar");
     }
 }

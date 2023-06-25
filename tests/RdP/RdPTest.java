@@ -53,4 +53,102 @@ class RdPTest {
         assertTrue(sensibilizadas[1]);
     }
 
+    @Test
+    void cuentaInvariantes() {
+        // crear red
+        int[][] plaza_salida = getMatrices(true);      // plazas a la salida de la transición
+        int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
+        int[] marcado = getMarcadoInicial();                    // marcado inicial
+
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
+
+        assertEquals(0,rdp.getCuentaInvariantes());
+
+        // disparo el invariante de transicion T1,T2,T4,T6
+        int[] secuencia1 = {0,1,3,5};
+        for (int transicion : secuencia1) {
+            rdp.disparar(transicion);
+        }
+
+        assertEquals(1,rdp.getCuentaInvariantes());
+
+        // disparo el invariante de transicion T1,T3,T5,T6
+        int[] secuencia2 = {0,2,4,5};
+        for (int transicion : secuencia2) {
+            rdp.disparar(transicion);
+        }
+
+        assertEquals(2,rdp.getCuentaInvariantes());
+
+        // disparo el invariante de transicion T7,T8,T9,T10
+        int[] secuencia3 = {6,7,8,9};
+        for (int transicion : secuencia3) {
+            rdp.disparar(transicion);
+        }
+
+        assertEquals(3,rdp.getCuentaInvariantes());
+
+        // disparar 200 invariantes
+        for (int i = 0; i < 200; i++) {
+            for (int transicion : secuencia3) {
+                rdp.disparar(transicion);
+            }
+        }
+
+        assertEquals(203,rdp.getCuentaInvariantes());
+
+    }
+
+    public int[][] getMatrices (boolean derecha){
+
+        int[][] matriz;
+
+        if(derecha){
+            // W+
+            matriz = new int[][]{
+                    //T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+                    {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},//P1
+                    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},//P2
+                    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},//P3
+                    {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},//P4
+                    {0, 0, 0, 1, 1, 0, 0, 0, 0, 0},//P5
+                    {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},//P6
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},//P7
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1},//P8
+                    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},//P9
+                    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},//P10
+                    {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},//P11
+                    {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},//P12
+                    {0, 1, 1, 0, 0, 1, 0, 1, 0, 1},//P13
+                    {0, 1, 1, 0, 0, 0, 0, 0, 1, 0},//P14
+            };
+        }else{
+            //W-
+            matriz = new int[][]{
+                    //T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+                    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},//P1
+                    {0, 1, 1, 0, 0, 0, 0, 0, 0, 0},//P2
+                    {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},//P3
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},//P4
+                    {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},//P5
+                    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},//P6
+                    {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},//P7
+                    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},//P8
+                    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},//P9
+                    {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},//P10
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1},//P11
+                    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},//P12
+                    {1, 0, 0, 1, 1, 0, 1, 0, 1, 0},//P13
+                    {1, 0, 0, 0, 0, 0, 1, 0, 0, 0},//P14
+
+                    //{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            };
+        }
+
+        return matriz;
+    }
+    public int[] getMarcadoInicial (){
+        //  P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14
+        return new int[]{2, 0, 0, 0, 0, 1, 1, 2, 0, 0,  0,  1,  1,  1};
+    }
 }

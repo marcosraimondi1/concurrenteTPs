@@ -9,14 +9,23 @@ public class RdP {
     private final int cantidad_plazas;                      // cantidad de plazas de la RdP
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     private final int[] marcado_actual;                     // estado de la RdP
+    private final int[] marcado_inicial;                    // estado inicial de la RdP
+    private int cuenta_invariantes = 0;
+
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial) {
-        //Las columnas de la matriz de incidencia son transiciones
-        //Las filas de la matriz de incidencia son plazas
+        // Las columnas de la matriz de incidencia son transiciones
+        // Las filas de la matriz de incidencia son plazas
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
         this.marcado_actual = marcado_inicial;
-        this.cantidad_plazas = plazas_entrada_transiciones.length;//Cantidad de filas o arreglos que tiene la matriz
-        this.cantidad_transiciones = plazas_entrada_transiciones[0].length;//Cantidad de columnas
+        this.cantidad_plazas = marcado_inicial.length;
+        this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
+
+        // guardo copia del marcado inicial
+        this.marcado_inicial = new int[cantidad_plazas];
+        for (int i = 0; i < cantidad_plazas; i++) {
+            this.marcado_inicial[i] = marcado_inicial[i];
+        }
     }
 
     /**
@@ -36,6 +45,23 @@ public class RdP {
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
         }
 
+        // si se llego al estado inicial sumar uno a la cuenta de invariantes de transicion
+        if(isEstadoInicial()){
+            // todo esto nose si esta bien
+            cuenta_invariantes++;
+        }
+
+        System.out.println("T"+transicion);
+
+        return true;
+    }
+
+    private boolean isEstadoInicial() {
+        for (int i = 0; i < cantidad_plazas; i++) {
+            if(marcado_actual[i] != marcado_inicial[i]){
+                return false;
+            }
+        }
         return true;
     }
 
@@ -77,5 +103,9 @@ public class RdP {
 
     public int getCantidadTransiciones() {
         return cantidad_transiciones;
+    }
+
+    public int getCuentaInvariantes(){
+        return cuenta_invariantes;
     }
 }
