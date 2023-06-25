@@ -12,9 +12,9 @@ public class Main {
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
-        int[][] plaza_salida = matricesDeIncidencia(true); //plazas a la salida de la transición (Matriz)
-        int[][] plaza_entrada = matricesDeIncidencia(false);//plazas a la entrada de la transición
-        int[] marcado = MarcadoInicial();//marcado inicial
+        int[][] plaza_salida = getMatricesDeIncidencia(true);  // plazas a la salida de la transición (Matriz)
+        int[][] plaza_entrada = getMatricesDeIncidencia(false);// plazas a la entrada de la transición
+        int[] marcado = getMarcadoInicial();                           // marcado inicial
         RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
@@ -25,7 +25,7 @@ public class Main {
         //CONTINUARA..........
 
     }
-    public static int[][] matricesDeIncidencia(boolean numero){
+    public static int[][] getMatricesDeIncidencia(boolean numero){
 
         int[][] matriz;
 
@@ -86,11 +86,10 @@ public class Main {
 
         return matriz;
     }
-    public static int[] MarcadoInicial(){
+    public static int[] getMarcadoInicial(){
                                   //P0 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18 P19 P20
-        int[] marcadito = new int[]{0, 1, 0, 3, 0, 1, 0, 1, 0,  2,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0, 1};
 
-        return marcadito;
+        return new int[]{0, 1, 0, 3, 0, 1, 0, 1, 0,  2,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0, 1};
     }
 }
 
