@@ -11,7 +11,7 @@ public class RdP {
     private final int[] marcado_actual;                     // estado de la RdP
     private final int[] marcado_inicial;                    // estado inicial de la RdP
     private int cuenta_invariantes = 0;
-
+    private String invariante= "";
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
@@ -44,14 +44,14 @@ public class RdP {
             marcado_actual[i] -= plazas_entrada_transiciones[i][transicion];
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
         }
-
+        invariante += "T"+transicion;
         // si se llego al estado inicial sumar uno a la cuenta de invariantes de transicion
         if(isEstadoInicial()){
             // todo esto nose si esta bien
+            System.out.println(invariante);
+            invariante = "";
             cuenta_invariantes++;
         }
-
-        System.out.println("T"+transicion);
 
         return true;
     }

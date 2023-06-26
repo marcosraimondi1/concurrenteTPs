@@ -97,5 +97,8 @@ public class Monitor {
     public Colas getColas() {
         return colas;
     }
+    public RdP getRed() {
+        return red;//solo para un hilo de test no para entradas concurrentes
+    }
 
 }

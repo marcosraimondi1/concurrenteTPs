@@ -4,7 +4,10 @@ import Politica.Politica1;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -116,7 +119,11 @@ class MonitorTest {
         int[] secuencia3 = {6,7,8,9};
         int[][] secuencias = {secuencia1,secuencia2,secuencia3};
 
-        CountDownLatch latch = new CountDownLatch(3);
+        CyclicBarrier cyclic = new CyclicBarrier(3,()->{
+           int[] marca = monitor.getRed().getMarcadoActual();
+           System.out.println(Arrays.toString(marca)); //verifico que termine en un marcado inicial
+
+        });
 
         Thread [] threads = new Thread[3];
 
@@ -124,30 +131,39 @@ class MonitorTest {
         {
             int finalI = i;
             threads[i] = new Thread(()->{
-                for(int j = 0;j<50;j++){ // todo no se si con esto estoy asegurando 150 invariantes
-                    int[] secuencia = secuencias[finalI];
+                for(int j = 0;j<50;j++){  // todo no se si con esto estoy asegurando 150 invariantes
+                    //selecciono cada secuencia 50 veces
+                    int[] secuencia = secuencias[finalI]; // selecciono una de las 3 secuancias que deben generar una invariante
                     for (int w = 0; w< secuencia.length; w++) {
-                        monitor.dispararTransicion(secuencia[w]);
+                        //como hilo trato de acceder al monitor y pido permiso para disparar las transiciones
+                        monitor.dispararTransicion(secuencia[w]);// selecciono una por una la transición a disparar dependiendo la secuancia
                     }
 //                    System.out.println("Invariantes Disparados"+rdp.getCuentaInvariantes());
                 }
                 System.out.println("Hilo terminado"+Thread.currentThread().getName());
-                latch.countDown();
+                try {
+                    cyclic.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (BrokenBarrierException e) {
+                    throw new RuntimeException(e);
+                }
             });
         }
 
-        for (int i = 0; i< threads.length; i++)
+        for (int i = 0; i< threads.length; i++) //threads.length
         {
             threads[i].start();
         }
 
         try {
-            latch.await(10, TimeUnit.SECONDS);
+            Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         // verifico que la red de petri haya alcanzado los 150 invariantes
+
         assertEquals(150,rdp.getCuentaInvariantes());
 
 
