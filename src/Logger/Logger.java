@@ -7,12 +7,11 @@ import java.io.PrintWriter;
 
 public class Logger {
     private PrintWriter pw;
-    private FileWriter file;
+
     public Logger(String file_path) {
         try {
-            file = new FileWriter(file_path);
+            FileWriter file = new FileWriter(file_path);
             pw = new PrintWriter(file);
-            pw.printf("Hello World\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -20,6 +19,7 @@ public class Logger {
 
     public void log(String s){
         pw.printf(s);
+        pw.flush();
     }
 
 

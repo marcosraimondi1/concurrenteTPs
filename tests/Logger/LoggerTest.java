@@ -8,7 +8,8 @@ class LoggerTest {
 
     @Test
     void log() {
-        Logger logger = new Logger(".//data//log.txt");
+        Logger logger = new Logger(".\\data\\log.txt");
         logger.log("Hello World");
+
     }
 }
