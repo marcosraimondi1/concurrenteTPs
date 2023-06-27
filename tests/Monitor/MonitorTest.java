@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +26,7 @@ class MonitorTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9});
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -107,7 +106,7 @@ class MonitorTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9});
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -118,55 +117,44 @@ class MonitorTest {
         int[] secuencia2 = {0,2,4,5};
         int[] secuencia3 = {6,7,8,9};
         int[][] secuencias = {secuencia1,secuencia2,secuencia3};
-
-        CyclicBarrier cyclic = new CyclicBarrier(3,()->{
-           int[] marca = monitor.getRed().getMarcadoActual();
-           System.out.println(Arrays.toString(marca)); //verifico que termine en un marcado inicial
-
-        });
-
         Thread [] threads = new Thread[3];
+        CyclicBarrier cyclic = new CyclicBarrier(threads.length + 1,() -> {});
+
 
         for (int i = 0; i< threads.length; i++)
         {
             int finalI = i;
             threads[i] = new Thread(()->{
-                for(int j = 0;j<50;j++){  // todo no se si con esto estoy asegurando 150 invariantes
-                    //selecciono cada secuencia 50 veces
+                for(int j = 0; j < 50; j++){
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 3 secuancias que deben generar una invariante
-                    for (int w = 0; w< secuencia.length; w++) {
-                        //como hilo trato de acceder al monitor y pido permiso para disparar las transiciones
-                        monitor.dispararTransicion(secuencia[w]);// selecciono una por una la transición a disparar dependiendo la secuancia
+
+                    // disparo la secuencia invariante
+                    for (int k : secuencia) {
+                        monitor.dispararTransicion(k);
                     }
-//                    System.out.println("Invariantes Disparados"+rdp.getCuentaInvariantes());
                 }
-                System.out.println("Hilo terminado"+Thread.currentThread().getName());
                 try {
                     cyclic.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (BrokenBarrierException e) {
+                } catch (InterruptedException | BrokenBarrierException e) {
                     throw new RuntimeException(e);
                 }
             });
         }
 
-        for (int i = 0; i< threads.length; i++) //threads.length
-        {
-            threads[i].start();
+        // threads.length
+        for (Thread thread : threads) {
+            thread.start();
         }
 
         try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(2));
-        } catch (InterruptedException e) {
+            cyclic.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
 
-        // verifico que la red de petri haya alcanzado los 150 invariantes
-
+        // verifico que se hayan ejecutado 150 invariantes y
         assertEquals(150,rdp.getCuentaInvariantes());
-
-
+        assertTrue(Arrays.equals(getMarcadoInicial(), rdp.getMarcadoActual()));
     }
     public int[][] getMatrices (boolean derecha){
 

@@ -15,7 +15,8 @@ public class Main {
         int[][] plaza_salida = getMatricesDeIncidencia(true);  // plazas a la salida de la transición (Matriz)
         int[][] plaza_entrada = getMatricesDeIncidencia(false);// plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                           // marcado inicial
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
+        int[] trans_invariantes = new int[]{5,9};                      // transiciones para contar invariantes
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 

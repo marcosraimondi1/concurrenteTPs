@@ -11,8 +11,8 @@ public class RdP {
     private final int[] marcado_actual;                     // estado de la RdP
     private final int[] marcado_inicial;                    // estado inicial de la RdP
     private int cuenta_invariantes = 0;
-    private String invariante= "";
-    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial) {
+    private final int[] trans_invariantes;
+    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
@@ -20,7 +20,7 @@ public class RdP {
         this.marcado_actual = marcado_inicial;
         this.cantidad_plazas = marcado_inicial.length;
         this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
-
+        this.trans_invariantes = trans_invariantes;
         // guardo copia del marcado inicial
         this.marcado_inicial = new int[cantidad_plazas];
         for (int i = 0; i < cantidad_plazas; i++) {
@@ -44,14 +44,15 @@ public class RdP {
             marcado_actual[i] -= plazas_entrada_transiciones[i][transicion];
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
         }
-        invariante += "T"+transicion;
-        // si se llego al estado inicial sumar uno a la cuenta de invariantes de transicion
-        if(isEstadoInicial()){
-            // todo esto nose si esta bien
-            System.out.println(invariante);
-            invariante = "";
-            cuenta_invariantes++;
-        }
+
+        String invariante = "T"+transicion;
+        System.out.println(invariante);
+
+        for (int inv : trans_invariantes)
+            if (inv == transicion){
+                cuenta_invariantes ++;
+                break;
+            }
 
         return true;
     }

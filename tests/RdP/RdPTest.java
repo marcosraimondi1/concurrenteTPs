@@ -13,7 +13,7 @@ class RdPTest {
         int[][] plazas_entrada  = {{1,0}, {1,0}, {0,1}};
         int[]   marcado_inicial = {0,0,1};
 
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial);
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1});
 
         int[] marcado_actual = red.getMarcadoActual();
 
@@ -45,7 +45,7 @@ class RdPTest {
         int[][] plazas_entrada  = {{1,0}, {1,0}, {0,1}};
         int[]   marcado_inicial = {0,0,1};
 
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial);
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1});
 
         // verificar sensibilizadas
         boolean[] sensibilizadas = red.getSensibilizadas();
@@ -60,7 +60,7 @@ class RdPTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9});
 
         assertEquals(0,rdp.getCuentaInvariantes());
 
