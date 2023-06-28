@@ -23,8 +23,9 @@ class MonitorTest {
         int[][] plaza_salida = getMatrices(true);      // plazas a la salida de la transición
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
+        int[][] invariantes_plazas = getInvariantesPlazas();
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9});
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9},invariantes_plazas);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -103,8 +104,9 @@ class MonitorTest {
         int[][] plaza_salida = getMatrices(true);      // plazas a la salida de la transición
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
+        int[][] invariantes_plazas = getInvariantesPlazas();
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9});
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9},invariantes_plazas);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -211,4 +213,27 @@ class MonitorTest {
                     //  P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14
         return new int[]{2, 0, 0, 0, 0, 1, 1, 2, 0, 0,  0,  1,  1,  1};
     }
+
+    public int[][] getInvariantesPlazas () {
+        /*
+            1. M(P1) + M(P2) + M(P3) + M(P4) + M(P5) = 2
+            2. M(P10) + M(P12) = 1
+            3. M(P11) + M(P13) + M(P2) + M(P5) + M(P9) = 1
+            4. M(P10) + M(P14) + M(P2) + M(P9) = 1
+            5. M(P3) + M(P6) = 1
+            6. M(P4) + M(P7) = 1
+            7. M(P10) + M(P11) + M(P8) + M(P9) = 2
+        */
+        return new int[][]{
+                // P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14  =  X
+                {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,         2},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0,         1},
+                {0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0,         1},
+                {0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1,         1},
+                {0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         1},
+                {0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,         1},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0,         2},
+        };
+    }
+
 }
