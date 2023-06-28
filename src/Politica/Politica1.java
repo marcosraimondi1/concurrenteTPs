@@ -24,39 +24,56 @@ public class Politica1 implements Politica {
             if (!transiciones[i])
                 continue;
 
+            //if (i == 1 && transiciones[i+1])
             if (i == 1)
-            {
+            {   // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 // en la RdP, T1 esta en conflicto con T2
                 c1 = !c1;
                 if (c1)
                     return i;
                 return i+1;
             }
-
+            /*else if (i == 1 || i == 2){
+                //solo una de las 2 sensibilizadas y retorno esa
+                return i;
+            }*/
+            //if (i == 5 && transiciones[i+1])
             if (i == 5)
-            {
+            {   // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 c2 = !c2;
                 if (c2)
                     return i;
                 return i+1;
             }
+            /*else if (i == 5 || i == 6){
+                //solo una de las 2 sensibilizadas y retorno esa
+                return i;
+            }*/
 
-            if (i == 11){
+            //if (i == 11 && transiciones[i+1])
+            if(i == 11){
+                // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 if(condicion){
+                    //politica 80% hacia la izquierda
                     boolean trans_izquierda = definirProbabilidad();
                     if(trans_izquierda){
                         return i;
                     }else{
                         return i+1;
                     }
-            }else{
+                }else{
                 c3 = !c3;
                 if (c3) {
                     return i;
                 }
                 return i+1;
+                }
+
             }
-            }
+            /*else if (i == 11 || i == 12){
+                //solo una de las 2 sensibilizadas y retorno esa
+                return i;
+            }*/
 
             return i;
         }
