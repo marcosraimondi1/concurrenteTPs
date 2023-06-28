@@ -96,7 +96,9 @@ class RdPTest {
         }
 
         assertEquals(203,rdp.getCuentaInvariantes());
-
+        String regex = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
+        String replace = "$5$7$9$11";
+        assertTrue(rdp.logger.validateLog(regex,replace));
     }
 
     public int[][] getMatrices (boolean derecha){

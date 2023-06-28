@@ -1,5 +1,7 @@
 package RdP;
 
+import Logger.Logger;
+
 /**
  * Clase que representa una Red de Petri
  */
@@ -12,6 +14,7 @@ public class RdP {
     private final int[] marcado_inicial;                    // estado inicial de la RdP
     private int cuenta_invariantes = 0;
     private final int[] trans_invariantes;
+    public final Logger logger = new Logger(".\\data\\log.txt");
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
@@ -45,8 +48,6 @@ public class RdP {
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
         }
 
-        String invariante = "T"+transicion;
-        System.out.println(invariante);
 
         for (int inv : trans_invariantes)
             if (inv == transicion){
@@ -54,15 +55,10 @@ public class RdP {
                 break;
             }
 
-        return true;
-    }
+        String invariante = "T"+transicion;
+        logger.log(invariante);
 
-    private boolean isEstadoInicial() {
-        for (int i = 0; i < cantidad_plazas; i++) {
-            if(marcado_actual[i] != marcado_inicial[i]){
-                return false;
-            }
-        }
+
         return true;
     }
 
