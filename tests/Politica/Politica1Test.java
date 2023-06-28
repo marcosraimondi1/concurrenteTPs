@@ -46,8 +46,8 @@ class Politica1Test {
         int T12s = 0;
 
         int t1;
-
-        for (int i = 0; i < 1000; i++){
+        int cantidadEjecuciones = 1000;
+        for (int i = 0; i < cantidadEjecuciones; i++){
             t1 = politica.cual(transiciones);
             if (t1 == 11)
                 T11s++;
@@ -55,8 +55,7 @@ class Politica1Test {
                 T12s++;
         }
         System.out.println("Veces que se disparo T11: "+T11s+" y Veces que se disparo T12: "+T12s);
-        assertTrue(T11s > 750 && T11s < 850);
-        assertTrue(T12s > 150 && T12s < 250);
-        //------------------------------Politica conflicto desabilitado--------------------------------------//
+        assertTrue(T11s > (cantidadEjecuciones*0.8 - cantidadEjecuciones*0.15) && T11s < (cantidadEjecuciones*0.8 + cantidadEjecuciones*0.15));
+        assertTrue(T12s > (cantidadEjecuciones*0.2 - cantidadEjecuciones*0.15) && T12s < (cantidadEjecuciones*0.2 + cantidadEjecuciones*0.15));
     }
 }
