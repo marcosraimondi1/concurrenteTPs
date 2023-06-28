@@ -5,9 +5,9 @@ import java.util.Random;
 
 public class PoliticaTest implements Politica{
     private boolean c1 = false;     // bandera para conflicto 1
-    private boolean c2 = false;     // bandera para conflicto 2
-    private boolean c3 = false;     // bandera para conflicto 3
-    private boolean condicion = false; // seleccion entre politica del 50% y el 80% (solo en etapa 3)
+    private int contadorT2 = 0;
+    private int contadorT3 = 0;
+    private boolean condicion = false; // seleccion entre politica del 50% y el 80% (solo en etapa 1 en red de test)
 
     public PoliticaTest() {
     }
@@ -20,39 +20,37 @@ public class PoliticaTest implements Politica{
             if (!transiciones[i])
                 continue;
 
-            if (i == 1)
-            {
-                // en la RdP, T1 esta en conflicto con T2
-                c1 = !c1;
-                if (c1)
-                    return i;
-                return i+1;
-            }
-
-            if (i == 5)
-            {
-                c2 = !c2;
-                if (c2)
-                    return i;
-                return i+1;
-            }
-
-            if (i == 11){
+            if (i == 1 && transiciones[i+1]){
+                // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 if(condicion){
+                    //politica 80% hacia la izquierda
                     boolean trans_izquierda = definirProbabilidad();
                     if(trans_izquierda){
+                        contadorT2++;
                         return i;
                     }else{
+                        contadorT3++;
                         return i+1;
                     }
                 }else{
-                    c3 = !c3;
-                    if (c3) {
+                    c1 = !c1;
+                    if (c1) {
+                        contadorT2++;
                         return i;
                     }
+                    contadorT3++;
                     return i+1;
                 }
+            }else if(i == 1 || i ==2){
+                //solo una de las 2 sensibilizadas y retorno esa
+                if(i == 1){
+                    contadorT2++;
+                    return i;
+                }
+                contadorT3++;
+                return i;
             }
+
 
             return i;
         }
@@ -62,7 +60,7 @@ public class PoliticaTest implements Politica{
 
     private boolean definirProbabilidad() {
 
-        double probabilidadDerecha = 0.2; // Probabilidad asociada a la T12
+        double probabilidadDerecha = 0.2; // Probabilidad asociada a la T3
 
         // Crea una instancia de la clase Random
         Random random = new Random();
@@ -72,11 +70,18 @@ public class PoliticaTest implements Politica{
 
         // Compara el número aleatorio con la probabilidad asociada
         if (numeroAleatorio < probabilidadDerecha) {
-            // La transicion seleccionada es T12
+            // La transicion seleccionada es T3
             return false;
         } else {
-            // La transicion seleccionada es T11
+            // La transicion seleccionada es T2
             return true;
         }
+    }
+    public int getContadorT2() {
+        return contadorT2;
+    }
+
+    public int getContadorT3() {
+        return contadorT3;
     }
 }

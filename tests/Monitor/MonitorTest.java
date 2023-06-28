@@ -1,6 +1,7 @@
 package Monitor;
 
 import Politica.Politica1;
+import Politica.PoliticaTest;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +98,7 @@ class MonitorTest {
     void invarianteDeTransicionCheck() {
         //------------------------------Inicio Politica----------------------------------------------//
 
-        Politica1 politica = new Politica1();
+        PoliticaTest politica = new PoliticaTest();
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
@@ -156,6 +157,12 @@ class MonitorTest {
         assertEquals(150,rdp.getCuentaInvariantes());
         // verifico que se termine en el marcado Inicial
         assertArrayEquals(getMarcadoInicial(), rdp.getMarcadoActual());
+        // verfico politica del 80%
+        int total = politica.getContadorT2()+ politica.getContadorT3();
+        float porcentajeT2 = ((float) politica.getContadorT2() /total)*100 ;
+        System.out.println(politica.getContadorT2());
+        assertTrue(porcentajeT2>=70);
+        //verifico expresion regular
         String regex = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
         String replace = "$5$7$9$11";
         assertTrue(rdp.logger.validateLog(regex, replace));
