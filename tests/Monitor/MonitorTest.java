@@ -152,8 +152,9 @@ class MonitorTest {
             throw new RuntimeException(e);
         }
 
-        // verifico que se hayan ejecutado 150 invariantes y
+        // verifico que se hayan ejecutado 150 invariantes
         assertEquals(150,rdp.getCuentaInvariantes());
+        // verifico que se termine en el marcado Inicial
         assertArrayEquals(getMarcadoInicial(), rdp.getMarcadoActual());
         String regex = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
         String replace = "$5$7$9$11";

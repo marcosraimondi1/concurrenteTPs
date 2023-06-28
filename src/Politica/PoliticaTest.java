@@ -3,19 +3,15 @@ package Politica;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Politica1: para cada conflicto, se dispara la transicion que
- * no se haya disparado antes
- */
-public class Politica1 implements Politica {
+public class PoliticaTest implements Politica{
     private boolean c1 = false;     // bandera para conflicto 1
     private boolean c2 = false;     // bandera para conflicto 2
     private boolean c3 = false;     // bandera para conflicto 3
     private boolean condicion = false; // seleccion entre politica del 50% y el 80% (solo en etapa 3)
 
-    public Politica1() {
+    public PoliticaTest() {
     }
-    public Politica1(boolean Condicion) {
+    public PoliticaTest(boolean Condicion) {
         this.condicion = Condicion;
     }
 
@@ -49,13 +45,13 @@ public class Politica1 implements Politica {
                     }else{
                         return i+1;
                     }
-            }else{
-                c3 = !c3;
-                if (c3) {
-                    return i;
+                }else{
+                    c3 = !c3;
+                    if (c3) {
+                        return i;
+                    }
+                    return i+1;
                 }
-                return i+1;
-            }
             }
 
             return i;
