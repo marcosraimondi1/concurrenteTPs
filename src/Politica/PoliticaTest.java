@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class PoliticaTest implements Politica{
-    private boolean c1 = false;     // bandera para conflicto 1
-    private int contadorT2 = 0;
-    private int contadorT3 = 0;
+    private boolean c1 = false;   // bandera para conflicto 1 (T1 Y T7)
     private boolean condicion = false; // seleccion entre politica del 50% y el 80% (solo en etapa 1 en red de test)
 
     public PoliticaTest() {
@@ -21,12 +19,35 @@ public class PoliticaTest implements Politica{
             if (!transiciones[i])
                 continue;
 
+            /*if ((i+1) == 1)
+            {
+                // las 2 transiciones correspondientes al conflicto esta sensibilizadas
+                // en la RdP, T1 esta en conflicto con T7
+                c1 = !c1;
+                if (c1)
+                    return i;// INDEX DE T1 = 0
+                return 7-1;// INDEX DE T7 = 6
+            }*/
+
+            /*if ((i+1) == 2)
+            {
+                // las 2 transiciones correspondientes al conflicto estan sensibilizadas
+                // politica 80% hacia la izquierda
+                boolean trans_izquierda = definirProbabilidad();
+                if(trans_izquierda){
+                    return i; // INDEX DE T2 = 1
+                }else{
+                    return i+1; // INDEX DE T3 = 2
+                }
+            }*/
+
 
               return i;
         }
-        System.out.println(Arrays.toString(transiciones));
+        //System.out.println(Arrays.toString(transiciones));
         throw new RuntimeException("No hay transiciones para disparar");
     }
+
 
     private boolean definirProbabilidad() {
 
@@ -47,11 +68,5 @@ public class PoliticaTest implements Politica{
             return true;
         }
     }
-    public int getContadorT2() {
-        return contadorT2;
-    }
 
-    public int getContadorT3() {
-        return contadorT3;
-    }
 }

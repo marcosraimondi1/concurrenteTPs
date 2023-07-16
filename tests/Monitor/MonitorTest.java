@@ -1,6 +1,6 @@
 package Monitor;
 
-import Politica.Politica1;
+import Politica.PoliticaTest;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class MonitorTest {
         // Testeo con la RdP del paper
         //------------------------------Inicio Politica----------------------------------------------//
 
-        Politica1 politica = new Politica1();
+        PoliticaTest politica = new PoliticaTest();
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
@@ -97,7 +97,7 @@ class MonitorTest {
     void invarianteDeTransicionCheck() {
         //------------------------------Inicio Politica----------------------------------------------//
 
-        Politica1 politica = new Politica1();
+        PoliticaTest politica = new PoliticaTest();
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
@@ -105,8 +105,8 @@ class MonitorTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
         int[][] invariantes_plazas = getInvariantesPlazas();
-
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9},invariantes_plazas);
+        int[] trans_invariantes = new int[]{5,9};              // index de T6 = 5 e index de T10 = 9 (se usan para contar vueltas completadas por hilo)
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -116,8 +116,8 @@ class MonitorTest {
         int[] secuencia1 = {0,1,3,5};
         int[] secuencia2 = {0,2,4,5};
         int[] secuencia3 = {6,7,8,9};
-        //int[] secuencia1 = {0,1,6,7,3,5,8,9};// NO PASA
-        //int[] secuencia4 = {0,1,6,7,8,9,3,5};
+        //int[] secuencia4 = {0,1,6,7,3,5,8,9};
+        //int[] secuencia5 = {0,1,6,7,8,9,3,5};
         int[][] secuencias = {secuencia1,secuencia2,secuencia3};
         Thread [] threads = new Thread[3];
         CyclicBarrier cyclic = new CyclicBarrier(threads.length + 1,() -> {});
