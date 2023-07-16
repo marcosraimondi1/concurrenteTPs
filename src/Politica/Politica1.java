@@ -33,7 +33,7 @@ public class Politica1 implements Politica {
                 return i+1;
             }
 
-            if(i == 11){
+            if(i == 9){
                 // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 c3 = !c3;
                 if (c3) {

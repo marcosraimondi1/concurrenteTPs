@@ -34,7 +34,7 @@ public class Politica2 implements Politica {
                 return i+1;
             }
 
-            if(i == 11){
+            if(i == 9){
                 // las 2 transiciones correspondientes al conflicto estan sensibilizadas
                 // politica 80% hacia la izquierda
                 boolean trans_izquierda = definirProbabilidad();
@@ -52,7 +52,7 @@ public class Politica2 implements Politica {
 
     private boolean definirProbabilidad() {
 
-        double probabilidadDerecha = 0.2; // Probabilidad asociada a la T12
+        double probabilidadDerecha = 0.2; // Probabilidad asociada a la T10
 
         // Crea una instancia de la clase Random
         Random random = new Random();
@@ -61,9 +61,9 @@ public class Politica2 implements Politica {
         double numeroAleatorio = random.nextDouble();
 
         // Compara el número aleatorio con la probabilidad asociada
-        boolean dispararT11 = numeroAleatorio >= probabilidadDerecha;
+        boolean dispararT9 = numeroAleatorio >= probabilidadDerecha;
 
-        return dispararT11;
+        return dispararT9;
 
     }
 }
