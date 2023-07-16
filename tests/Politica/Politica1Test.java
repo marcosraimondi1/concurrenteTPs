@@ -35,7 +35,7 @@ class Politica1Test {
         assertEquals(500, T1s);
         assertEquals(500, T2s);
         //------------------------------Politica 80% etapa 3--------------------------------------//
-        politica = new Politica1(true);
+        politica = new Politica2();
         transiciones = new boolean[16];
 
         // conflicto T11 y T12

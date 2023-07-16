@@ -1,7 +1,6 @@
 package Monitor;
 
 import Politica.Politica1;
-import Politica.PoliticaTest;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
@@ -98,7 +97,7 @@ class MonitorTest {
     void invarianteDeTransicionCheck() {
         //------------------------------Inicio Politica----------------------------------------------//
 
-        PoliticaTest politica = new PoliticaTest();
+        Politica1 politica = new Politica1();
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
