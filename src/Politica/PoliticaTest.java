@@ -16,43 +16,13 @@ public class PoliticaTest implements Politica{
     }
 
     public int cual(boolean[] transiciones){
-        for (int i = 0; i < transiciones.length; i++) {
+        for (int i = (transiciones.length) -1  ; i >= 0; i--) {
+
             if (!transiciones[i])
                 continue;
 
-            if (i == 1 && transiciones[i+1]){
-                // las 2 transiciones correspondientes al conflicto esta sensibilizadas
-                if(condicion){
-                    //politica 80% hacia la izquierda
-                    boolean trans_izquierda = definirProbabilidad();
-                    if(trans_izquierda){
-                        contadorT2++;
-                        return i;
-                    }else{
-                        contadorT3++;
-                        return i+1;
-                    }
-                }else{
-                    c1 = !c1;
-                    if (c1) {
-                        contadorT2++;
-                        return i;
-                    }
-                    contadorT3++;
-                    return i+1;
-                }
-            }else if(i == 1 || i ==2){
-                //solo una de las 2 sensibilizadas y retorno esa
-                if(i == 1){
-                    contadorT2++;
-                    return i;
-                }
-                contadorT3++;
-                return i;
-            }
 
-
-            return i;
+              return i;
         }
         System.out.println(Arrays.toString(transiciones));
         throw new RuntimeException("No hay transiciones para disparar");

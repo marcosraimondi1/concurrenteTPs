@@ -1,5 +1,6 @@
 package Monitor;
 
+import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 import Politica.Politica;
@@ -40,7 +41,9 @@ public class Monitor {
         while (k) {
             k = red.disparar(transicion);
             if (k) {
+                //System.out.println("Hilo "+Thread.currentThread().getName()+"Disparo trans "+transicion);
                 boolean[] sensibilizadas        = red.getSensibilizadas();
+                //System.out.println(Arrays.toString(sensibilizadas));
                 boolean[] transicionesConEspera = colas.hayEsperando();
 
                 // m = sensibilizadas AND transicionesConEspera

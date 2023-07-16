@@ -117,6 +117,8 @@ class MonitorTest {
         int[] secuencia1 = {0,1,3,5};
         int[] secuencia2 = {0,2,4,5};
         int[] secuencia3 = {6,7,8,9};
+        //int[] secuencia1 = {0,1,6,7,3,5,8,9};// NO PASA
+        //int[] secuencia4 = {0,1,6,7,8,9,3,5};
         int[][] secuencias = {secuencia1,secuencia2,secuencia3};
         Thread [] threads = new Thread[3];
         CyclicBarrier cyclic = new CyclicBarrier(threads.length + 1,() -> {});
@@ -127,13 +129,16 @@ class MonitorTest {
             int finalI = i;
             threads[i] = new Thread(()->{
                 for(int j = 0; j < 50; j++){
+                    //int[] secuencia = secuencia4;
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 3 secuancias que deben generar una invariante
 
                     // disparo la secuencia invariante
                     for (int k : secuencia) {
+                        //System.out.println("Hilo "+Thread.currentThread().getName()+"Disparo trans "+k);
                         monitor.dispararTransicion(k);
                     }
                 }
+                //System.out.println("Hilo termino"+Thread.currentThread().getName());
                 try {
                     cyclic.await();
                 } catch (InterruptedException | BrokenBarrierException e) {
