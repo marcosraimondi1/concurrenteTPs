@@ -17,8 +17,9 @@ public class Main {
         int[] marcado = getMarcadoInicial();                           // marcado inicial
         int[] trans_invariantes = new int[]{14};                      // transiciones para contar invariantes (T14 marca una vuelta)
         int[][] invariantes_plazas = getInvariantesPlazas();
+        int invariantes_MAX = 200;
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -80,7 +81,7 @@ public class Main {
                      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  1,  0  },//P16
                      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  1  },//P17
                      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  1,  0  },//P18
-                     //{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0},
+                     //{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0  },
             };
         }
 

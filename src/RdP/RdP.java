@@ -15,11 +15,14 @@ public class RdP {
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     private final int[] marcado_actual;                     // estado de la RdP
     private final int[] marcado_inicial;                    // estado inicial de la RdP
+    private boolean cortarEjecucion = false;
+    private final int invariantes_MAX;
     private int cuenta_invariantes = 0;
     private final int[] trans_invariantes;
     private final int[][] invariantes_plazas;
+    private String invariante_real = "";
     public final Logger logger = new Logger(".\\data\\log.txt");
-    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas) {
+    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, int invariantes_MAX) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
@@ -28,6 +31,7 @@ public class RdP {
         this.cantidad_plazas = marcado_inicial.length;
         this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
         this.trans_invariantes = trans_invariantes;
+        this.invariantes_MAX = invariantes_MAX;
         // guardo copia del marcado inicial
         this.marcado_inicial = new int[cantidad_plazas];
         for (int i = 0; i < cantidad_plazas; i++) {
@@ -42,6 +46,9 @@ public class RdP {
      * @return true si se pudo disparar, false si no
      */
     public boolean disparar(int transicion) {
+        if(cortarEjecucion && Arrays.equals(marcado_actual,marcado_inicial)){
+            return false;
+        }
         if (!isSensibilizada(transicion)) {
             return false;
         }
@@ -94,13 +101,23 @@ public class RdP {
     }
 
     private void verificarInvarianteTransicion(int transicion) {
+        boolean es_invariante = false;
         for (int inv : trans_invariantes)
-            if (inv == transicion){
+            if (inv == transicion ){
                 cuenta_invariantes ++;
+                es_invariante = true;
                 break;
             }
 
         String invariante = "T"+ transicion;
+        invariante_real += invariante;
+        if (es_invariante){
+            System.out.println("\n"+invariante_real);
+            invariante_real = "";
+            if(cuenta_invariantes == invariantes_MAX){
+                cortarEjecucion = true;
+            }
+        }
         logger.log(invariante);
     }
 

@@ -16,8 +16,8 @@ class RdPTest {
                 { 1, 0, 1, 1},
                 { 0, 1, 1, 1}
         };
-
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1},invariantes_plazas);
+        int invariante_MAX = 50;
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1},invariantes_plazas,invariante_MAX);
 
         int[] marcado_actual = red.getMarcadoActual();
 
@@ -49,7 +49,7 @@ class RdPTest {
                 { 0, 1, 1, 1}
         };
 
-        RdP red2 = new RdP(plazas_salida2,plazas_entrada2,marcado_inicial2, new int[]{1,1},invariantes_plazas2);
+        RdP red2 = new RdP(plazas_salida2,plazas_entrada2,marcado_inicial2, new int[]{1,1},invariantes_plazas2,invariante_MAX);
 
         assertThrows(RuntimeException.class, ()->red2.disparar(1));
     }
@@ -61,8 +61,8 @@ class RdPTest {
         int[][] plazas_entrada  = {{1,0}, {1,0}, {0,1}};
         int[]   marcado_inicial = {0,0,1};
         int[][] invariantes_plazas = getInvariantesPlazas();
-
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1}, invariantes_plazas);
+        int invariante_MAX = 50;
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1}, invariantes_plazas,invariante_MAX);
 
         // verificar sensibilizadas
         boolean[] sensibilizadas = red.getSensibilizadas();
@@ -77,7 +77,8 @@ class RdPTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
         int[][] invariantes_plazas = getInvariantesPlazas();
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas);
+        int invariante_MAX = 50;
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas,invariante_MAX);
 
         assertEquals(0,rdp.getCuentaInvariantes());
 

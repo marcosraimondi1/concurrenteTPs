@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,8 +25,9 @@ class MonitorTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
         int[][] invariantes_plazas = getInvariantesPlazas();
+        int invariantes_MAX = 200;
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9},invariantes_plazas);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9},invariantes_plazas,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -106,43 +108,44 @@ class MonitorTest {
         int[] marcado = getMarcadoInicial();                    // marcado inicial
         int[][] invariantes_plazas = getInvariantesPlazas();
         int[] trans_invariantes = new int[]{5,9};              // index de T6 = 5 e index de T10 = 9 (se usan para contar vueltas completadas por hilo)
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas);
+        int invariantes_MAX = 100;
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas, invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
         Monitor monitor = new Monitor(rdp,politica);
 
         // verifico que se disparen 150 invariantes de transicion con 3 hilos diferentes
-        int[] secuencia1 = {0,1,3,5};
-        int[] secuencia2 = {0,2,4,5};
-        int[] secuencia3 = {6,7,8,9};
-        //int[] secuencia4 = {0,1,6,7,3,5,8,9};
-        //int[] secuencia5 = {0,1,6,7,8,9,3,5};
-        int[][] secuencias = {secuencia1,secuencia2,secuencia3};
-        Thread [] threads = new Thread[3];
-        CyclicBarrier cyclic = new CyclicBarrier(threads.length + 1,() -> {});
+        int[] secuencia1 = {6,7,8,9}; //Caso 1 segmento S_e implica plazas P9,P10,P11
+        int[] secuencia2 = {0};       //Caso 2 segmento S_a implica plazas P2
+        int[] secuencia3 = {1,3};     //Caso 2 segmento S_b implica plazas P3
+        int[] secuencia4 = {2,4};     //Caso 2 segmento S_c implica plazas P4
+        int[] secuencia5 = {5};       //Caso 3 segmento S_d implica plazas P5
+
+        int[][] secuencias = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5};
+        Thread [] threads = new Thread[5];
+        CyclicBarrier cyclic = new CyclicBarrier(2,() -> {}); // el hilo de ejecución del test y el que termine
 
 
         for (int i = 0; i< threads.length; i++)
         {
             int finalI = i;
             threads[i] = new Thread(()->{
-                for(int j = 0; j < 50; j++){
-                    //int[] secuencia = secuencia4;
+
+                while(true){
+
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 3 secuancias que deben generar una invariante
 
                     // disparo la secuencia invariante
                     for (int k : secuencia) {
                         //System.out.println("Hilo "+Thread.currentThread().getName()+"Disparo trans "+k);
                         monitor.dispararTransicion(k);
+
                     }
+
                 }
                 //System.out.println("Hilo termino"+Thread.currentThread().getName());
-                try {
-                    cyclic.await();
-                } catch (InterruptedException | BrokenBarrierException e) {
-                    throw new RuntimeException(e);
-                }
+
             });
         }
 
@@ -152,13 +155,13 @@ class MonitorTest {
         }
 
         try {
-            cyclic.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(10));
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        // verifico que se hayan ejecutado 150 invariantes
-        assertEquals(150,rdp.getCuentaInvariantes());
+        // verifico que se hayan ejecutado 100 invariantes
+        assertTrue(100<=rdp.getCuentaInvariantes());
         // verifico que se termine en el marcado Inicial
         assertArrayEquals(getMarcadoInicial(), rdp.getMarcadoActual());
         //verifico expresion regular
