@@ -1,11 +1,13 @@
 package Monitor;
 
 
+
 import java.util.concurrent.Semaphore;
 
 import Politica.Politica;
 import RdP.RdP;
 import Cola.Colas;
+
 
 public class Monitor {
     private final Semaphore mutex;
@@ -39,13 +41,15 @@ public class Monitor {
 
         k = true; // Variable de estado
         while (k) {
+
             k = red.disparar(transicion);
+
             if (k) {
-                //System.out.println("Hilo "+Thread.currentThread().getName()+"Disparo trans "+transicion);
+
                 boolean[] sensibilizadas        = red.getSensibilizadas();
-                //System.out.println(Arrays.toString(sensibilizadas));
+
                 boolean[] transicionesConEspera = colas.hayEsperando();
-                //System.out.println(Arrays.toString(transicionesConEspera));
+
                 // m = sensibilizadas AND transicionesConEspera
                 boolean[] transicionesConEsperaySensibilizadas = new boolean[sensibilizadas.length];
                 for (int i = 0; i < sensibilizadas.length; i++) {
@@ -55,8 +59,7 @@ public class Monitor {
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar elegimos una
                     int indexDisparo = politica.cual(transicionesConEsperaySensibilizadas);
-                    //System.out.println(Arrays.toString(transicionesConEsperaySensibilizadas));
-                    //System.out.println(indexDisparo);
+
                     colas.getCola(indexDisparo).sacar();      // debe liberar el hilo que va a disparar
                     return;                                   // me vuelvo porque termine
                 }else{
@@ -67,10 +70,24 @@ public class Monitor {
                 if (mutex.availablePermits() != 0) {
                     throw new RuntimeException("Se corrompio el mutex de entrada");
                 }
-                mutex.release();
 
-                //me voy a esperar a la cola correspondiente a la transicion que quiero disparar
-                colas.getCola(transicion).esperar();
+                if(seAvanza()) {
+                    //me voy a esperar a la cola correspondiente a la transicion que quiero disparar
+                    mutex.release();
+                    colas.getCola(transicion).esperar();
+                }
+                else{
+                    // si se corto la ejecución despierto a los hilos uno a uno.
+                    boolean libero = liberar(); //veo si puedo liberar un hilo que esperar en una cola dew condición
+                    if(libero)
+                    {   k = true; //si libero pongo el k en true para que cuando despierte no se vaya del while
+                        return;
+                    }
+                    mutex.release(); // no habia hilos esperando en la cola de condición libero el mutex por si esperan en la entrada
+                    return;
+                }
+
+
             }
         }
 
@@ -95,15 +112,23 @@ public class Monitor {
         }
         return true;
     }
-
+    private boolean liberar(){
+        boolean libero =false;
+        boolean[] HilosEnEspera = colas.hayEsperando();
+        for (int i = 0; i < HilosEnEspera.length ; i++) {
+            if(HilosEnEspera[i]){
+                libero = true;
+                colas.getCola(i).sacar();
+                break;
+            }
+        }
+        return libero;
+    }
+    public boolean seAvanza(){
+        return !red.getApagar();
+    }
     public Semaphore getMutex() {
         return mutex;
-    }
-    public Colas getColas() {
-        return colas;
-    }
-    public RdP getRed() {
-        return red;//solo para un hilo de test no para entradas concurrentes
     }
 
 }

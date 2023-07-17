@@ -3,7 +3,10 @@ package RdP;
 import Exceptions.InvariantePlazaException;
 import Logger.Logger;
 
+
 import java.util.Arrays;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Clase que representa una Red de Petri
@@ -15,12 +18,14 @@ public class RdP {
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     private final int[] marcado_actual;                     // estado de la RdP
     private final int[] marcado_inicial;                    // estado inicial de la RdP
-    private boolean cortarEjecucion = false;
+    private boolean cortarEjecucion;
     private final int invariantes_MAX;
     private int cuenta_invariantes = 0;
     private final int[] trans_invariantes;
     private final int[][] invariantes_plazas;
-    private String invariante_real = "";
+    //private String invariante_real = "";
+    private boolean apagar;
+    private final ReadWriteLock lock;
     public final Logger logger = new Logger(".\\data\\log.txt");
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, int invariantes_MAX) {
         // Las columnas de la matriz de incidencia son transiciones
@@ -32,12 +37,15 @@ public class RdP {
         this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
         this.trans_invariantes = trans_invariantes;
         this.invariantes_MAX = invariantes_MAX;
+        this.apagar = false;
+        this.cortarEjecucion = false;
         // guardo copia del marcado inicial
         this.marcado_inicial = new int[cantidad_plazas];
         for (int i = 0; i < cantidad_plazas; i++) {
             this.marcado_inicial[i] = marcado_inicial[i];
         }
         this.invariantes_plazas = invariantes_plazas;
+        this.lock = new ReentrantReadWriteLock(); //creo lock para el Apagado
     }
 
     /**
@@ -46,7 +54,8 @@ public class RdP {
      * @return true si se pudo disparar, false si no
      */
     public boolean disparar(int transicion) {
-        if(cortarEjecucion && Arrays.equals(marcado_actual,marcado_inicial)){
+        if(CortarEjecucion()){
+            setApagar();
             return false;
         }
         if (!isSensibilizada(transicion)) {
@@ -110,10 +119,10 @@ public class RdP {
             }
 
         String invariante = "T"+ transicion;
-        invariante_real += invariante;
+        //invariante_real += invariante;
         if (es_invariante){
-            System.out.println("\n"+invariante_real);
-            invariante_real = "";
+            //System.out.println("\n"+invariante_real);
+            //invariante_real = "";
             if(cuenta_invariantes == invariantes_MAX){
                 cortarEjecucion = true;
             }
@@ -150,6 +159,21 @@ public class RdP {
             }
         }
         return true;
+    }
+
+    public boolean getApagar() {
+        lock.readLock().lock();
+        boolean aux = apagar;
+        lock.readLock().unlock();
+        return aux;
+    }
+    private void setApagar() {
+        lock.writeLock().lock();
+        this.apagar = true;
+        lock.writeLock().unlock();
+    }
+    public boolean CortarEjecucion() {
+        return (cortarEjecucion && Arrays.equals(marcado_actual,marcado_inicial));
     }
 
     public int[] getMarcadoActual() {

@@ -4,9 +4,11 @@ import Politica.PoliticaTest;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -124,45 +126,61 @@ class MonitorTest {
 
         int[][] secuencias = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5};
         Thread [] threads = new Thread[5];
-        CyclicBarrier cyclic = new CyclicBarrier(2,() -> {}); // el hilo de ejecución del test y el que termine
+        CyclicBarrier cyclic = new CyclicBarrier( threads.length + 1,() -> {}); // el hilo de ejecución del test y el que termine
 
 
         for (int i = 0; i< threads.length; i++)
         {
             int finalI = i;
             threads[i] = new Thread(()->{
-
-                while(true){
+                boolean condicion = true;
+                while(condicion){
 
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 3 secuancias que deben generar una invariante
 
                     // disparo la secuencia invariante
                     for (int k : secuencia) {
-                        //System.out.println("Hilo "+Thread.currentThread().getName()+"Disparo trans "+k);
-                        monitor.dispararTransicion(k);
+                        if(!monitor.seAvanza()){
+                            condicion = false;
+                            break;
+                        }else {
+                            monitor.dispararTransicion(k);
+                        }
 
                     }
 
+
+
                 }
-                //System.out.println("Hilo termino"+Thread.currentThread().getName());
+                System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió");
+                try {
+                    cyclic.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (BrokenBarrierException e) {
+                    throw new RuntimeException(e);
+                }
 
             });
         }
 
-        // threads.length
         for (Thread thread : threads) {
             thread.start();
         }
 
         try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(10));
+            cyclic.await();
         } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
 
         // verifico que se hayan ejecutado 100 invariantes
+        System.out.println(rdp.getCuentaInvariantes());
         assertTrue(100<=rdp.getCuentaInvariantes());
         // verifico que se termine en el marcado Inicial
+        System.out.println(Arrays.toString(rdp.getMarcadoActual()));
         assertArrayEquals(getMarcadoInicial(), rdp.getMarcadoActual());
         //verifico expresion regular
         String regex = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
