@@ -17,7 +17,7 @@ public class Monitor {
     private final Colas colas;
     private boolean k;
     public Monitor(RdP red, Politica politica){
-        mutex           = new Semaphore(1,true);
+        mutex           = new Semaphore(1);
         this.politica   = politica;
         this.red        = red;
         this.colas      = new Colas(red.getCantidadTransiciones());

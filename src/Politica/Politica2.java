@@ -1,5 +1,6 @@
 package Politica;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -10,52 +11,80 @@ import java.util.Random;
 public class Politica2 implements Politica {
     private boolean c1 = false;     // bandera para conflicto 1
     private boolean c2 = false;     // bandera para conflicto 2
-
+    private int contadorT9 = 0;
+    private int contadorT10 = 0;
     public int cual(boolean[] transiciones){
-        for (int i = 0; i < transiciones.length; i++) {
-            if (!transiciones[i])
-                continue;
 
-            if (i == 1)
-            {
-                // las 2 transiciones correspondientes al conflicto esta sensibilizadas
-                // en la RdP, T1 esta en conflicto con T2
-                if (!transiciones[i + 1]) {
-                    return i;
-                }
-                c1 = !c1;
-                if (c1)
-                    return i;
-                return i+1;
-            }
-            if (i == 5)
-            {
-                // las 2 transiciones correspondientes al conflicto esta sensibilizadas
-                if (!transiciones[i + 1]) {
-                    return i;
-                }
-                c2 = !c2;
-                if (c2)
-                    return i;
-                return i+1;
-            }
-
-            if(i == 9){
-                // las 2 transiciones correspondientes al conflicto estan sensibilizadas
-                // politica 80% hacia la izquierda
-                boolean trans_izquierda = definirProbabilidad();
-                if(trans_izquierda){
-                    return i;
-                }else{
-                    return i+1;
-                }
-            }
-            return i;
+        ArrayList<Integer> sensibilizadas = new ArrayList<>();
+        for(int i = 0; i<transiciones.length;i++){
+            if(transiciones[i])
+                sensibilizadas.add(i);
         }
-        System.out.println(Arrays.toString(transiciones));
-        throw new RuntimeException("No hay transiciones para disparar");
+        int index = getRandomElement(sensibilizadas);
+
+        if (index == 1 || index == 2)
+        {
+            // en la RdP, T1 esta en conflicto con T2
+            if (!transiciones[2]) {
+                return 1;
+            }
+            if (!transiciones[1]) {
+                return 2;
+            }
+            // las 2 transiciones correspondientes al conflicto esta sensibilizadas y tiene hilo asociado a ejecución
+            c1 = !c1;
+            if (c1) {
+                return 1;
+            }
+            return 2;
+        }
+        if (index == 5 || index == 6)
+        {
+            // en la RdP, T1 esta en conflicto con T2
+            if (!transiciones[6]) {
+                return 5;
+            }
+            if (!transiciones[5]) {
+                return 6;
+            }
+            // las 2 transiciones correspondientes al conflicto esta sensibilizadas y tiene hilo asociado a ejecución
+            c2 = !c2;
+            if (c2) {
+                return 5;
+            }
+            return 6;
+        }
+        if (index == 9 || index == 10)
+        {
+            // en la RdP, T1 esta en conflicto con T2
+            if (!transiciones[10]) {
+                return 9;
+            }
+            if (!transiciones[9]) {
+                return 10;
+            }
+            // las 2 transiciones correspondientes al conflicto esta sensibilizadas y tiene hilo asociado a ejecución
+            // politica 80% hacia la izquierda
+            boolean trans_izquierda = definirProbabilidad();
+            if(trans_izquierda){
+                contadorT9++;
+                return 9;
+            }else {
+                contadorT10++;
+                return 10;
+            }
+        }
+
+        return index; //TODO incluir en los random las transiciones de los conflictos para que no haya prioridad
+
     }
 
+
+    public int getRandomElement(ArrayList<Integer> list)
+    {
+        Random rand = new Random();
+        return list.get(rand.nextInt(list.size()));
+    }
     private boolean definirProbabilidad() {
 
         double probabilidadDerecha = 0.2; // Probabilidad asociada a la T10
@@ -65,11 +94,19 @@ public class Politica2 implements Politica {
 
         // Genera un número aleatorio entre 0 y 1
         double numeroAleatorio = random.nextDouble();
-
+        //System.out.println(numeroAleatorio);
         // Compara el número aleatorio con la probabilidad asociada
-        boolean dispararT9 = numeroAleatorio >= probabilidadDerecha;
+        boolean dispararT9 = numeroAleatorio > probabilidadDerecha;
 
         return dispararT9;
 
     }
+    public int getContadorT9() {
+        return contadorT9;
+    }
+
+    public int getContadorT10() {
+        return contadorT10;
+    }
+
 }

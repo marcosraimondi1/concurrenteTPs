@@ -13,7 +13,8 @@ public class Main {
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
 
-        Politica1 politica = new Politica1();
+        Politica1 politica1 = new Politica1();
+        Politica2 politica2 = new Politica2();
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
@@ -22,26 +23,41 @@ public class Main {
         int[] marcado = getMarcadoInicial();                           // marcado inicial
         int[] trans_invariantes = new int[]{14};                      // transiciones para contar invariantes (T14 marca una vuelta)
         int[][] invariantes_plazas = getInvariantesPlazas();
-        int invariantes_MAX = 200;
+        int invariantes_MAX = 1000;
 
         RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
-        Monitor monitor = new Monitor(rdp,politica);
-
+        Monitor monitor = new Monitor(rdp,politica2);
         // Declaro las secuencias de disparo para los hilos
-        int[] secuencia1 = {0};
+        /*int[] secuencia1 = {0};
         int[] secuencia2 = {1,3};
         int[] secuencia3 = {2,4};
         int[] secuencia4 = {5,7};
         int[] secuencia5 = {6,8};
         int[] secuencia6 = {9,11};
         int[] secuencia7 = {10,12};
-        int[] secuencia8 = {13,14};
+        int[] secuencia8 = {13,14};*/
 
-        int[][] secuencias = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5,secuencia6,secuencia7,secuencia8};
-        Thread [] threads = new Thread[8];
+        // Declaro las secuencias de disparo para los hilos
+        int[] secuencia1 = {0};
+        int[] secuencia2 = {1};
+        int[] secuencia3 = {3};
+        int[] secuencia4 = {2};
+        int[] secuencia5 = {4};
+        int[] secuencia6 = {5};
+        int[] secuencia7 = {7};
+        int[] secuencia8 = {6};
+        int[] secuencia9 = {8};
+        int[] secuencia10 = {9}; // Hilo 9
+        int[] secuencia11 = {11};
+        int[] secuencia12 = {10}; // Hilo 11
+        int[] secuencia13 = {12};
+        int[] secuencia14 = {13,14};
+
+        int[][] secuencias = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5,secuencia6,secuencia7,secuencia8,secuencia9,secuencia10,secuencia11,secuencia12,secuencia13,secuencia14};
+        Thread [] threads = new Thread[secuencias.length];
         CyclicBarrier cyclic = new CyclicBarrier( threads.length + 1,() -> {}); // el hilo de ejecución del test y el que termine
 
 
@@ -51,7 +67,7 @@ public class Main {
             threads[i] = new Thread(()->{
 
                 boolean condicion = true;
-
+                int contadorDisparos = 0;
                 while(condicion){
 
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 5 secuancias
@@ -63,7 +79,7 @@ public class Main {
                             break;
                         }else {
                             monitor.dispararTransicion(k);
-
+                            contadorDisparos++;
                         }
 
                     }
@@ -71,7 +87,7 @@ public class Main {
 
 
                 }
-                System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió");
+                System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió y disparo: "+contadorDisparos+" Transiciones");
                 try {
                     cyclic.await();
                 } catch (InterruptedException e) {
@@ -94,10 +110,10 @@ public class Main {
         } catch (BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
-
+        System.out.println("Cantidad de veces T9: "+politica2.getContadorT9());
+        System.out.println("Cantidad de veces T10: "+politica2.getContadorT10());
         System.out.println(rdp.getCuentaInvariantes());
         System.out.println(Arrays.toString(rdp.getMarcadoActual()));
-        // Ver T0 para ver que este andando  bien la transición fuente
     }
     public static int[][] getMatricesDeIncidencia(boolean numero){
 

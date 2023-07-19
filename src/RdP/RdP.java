@@ -122,7 +122,7 @@ public class RdP {
         String invariante = "T"+ transicion;
 
         if (es_invariante){
-            System.out.println(Arrays.toString(marcado_actual));
+            //System.out.println(Arrays.toString(marcado_actual));
             if(cuenta_invariantes == invariantes_MAX){
                 cortarEjecucion = true;
             }
