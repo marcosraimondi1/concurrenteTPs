@@ -120,11 +120,9 @@ public class RdP {
             }
 
         String invariante = "T"+ transicion;
-        //System.out.println(invariante);
-        //if(transicion==12)
-         //System.out.println(Arrays.toString(marcado_actual));
+
         if (es_invariante){
-            System.out.println(invariante);
+            System.out.println(Arrays.toString(marcado_actual));
             if(cuenta_invariantes == invariantes_MAX){
                 cortarEjecucion = true;
             }
@@ -175,8 +173,8 @@ public class RdP {
         lock.writeLock().unlock();
     }
     public boolean CortarEjecucion() {
-        return (cortarEjecucion && Arrays.equals(marcado_actual,marcado_inicial));
-    }
+        return (cortarEjecucion );
+    } //&& Arrays.equals(marcado_actual,marcado_inicial)
 
     public int[] getMarcadoActual() {
         return marcado_actual;

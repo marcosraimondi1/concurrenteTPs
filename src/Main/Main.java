@@ -2,6 +2,7 @@ package Main;
 
 import Monitor.Monitor;
 import Politica.Politica1;
+import Politica.Politica2;
 import RdP.RdP;
 
 import java.util.Arrays;
@@ -62,7 +63,7 @@ public class Main {
                             break;
                         }else {
                             monitor.dispararTransicion(k);
-                            
+
                         }
 
                     }
