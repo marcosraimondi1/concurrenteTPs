@@ -78,7 +78,7 @@ public class Monitor {
                 }
                 else{
                     // si se corto la ejecución despierto a los hilos uno a uno.
-                    boolean libero = liberar(); //veo si puedo liberar un hilo que esperar en una cola dew condición
+                    boolean libero = liberar(); //veo si puedo liberar un hilo que esperar en una cola de condición
                     if(libero)
                     {   k = true; //si libero pongo el k en true para que cuando despierte no se vaya del while
                         return;
