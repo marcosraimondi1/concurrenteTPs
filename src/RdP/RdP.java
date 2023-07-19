@@ -119,10 +119,7 @@ public class RdP {
             }
 
         String invariante = "T"+ transicion;
-        //invariante_real += invariante;
         if (es_invariante){
-            //System.out.println("\n"+invariante_real);
-            //invariante_real = "";
             if(cuenta_invariantes == invariantes_MAX){
                 cortarEjecucion = true;
             }

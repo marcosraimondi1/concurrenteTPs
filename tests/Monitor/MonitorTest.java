@@ -133,10 +133,12 @@ class MonitorTest {
         {
             int finalI = i;
             threads[i] = new Thread(()->{
+
                 boolean condicion = true;
+
                 while(condicion){
 
-                    int[] secuencia = secuencias[finalI]; // selecciono una de las 3 secuancias que deben generar una invariante
+                    int[] secuencia = secuencias[finalI]; // selecciono una de las 5 secuancias
 
                     // disparo la secuencia invariante
                     for (int k : secuencia) {
@@ -145,6 +147,7 @@ class MonitorTest {
                             break;
                         }else {
                             monitor.dispararTransicion(k);
+
                         }
 
                     }
