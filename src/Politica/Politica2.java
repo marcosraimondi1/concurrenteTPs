@@ -20,6 +20,9 @@ public class Politica2 implements Politica {
             {
                 // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 // en la RdP, T1 esta en conflicto con T2
+                if (!transiciones[i + 1]) {
+                    return i;
+                }
                 c1 = !c1;
                 if (c1)
                     return i;
@@ -28,6 +31,9 @@ public class Politica2 implements Politica {
             if (i == 5)
             {
                 // las 2 transiciones correspondientes al conflicto esta sensibilizadas
+                if (!transiciones[i + 1]) {
+                    return i;
+                }
                 c2 = !c2;
                 if (c2)
                     return i;

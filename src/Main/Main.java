@@ -62,7 +62,7 @@ public class Main {
                             break;
                         }else {
                             monitor.dispararTransicion(k);
-
+                            
                         }
 
                     }
