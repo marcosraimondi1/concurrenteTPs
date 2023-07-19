@@ -1,6 +1,6 @@
 from xml.dom.minidom import parse
 import numpy as np
-pipe_xml_path = "C:\\Users\\marco\\Downloads\\FinalPetri_v2.xml"
+pipe_xml_path = "../rdp_pipe/rdp_PAPER.xml"
 
 document = parse(pipe_xml_path)
 
@@ -31,24 +31,50 @@ for i in range(len(places)):
             if arc.attributes["target"].value == places_ids[i] and arc.attributes["source"].value == transitions_ids[j]:
                 W_mas[i][j]     = int(arc.getElementsByTagName("inscription")[0].getElementsByTagName("value")[0].firstChild.nodeValue.split(',')[1])
             
+# vector de tiempos [ [alfa, beta], ... ]
+tiempos = [ [float(t.getElementsByTagName("rate")[0].getElementsByTagName("value")[0].firstChild.nodeValue) if t.getElementsByTagName("timed")[0].getElementsByTagName("value")[0].firstChild.nodeValue == "true" else 0, -1] for t in transitions ]
+
 
 
 
 def imprimir_matriz(matriz):
     print("[")
-    for fila in matriz:
+    print("\t#", end=" ")
+    for j in range(len(matriz[0])):
+        print(f"T{j+1}", end=" ")
+    print("")
+    for i in range(len(matriz)):
+        fila = matriz[i]
         print("\t[", end=" ")
         for elemento in fila:
-            print(elemento, end=", ")
-        print("],")
+            print(f"{elemento}", end=", ")
+        print(f"], # P{i+1}")
+    print("]")
+
+def imprimir_tiempos(matriz):
+    print("[")
+    print("\t# alfa ,  beta")
+    for i in range(len(matriz)):
+        fila = matriz[i]
+        print("\t[", end=" ")
+        for elemento in fila:
+            print(f"{elemento:5.1f}", end=", ")
+        print(f"], # T{i}")
     print("]")
 
 
 print("\n✅ MARCADO INICIAL : ")
+print("#", end=" ")
+for i in range(len(marcado_inicial)):
+    print(f"P{i}", end=" ")
+print("")
 print(marcado_inicial)
 
-print("\n✅ MATRIZ W- : ")
+print("\n✅ MATRIZ W- : P ➡️ T")
 print(imprimir_matriz(W_menos))
 
-print("\n✅ MATRIZ W+ : ")
+print("\n✅ MATRIZ W+ : T ➡️ P")
 print(imprimir_matriz(W_mas))
+
+print("\n✅ TIEMPOS : ALFA - BETA")
+print(imprimir_tiempos(tiempos))
