@@ -54,7 +54,7 @@ public class Politica1 implements Politica {
             if(transiciones[i])
                 sensibilizadas.add(i);
         }
-        return getRandomElement(sensibilizadas);
+        return getRandomElement(sensibilizadas); //TODO incluir en los random las transiciones de los conflictos para que no haya prioridad
 
     }
     public int getRandomElement(ArrayList<Integer> list)
