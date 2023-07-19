@@ -4,6 +4,10 @@ import Monitor.Monitor;
 import Politica.Politica1;
 import RdP.RdP;
 
+import java.util.Arrays;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 public class Main {
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
@@ -25,9 +29,74 @@ public class Main {
 
         Monitor monitor = new Monitor(rdp,politica);
 
-        //HACER COSAS CON EL MONITOR
-        //CONTINUARA..........
+        // Declaro las secuencias de disparo para los hilos
+        int[] secuencia1 = {0};
+        int[] secuencia2 = {1,3};
+        int[] secuencia3 = {2,4};
+        int[] secuencia4 = {5,7};
+        int[] secuencia5 = {6,8};
+        int[] secuencia6 = {9,11};
+        int[] secuencia7 = {10,12};
+        int[] secuencia8 = {13,14};
 
+        int[][] secuencias = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5,secuencia6,secuencia7,secuencia8};
+        Thread [] threads = new Thread[8];
+        CyclicBarrier cyclic = new CyclicBarrier( threads.length + 1,() -> {}); // el hilo de ejecución del test y el que termine
+
+
+        for (int i = 0; i< threads.length; i++)
+        {
+            int finalI = i;
+            threads[i] = new Thread(()->{
+
+                boolean condicion = true;
+
+                while(condicion){
+
+                    int[] secuencia = secuencias[finalI]; // selecciono una de las 5 secuancias
+
+                    // disparo la secuencia invariante
+                    for (int k : secuencia) {
+                        if(!monitor.seAvanza()){
+                            condicion = false;
+                            break;
+                        }else {
+                            monitor.dispararTransicion(k);
+
+                        }
+
+                    }
+
+
+
+                }
+                System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió");
+                try {
+                    cyclic.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (BrokenBarrierException e) {
+                    throw new RuntimeException(e);
+                }
+
+            });
+        }
+
+        for (Thread thread : threads) {
+            thread.start();
+        }
+        System.out.println("Inicio los hilos");
+        try {
+            cyclic.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (BrokenBarrierException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(rdp.getCuentaInvariantes());
+        System.out.println(Arrays.toString(rdp.getMarcadoActual()));
+        // Ver T0 para ver que este andando  bien la transición fuente
     }
     public static int[][] getMatricesDeIncidencia(boolean numero){
 

@@ -117,7 +117,7 @@ class MonitorTest {
 
         Monitor monitor = new Monitor(rdp,politica);
 
-        // verifico que se disparen 150 invariantes de transicion con 3 hilos diferentes
+        // Declaro las secuencias de disparo para los hilos
         int[] secuencia1 = {6,7,8,9}; //Caso 1 segmento S_e implica plazas P9,P10,P11
         int[] secuencia2 = {0};       //Caso 2 segmento S_a implica plazas P2
         int[] secuencia3 = {1,3};     //Caso 2 segmento S_b implica plazas P3

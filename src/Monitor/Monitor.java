@@ -2,6 +2,7 @@ package Monitor;
 
 
 
+import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 import Politica.Politica;
@@ -47,9 +48,11 @@ public class Monitor {
             if (k) {
 
                 boolean[] sensibilizadas        = red.getSensibilizadas();
-
+                //if(transicion == 12)
+                  //  System.out.println(Arrays.toString(sensibilizadas));
                 boolean[] transicionesConEspera = colas.hayEsperando();
-
+                //if(transicion == 12)
+                  //  System.out.println(Arrays.toString(transicionesConEspera));
                 // m = sensibilizadas AND transicionesConEspera
                 boolean[] transicionesConEsperaySensibilizadas = new boolean[sensibilizadas.length];
                 for (int i = 0; i < sensibilizadas.length; i++) {
@@ -59,7 +62,8 @@ public class Monitor {
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar elegimos una
                     int indexDisparo = politica.cual(transicionesConEsperaySensibilizadas);
-
+                    //System.out.println(Arrays.toString(transicionesConEsperaySensibilizadas));
+                    //System.out.println(indexDisparo);
                     colas.getCola(indexDisparo).sacar();      // debe liberar el hilo que va a disparar
                     return;                                   // me vuelvo porque termine
                 }else{

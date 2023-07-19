@@ -20,30 +20,30 @@ public class Politica1 implements Politica {
                 // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 // en la RdP, T1 esta en conflicto con T2
                 c1 = !c1;
-                if (c1)
+                if (c1 || !transiciones[i+1])
                     return i;
                 return i+1;
             }
-            if (i == 5)
+            if (i == 5 )
             {
                 // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 c2 = !c2;
-                if (c2)
+                if (c2 || !transiciones[i+1])
                     return i;
                 return i+1;
             }
-
             if(i == 9){
                 // las 2 transiciones correspondientes al conflicto esta sensibilizadas
                 c3 = !c3;
-                if (c3) {
+                if (c3 || !transiciones[i+1]) {
                     return i;
                 }
                 return i+1;
             }
-            return i;
+            return i; //TODO revisar politica con numero de transiciones altas
         }
         System.out.println(Arrays.toString(transiciones));
         throw new RuntimeException("No hay transiciones para disparar");
     }
+
 }
