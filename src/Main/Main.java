@@ -13,7 +13,7 @@ public class Main {
         //------------------------------Inicio Politica----------------------------------------------//
         int[][] conflictos = Constants.CONFLICTOS_TP2;
         Politica politica1  = new Politica1(conflictos);
-        Politica2 politica2 = new Politica2();
+        Politica2 politica2 = new Politica2(conflictos);
 
         //------------------------------Inicio RdP---------------------------------------------------//
 

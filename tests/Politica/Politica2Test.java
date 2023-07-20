@@ -9,28 +9,33 @@ class Politica2Test {
     @Test
     void cual() {
         //------------------------------Politica 80% etapa 3--------------------------------------//
-        Politica politica = new Politica2();
+        int[][] conflictos = new int[][] {
+                {9, 10} // T9 y T10
+        };
+
+        Politica politica = new Politica2(conflictos);
+
         boolean[] transiciones = new boolean[16];
 
-        // conflicto T11 y T12
-        transiciones[11] = true;
-        transiciones[12] = true;
+        // conflicto T9 y T10
+        transiciones[9] = true;
+        transiciones[10] = true;
 
-        int T11s = 0;
-        int T12s = 0;
+        int T9s = 0;
+        int T10s = 0;
 
         int t1;
         int cantidadEjecuciones = 1000;
         for (int i = 0; i < cantidadEjecuciones; i++){
             t1 = politica.cual(transiciones);
-            if (t1 == 11)
-                T11s++;
-            else if (t1 == 12)
-                T12s++;
+            if (t1 == 9)
+                T9s++;
+            else if (t1 == 10)
+                T10s++;
         }
-        System.out.println("Veces que se disparo T11: "+T11s+" y Veces que se disparo T12: "+T12s);
-        assertTrue(T11s > (cantidadEjecuciones*0.8 - cantidadEjecuciones*0.15) && T11s < (cantidadEjecuciones*0.8 + cantidadEjecuciones*0.15));
-        assertTrue(T12s > (cantidadEjecuciones*0.2 - cantidadEjecuciones*0.15) && T12s < (cantidadEjecuciones*0.2 + cantidadEjecuciones*0.15));
+        System.out.println("Veces que se disparo T9: "+T9s+" y Veces que se disparo T10: "+T10s);
+        assertTrue(T9s > (cantidadEjecuciones*0.8 - cantidadEjecuciones*0.15) && T9s < (cantidadEjecuciones*0.8 + cantidadEjecuciones*0.15));
+        assertTrue(T10s > (cantidadEjecuciones*0.2 - cantidadEjecuciones*0.15) && T10s < (cantidadEjecuciones*0.2 + cantidadEjecuciones*0.15));
 
     }
 }
