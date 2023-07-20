@@ -71,7 +71,9 @@ public class Constants {
     };
 
     public static int[][] CONFLICTOS_TP2 = new int[][] {
-            {1,2}
+            { 1, 2         },
+            { 5, 6         },
+            { 9, 10        },
     };
 
 
