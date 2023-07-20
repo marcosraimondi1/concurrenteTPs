@@ -36,17 +36,18 @@ public class Politica1 extends Politica {
             if (index != tx && index != ty)
                 continue; // no se eligieron las transiciones del conflicto
 
-            // verifico que ambas transiciones esten sensibilizdasa
+            // verifico que ambas transiciones esten sensibilizdas
             if (!transiciones[tx]) {
                 return ty;
             }
+
             if (!transiciones[ty]) {
                 return tx;
             }
 
             // hay conflicto efectivo -> aplico la politica
             flags[i] = !flags[i];           // cambio el valor de la bandera
-            index = flags[i] ? tx : ty;     // elijo la transicion correspondiente
+            return flags[i] ? tx : ty;     // elijo la transicion correspondiente
         }
 
         return index;
