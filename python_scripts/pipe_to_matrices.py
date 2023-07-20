@@ -1,6 +1,6 @@
 from xml.dom.minidom import parse
 import numpy as np
-pipe_xml_path = "../rdp_pipe/rdp_PAPER.xml"
+pipe_xml_path = "../rdp_pipe/rdp_TP2.xml"
 
 document = parse(pipe_xml_path)
 
@@ -34,21 +34,39 @@ for i in range(len(places)):
 # vector de tiempos [ [alfa, beta], ... ]
 tiempos = [ [float(t.getElementsByTagName("rate")[0].getElementsByTagName("value")[0].firstChild.nodeValue) if t.getElementsByTagName("timed")[0].getElementsByTagName("value")[0].firstChild.nodeValue == "true" else 0, -1] for t in transitions ]
 
-
+# encontrar conflictos (estructurales)
+conflictos = []
+for i in range(len(W_menos)):
+    conflicto = []
+    for j in range(len(W_menos[i])):
+        if W_menos[i][j] >= 1:
+            conflicto.append(j)
+    if len(conflicto) > 1:
+        if (conflicto not in conflictos):
+            conflictos.append(conflicto)
 
 
 def imprimir_matriz(matriz):
     print("[")
     print("\t#", end=" ")
     for j in range(len(matriz[0])):
-        print(f"T{j+1}", end=" ")
+        print(f"T{j}", end=" ")
     print("")
     for i in range(len(matriz)):
         fila = matriz[i]
         print("\t[", end=" ")
         for elemento in fila:
             print(f"{elemento}", end=", ")
-        print(f"], # P{i+1}")
+        print(f"], # P{i}")
+    print("]")
+
+def imprimir_matriz_normal(matriz):
+    print("[")
+    for fila in matriz:
+        print("\t[", end=" ")
+        for elemento in fila:
+            print(f"{elemento}", end=", ")
+        print(f"\t],")
     print("]")
 
 def imprimir_tiempos(matriz):
@@ -78,3 +96,6 @@ print(imprimir_matriz(W_mas))
 
 print("\n✅ TIEMPOS : ALFA - BETA")
 print(imprimir_tiempos(tiempos))
+
+print("\n✅ CONFLICTOS : TX - TY")
+print(imprimir_matriz_normal(conflictos))
