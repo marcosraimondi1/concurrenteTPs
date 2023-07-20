@@ -1,11 +1,9 @@
 package Main;
 
 import Monitor.Monitor;
-import Politica.Politica1;
-import Politica.Politica2;
+import Politica.*;
 import RdP.RdP;
-
-import java.util.ArrayList;
+import Constants.*;
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -13,9 +11,8 @@ import java.util.concurrent.CyclicBarrier;
 public class Main {
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-        ArrayList<int[]> conflictos = new ArrayList<>();
-        conflictos.add(new int[]{1, 2});                    // agrego un conflicto en T1 y T2
-        Politica1 politica1 = new Politica1(conflictos);
+        int[][] conflictos = Constants.CONFLICTOS_TP2;
+        Politica politica1  = new Politica1(conflictos);
         Politica2 politica2 = new Politica2();
 
         //------------------------------Inicio RdP---------------------------------------------------//

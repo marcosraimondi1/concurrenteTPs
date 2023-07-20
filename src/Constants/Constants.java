@@ -51,7 +51,7 @@ public class Constants {
 
     };
 
-    public static double[][] tiempos = new double[][] {
+    public static double[][] TIEMPOS = new double[][] {
             // alfa ,  beta
             {  40.0 ,  -1.0  }, // T0
             {  0.0  ,   0.0  }, // T1
@@ -68,6 +68,10 @@ public class Constants {
             {  20.0 ,  -1.0  }, // T12
             {  0.0  ,   0.0  }, // T13
             {  10.0 ,  -1.0  }, // T14
+    };
+
+    public static int[][] CONFLICTOS_TP2 = new int[][] {
+            {1,2}
     };
 
 

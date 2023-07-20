@@ -11,8 +11,9 @@ class Politica1Test {
     @Test
     void cual() {
         //------------------------------Politica 50%----------------------------------------------//
-        ArrayList<int[]> conflictos = new ArrayList<>();
-        conflictos.add(new int[]{1, 2});                    // agrego un conflicto en T1 y T2
+        int[][] conflictos = new int[][] {
+                {1, 2} // T1 y T2
+        };
 
         Politica politica           = new Politica1(conflictos);
         boolean[] transiciones      = new boolean[16];

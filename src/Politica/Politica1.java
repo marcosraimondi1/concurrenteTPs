@@ -1,6 +1,5 @@
 package Politica;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -8,18 +7,18 @@ import java.util.Arrays;
  * no se haya disparado antes (Politica del 50%)
  */
 public class Politica1 extends Politica {
-    private final ArrayList<int[]> conflictos;
+    private final int[][] conflictos;
     private final boolean[] flags;
 
     /**
      * Constructor de la clase Politica1,
      * @param conflictos, los conflictos de la RdP
      */
-    public Politica1(ArrayList<int[]> conflictos) {
+    public Politica1(int[][] conflictos) {
         this.conflictos = conflictos;
 
         // inicializa todas las banderas en false
-        flags = new boolean[conflictos.size()];
+        flags = new boolean[conflictos.length];
         Arrays.fill(flags, false);
     }
     @Override
@@ -27,8 +26,8 @@ public class Politica1 extends Politica {
 
         int index = super.cual(transiciones); // transicion aleatoria
 
-        for (int i = 0; i < conflictos.size(); i++) {
-            int[] conflicto = conflictos.get(i);
+        for (int i = 0; i < conflictos.length; i++) {
+            int[] conflicto = conflictos[i];
 
             // transiciones en conflicto
             int tx = conflicto[0];
