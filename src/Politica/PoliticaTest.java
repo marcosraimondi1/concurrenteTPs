@@ -3,7 +3,7 @@ package Politica;
 
 import java.util.Random;
 
-public class PoliticaTest implements Politica{
+public class PoliticaTest extends Politica{
     private boolean condicion = false; // seleccion entre politica del 50% y el 80% (solo en etapa 1 en red de test)
     public PoliticaTest() {
     }
@@ -11,6 +11,7 @@ public class PoliticaTest implements Politica{
         this.condicion = Condicion;
     }
 
+    @Override
     public int cual(boolean[] transiciones){
         for (int i = 0; i < transiciones.length; i++) {
 

@@ -1,18 +1,18 @@
 package Politica;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
  * Politica1: para cada conflicto, se dispara la transicion que
  * no se haya disparado antes
  */
-public class Politica2 implements Politica {
+public class Politica2 extends Politica {
     private boolean c1 = false;     // bandera para conflicto 1
     private boolean c2 = false;     // bandera para conflicto 2
     private int contadorT9 = 0;
     private int contadorT10 = 0;
+    @Override
     public int cual(boolean[] transiciones){
 
         ArrayList<Integer> sensibilizadas = new ArrayList<>();
@@ -75,16 +75,11 @@ public class Politica2 implements Politica {
             }
         }
 
-        return index; //TODO incluir en los random las transiciones de los conflictos para que no haya prioridad
+        return index;
 
     }
 
 
-    public int getRandomElement(ArrayList<Integer> list)
-    {
-        Random rand = new Random();
-        return list.get(rand.nextInt(list.size()));
-    }
     private boolean definirProbabilidad() {
 
         double probabilidadDerecha = 0.2; // Probabilidad asociada a la T10

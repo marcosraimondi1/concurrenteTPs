@@ -2,81 +2,55 @@ package Politica;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Politica1: para cada conflicto, se dispara la transicion que
- * no se haya disparado antes
+ * no se haya disparado antes (Politica del 50%)
  */
-public class Politica1 implements Politica {
-    private boolean c1 = false;     // bandera para conflicto 1
-    private boolean c2 = false;     // bandera para conflicto 2
-    private boolean c3 = false;     // bandera para conflicto 3
+public class Politica1 extends Politica {
+    private final ArrayList<int[]> conflictos;
+    private final boolean[] flags;
+
+    /**
+     * Constructor de la clase Politica1,
+     * @param conflictos, los conflictos de la RdP
+     */
+    public Politica1(ArrayList<int[]> conflictos) {
+        this.conflictos = conflictos;
+
+        // inicializa todas las banderas en false
+        flags = new boolean[conflictos.size()];
+        Arrays.fill(flags, false);
+    }
+    @Override
     public int cual(boolean[] transiciones){
 
-        ArrayList<Integer> sensibilizadas = new ArrayList<>();
-        for(int i = 0; i<transiciones.length;i++){
-            if(transiciones[i])
-                sensibilizadas.add(i);
-        }
-        int index = getRandomElement(sensibilizadas);
+        int index = super.cual(transiciones); // transicion aleatoria
 
-        if (index == 1 || index == 2)
-        {
-            // en la RdP, T1 esta en conflicto con T2
-            if (!transiciones[2]) {
-                return 1;
+        for (int i = 0; i < conflictos.size(); i++) {
+            int[] conflicto = conflictos.get(i);
+
+            // transiciones en conflicto
+            int tx = conflicto[0];
+            int ty = conflicto[1];
+
+            if (index != tx && index != ty)
+                continue; // no se eligieron las transiciones del conflicto
+
+            // verifico que ambas transiciones esten sensibilizdasa
+            if (!transiciones[tx]) {
+                return ty;
             }
-            if (!transiciones[1]) {
-                return 2;
+            if (!transiciones[ty]) {
+                return tx;
             }
-            // las 2 transiciones correspondientes al conflicto esta sensibilizadas y tiene hilo asociado a ejecución
-            c1 = !c1;
-            if (c1) {
-                return 1;
-            }
-            return 2;
-        }
-        if (index == 5 || index == 6)
-        {
-            // en la RdP, T1 esta en conflicto con T2
-            if (!transiciones[6]) {
-                return 5;
-            }
-            if (!transiciones[5]) {
-                return 6;
-            }
-            // las 2 transiciones correspondientes al conflicto esta sensibilizadas y tiene hilo asociado a ejecución
-            c2 = !c2;
-            if (c2) {
-                return 5;
-            }
-            return 6;
-        }
-        if (index == 9 || index == 10)
-        {
-            // en la RdP, T1 esta en conflicto con T2
-            if (!transiciones[10]) {
-                return 9;
-            }
-            if (!transiciones[9]) {
-                return 10;
-            }
-            // las 2 transiciones correspondientes al conflicto esta sensibilizadas y tiene hilo asociado a ejecución
-            c3 = !c3;
-            if (c3) {
-                return 9;
-            }
-            return 10;
+
+            // hay conflicto efectivo -> aplico la politica
+            flags[i] = !flags[i];           // cambio el valor de la bandera
+            index = flags[i] ? tx : ty;     // elijo la transicion correspondiente
         }
 
-        return index; //TODO incluir en los random las transiciones de los conflictos para que no haya prioridad
-
-    }
-    public int getRandomElement(ArrayList<Integer> list)
-    {
-        Random rand = new Random();
-        return list.get(rand.nextInt(list.size()));
+        return index;
     }
 
 }

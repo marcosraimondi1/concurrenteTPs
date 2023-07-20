@@ -5,6 +5,7 @@ import Politica.Politica1;
 import Politica.Politica2;
 import RdP.RdP;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -12,8 +13,9 @@ import java.util.concurrent.CyclicBarrier;
 public class Main {
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-
-        Politica1 politica1 = new Politica1();
+        ArrayList<int[]> conflictos = new ArrayList<>();
+        conflictos.add(new int[]{1, 2});                    // agrego un conflicto en T1 y T2
+        Politica1 politica1 = new Politica1(conflictos);
         Politica2 politica2 = new Politica2();
 
         //------------------------------Inicio RdP---------------------------------------------------//
@@ -90,9 +92,7 @@ public class Main {
                 System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió y disparo: "+contadorDisparos+" Transiciones");
                 try {
                     cyclic.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (BrokenBarrierException e) {
+                } catch (InterruptedException | BrokenBarrierException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -105,9 +105,7 @@ public class Main {
         System.out.println("Inicio los hilos");
         try {
             cyclic.await();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (BrokenBarrierException e) {
+        } catch (InterruptedException | BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Cantidad de veces T9: "+politica2.getContadorT9());
