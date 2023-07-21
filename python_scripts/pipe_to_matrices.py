@@ -32,7 +32,7 @@ for i in range(len(places)):
                 W_mas[i][j]     = int(arc.getElementsByTagName("inscription")[0].getElementsByTagName("value")[0].firstChild.nodeValue.split(',')[1])
             
 # vector de tiempos [ [alfa, beta], ... ]
-tiempos = [ [float(t.getElementsByTagName("rate")[0].getElementsByTagName("value")[0].firstChild.nodeValue) if t.getElementsByTagName("timed")[0].getElementsByTagName("value")[0].firstChild.nodeValue == "true" else 0, -1] for t in transitions ]
+tiempos = [ [str(int(float(t.getElementsByTagName("rate")[0].getElementsByTagName("value")[0].firstChild.nodeValue)))+"L" if t.getElementsByTagName("timed")[0].getElementsByTagName("value")[0].firstChild.nodeValue == "true" else "0L", "MAX_TIME"] for t in transitions ]
 
 # encontrar conflictos (estructurales)
 conflictos = []
@@ -76,7 +76,7 @@ def imprimir_tiempos(matriz):
         fila = matriz[i]
         print("\t[", end=" ")
         for elemento in fila:
-            print(f"{elemento:5.0f}L", end=", ")
+            print(f"{elemento:5}", end=", ")
         print(f"], # T{i}")
     print("]")
 
