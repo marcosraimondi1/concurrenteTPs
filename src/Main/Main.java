@@ -23,21 +23,23 @@ public class Main {
         int[] trans_invariantes = new int[]{14};                      // transiciones para contar invariantes (T14 marca una vuelta)
         int[][] invariantes_plazas = getInvariantesPlazas();
         int invariantes_MAX = 1000;
-
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,invariantes_MAX);
+        long[][] tiempos = Constants.TIEMPOS;
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
         Monitor monitor = new Monitor(rdp,politica2);
         // Declaro las secuencias de disparo para los hilos
-        /*int[] secuencia1 = {0};
+        /*
+        int[] secuencia1 = {0};
         int[] secuencia2 = {1,3};
         int[] secuencia3 = {2,4};
         int[] secuencia4 = {5,7};
         int[] secuencia5 = {6,8};
         int[] secuencia6 = {9,11};
         int[] secuencia7 = {10,12};
-        int[] secuencia8 = {13,14};*/
+        int[] secuencia8 = {13,14};
+        */
 
         // Declaro las secuencias de disparo para los hilos
         int[] secuencia1 = {0};

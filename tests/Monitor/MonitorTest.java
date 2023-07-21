@@ -7,13 +7,24 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static Constants.Constants.MAX_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MonitorTest {
+    long[][] tiempos = {
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+            { 0, MAX_TIME},
+    };
     @Test
     void dispararTransicion() {
         // Testeo con la RdP del paper
@@ -29,7 +40,7 @@ class MonitorTest {
         int[][] invariantes_plazas = getInvariantesPlazas();
         int invariantes_MAX = 200;
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9},invariantes_plazas,invariantes_MAX);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado,new int[]{5,9},invariantes_plazas,tiempos,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -111,7 +122,7 @@ class MonitorTest {
         int[][] invariantes_plazas = getInvariantesPlazas();
         int[] trans_invariantes = new int[]{5,9};              // index de T6 = 5 e index de T10 = 9 (se usan para contar vueltas completadas por hilo)
         int invariantes_MAX = 100;
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas, invariantes_MAX);
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -158,9 +169,7 @@ class MonitorTest {
                 System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió");
                 try {
                     cyclic.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (BrokenBarrierException e) {
+                } catch (InterruptedException | BrokenBarrierException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -173,9 +182,7 @@ class MonitorTest {
 
         try {
             cyclic.await();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (BrokenBarrierException e) {
+        } catch (InterruptedException | BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
 

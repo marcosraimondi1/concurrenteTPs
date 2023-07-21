@@ -9,7 +9,7 @@ public class VectorSensibilizadas {
 
     private final int[][] plazas_entrada_transiciones;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
 
-     SensibilizadoConTiempo sensibilizadoConTiempo;
+    private final SensibilizadoConTiempo sensibilizadoConTiempo;
 
     public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {
         sensibilizadas                      = new boolean[tiempos.length];
@@ -68,30 +68,29 @@ public class VectorSensibilizadas {
              // si es inmediata, esta sensibilizada solo con los tokens
              return true;
          }
+
         // verifico la ventana de tiempo
         boolean ventana = sensibilizadoConTiempo.testVentana(transicion);
 
         if (ventana) {
-            synchronized (this) {
 
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
+
             if (!esperando) {
-                 sensibilizadoConTiempo.setTimeStamp(transicion);
+                // nadie durmiendo, esta sensibilizada
+                // todo : sensibilizadoConTiempo.setTimeStamp(transicion); // ver si es necesario
                 return true;
             }
-
-            }
-            // si esta esperando, no esta sensibilizada
-
+            // esta sensibilizada pero hay alguien durmiendo
+            // esperando = true
+            // si alguien esta esperando, no esta sensibilizada
             return false;
 
         } else {
             boolean antes = sensibilizadoConTiempo.antesDeLaVentana(transicion);
             if (antes) {
                 // si es antes libero el mutex y me voy a dormir
-                synchronized (this) {
                 sensibilizadoConTiempo.setEsperando(transicion);    // aviso que esta esperando
-                }
                 // todo: Monitor.getMutex.release();
 
                 long tiempoRestante = sensibilizadoConTiempo.getTiempoRestante(transicion);
@@ -104,9 +103,7 @@ public class VectorSensibilizadas {
 
                 // todo: Monitor.getMutex.acquire();
 
-                synchronized (this) {
                 sensibilizadoConTiempo.resetEsperando(transicion);  // aviso que ya no esta esperando
-                }
 
                 // verifico que siga sensibilizada despues de dormir
                 if (!sensibilizadas[transicion]) {

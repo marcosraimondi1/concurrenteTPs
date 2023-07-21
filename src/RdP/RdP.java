@@ -5,6 +5,7 @@ import Logger.Logger;
 
 
 import java.util.Arrays;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -27,7 +28,8 @@ public class RdP {
     private boolean apagar;
     private final ReadWriteLock lock;
     public final Logger logger = new Logger(".\\data\\log.txt");
-    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, int invariantes_MAX) {
+    private final VectorSensibilizadas vectorSensibilizadas;
+    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
@@ -46,6 +48,7 @@ public class RdP {
         }
         this.invariantes_plazas = invariantes_plazas;
         this.lock = new ReentrantReadWriteLock(); //creo lock para el Apagado
+        vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
     }
 
     /**
@@ -59,8 +62,13 @@ public class RdP {
             return false;
         }
         //System.out.println("T"+transicion);
-        if (!isSensibilizada(transicion)) {
-            return false;
+        try {
+            if (!vectorSensibilizadas.isSensibilizada(transicion)) {
+                return false;
+            }
+        } catch (TimeoutException e) {
+            System.out.println("TimeoutException en T"+transicion);
+            throw new RuntimeException(e);
         }
 
         // actualizo el marcado actual
@@ -70,7 +78,6 @@ public class RdP {
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
         }
 
-
         verificarInvarianteTransicion(transicion);
 
         try {
@@ -78,6 +85,8 @@ public class RdP {
         } catch (InvariantePlazaException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        vectorSensibilizadas.actualizarSensibilizadas(marcado_actual);
 
         return true;
     }

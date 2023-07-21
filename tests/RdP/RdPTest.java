@@ -2,6 +2,7 @@ package RdP;
 
 import org.junit.jupiter.api.Test;
 
+import static Constants.Constants.MAX_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RdPTest {
@@ -16,8 +17,13 @@ class RdPTest {
                 { 1, 0, 1, 1},
                 { 0, 1, 1, 1}
         };
+        long[][] tiempos = new long[][]{
+                // alfa ,  beta [ms]
+                {   0   ,   MAX_TIME}, // T0
+                {   0   ,   MAX_TIME}  // T3
+        };
         int invariante_MAX = 50;
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1},invariantes_plazas,invariante_MAX);
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1},invariantes_plazas,tiempos,invariante_MAX);
 
         int[] marcado_actual = red.getMarcadoActual();
 
@@ -49,7 +55,7 @@ class RdPTest {
                 { 0, 1, 1, 1}
         };
 
-        RdP red2 = new RdP(plazas_salida2,plazas_entrada2,marcado_inicial2, new int[]{1,1},invariantes_plazas2,invariante_MAX);
+        RdP red2 = new RdP(plazas_salida2,plazas_entrada2,marcado_inicial2, new int[]{1,1},invariantes_plazas2,tiempos,invariante_MAX);
 
         assertThrows(RuntimeException.class, ()->red2.disparar(1));
     }
@@ -60,9 +66,14 @@ class RdPTest {
         int[][] plazas_salida   = {{0,1}, {0,1}, {1,0}};
         int[][] plazas_entrada  = {{1,0}, {1,0}, {0,1}};
         int[]   marcado_inicial = {0,0,1};
+        long[][] tiempos = new long[][]{
+                // alfa ,  beta [ms]
+                {   0   ,   MAX_TIME}, // T0
+                {   0   ,   MAX_TIME}, // T1
+        };
         int[][] invariantes_plazas = getInvariantesPlazas();
         int invariante_MAX = 50;
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1}, invariantes_plazas,invariante_MAX);
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1}, invariantes_plazas,tiempos,invariante_MAX);
 
         // verificar sensibilizadas
         boolean[] sensibilizadas = red.getSensibilizadas();
@@ -78,7 +89,20 @@ class RdPTest {
         int[] marcado = getMarcadoInicial();                    // marcado inicial
         int[][] invariantes_plazas = getInvariantesPlazas();
         int invariante_MAX = 250;
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas,invariante_MAX);
+        long[][] tiempos = new long[][]{
+                // alfa ,  beta [ms]
+                {   0   ,   MAX_TIME}, // T0
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+                {   0   ,   MAX_TIME}, // T1
+        };
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas,tiempos,invariante_MAX);
 
         assertEquals(0,rdp.getCuentaInvariantes());
 
