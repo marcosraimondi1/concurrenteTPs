@@ -76,7 +76,7 @@ def imprimir_tiempos(matriz):
         fila = matriz[i]
         print("\t[", end=" ")
         for elemento in fila:
-            print(f"{elemento:5.1f}", end=", ")
+            print(f"{elemento:5.0f}L", end=", ")
         print(f"], # T{i}")
     print("]")
 
