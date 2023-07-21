@@ -1,5 +1,6 @@
 package RdP;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class VectorSensibilizadas {
@@ -10,11 +11,14 @@ public class VectorSensibilizadas {
 
      SensibilizadoConTiempo sensibilizadoConTiempo;
 
-    public VectorSensibilizadas (int nTransiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {
-        sensibilizadas = new boolean[nTransiciones];
-        sensibilizadasAnterior = new boolean[nTransiciones];
-        this.plazas_entrada_transiciones = plazas_entrada_transiciones;
-        sensibilizadoConTiempo = new SensibilizadoConTiempo(tiempos);
+    public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {
+        sensibilizadas                      = new boolean[tiempos.length];
+        sensibilizadasAnterior              = new boolean[tiempos.length];
+        this.plazas_entrada_transiciones    = plazas_entrada_transiciones;
+        sensibilizadoConTiempo              = new SensibilizadoConTiempo(tiempos);
+
+        Arrays.fill             (sensibilizadas         , false );
+        Arrays.fill             (sensibilizadasAnterior , false );
         actualizarSensibilizadas(marcado_inicial);
     }
 
@@ -31,7 +35,7 @@ public class VectorSensibilizadas {
 
 
     /**
-     * Verifica si una transicion esta sensibilizada
+     * Verifica si una transicion esta sensibilizada con los tokens en cierto marcado
      * @param transicion transicion a verificar
      * @param marcado marcado en el que debe verificar si esta sensibilizada
      * @return  true si esta sensibilizada, false si no
@@ -47,7 +51,14 @@ public class VectorSensibilizadas {
         return true;
     }
 
+    /**
+     * Verifica si una transicion esta sensibilizada por tokens y tiempo
+     * @param transicion transicion a verificar
+     * @return true si esta sensibilizada, false si no
+     * @throws TimeoutException si la transicion se paso del tiempo maximo
+     */
     public boolean isSensibilizada(int transicion) throws TimeoutException {
+
         if (!sensibilizadas[transicion]) {
             // si no tiene los tokens necesarios, no esta sensibilizada
             return false;
@@ -61,11 +72,14 @@ public class VectorSensibilizadas {
         boolean ventana = sensibilizadoConTiempo.testVentana(transicion);
 
         if (ventana) {
-            boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
+            synchronized (this) {
 
+            boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
             if (!esperando) {
                  sensibilizadoConTiempo.setTimeStamp(transicion);
                 return true;
+            }
+
             }
             // si esta esperando, no esta sensibilizada
 
@@ -74,9 +88,12 @@ public class VectorSensibilizadas {
         } else {
             boolean antes = sensibilizadoConTiempo.antesDeLaVentana(transicion);
             if (antes) {
-                // se es antes libero el mutex y me voy a dormir
-                // Monitor.getMutex.release();
-                sensibilizadoConTiempo.setEsperando(transicion);
+                // si es antes libero el mutex y me voy a dormir
+                synchronized (this) {
+                sensibilizadoConTiempo.setEsperando(transicion);    // aviso que esta esperando
+                }
+                // todo: Monitor.getMutex.release();
+
                 long tiempoRestante = sensibilizadoConTiempo.getTiempoRestante(transicion);
                 try {
                     Thread.sleep(tiempoRestante);
@@ -84,8 +101,22 @@ public class VectorSensibilizadas {
                     // no deberia ser interrumpido creo
                     throw new RuntimeException(e);
                 }
-                // Monitor.getMutex.acquire();
+
+                // todo: Monitor.getMutex.acquire();
+
+                synchronized (this) {
+                sensibilizadoConTiempo.resetEsperando(transicion);  // aviso que ya no esta esperando
+                }
+
+                // verifico que siga sensibilizada despues de dormir
+                if (!sensibilizadas[transicion]) {
+                    // si no tiene los tokens necesarios, no esta sensibilizada
+                    return false;
+                }
+
+                // esta en la ventana de tiempo y tiene los tokens
                 return true;
+
             } else {
                 // si es despues, no esta sensibilizada y nunca va a poder dispararse
                 // lanzo excepcion

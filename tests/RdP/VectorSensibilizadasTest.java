@@ -1,0 +1,313 @@
+package RdP;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeoutException;
+
+import static Constants.Constants.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class VectorSensibilizadasTest {
+
+    @Test
+    void isSensibilizada() {
+        int[][]     plazas_entrada_transiciones = W_MENOS_TP2   ;
+        int[]       marcado_inicial             = MI_TP2        ;
+        long[][]    tiempos                     = TIEMPOS       ;
+
+        VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
+                plazas_entrada_transiciones,
+                marcado_inicial,
+                tiempos
+        );
+        boolean sensibilizada;
+        long tic = System.currentTimeMillis();
+        try {
+            sensibilizada = vectorSensibilizadas.isSensibilizada(0);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+        long toc = System.currentTimeMillis();
+
+        // is sensibilizada, si alcanzan los tokens duerme hasta que este en la ventana y devuelve true
+        assertTrue(sensibilizada);
+        assertTrue(toc - tic >= TIEMPOS[0][0]);
+
+        try {
+            sensibilizada = vectorSensibilizadas.isSensibilizada(1);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertFalse(sensibilizada);
+
+        try {
+            sensibilizada = vectorSensibilizadas.isSensibilizada(3);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertFalse(sensibilizada);
+
+        // -------------- PRUEBO SI TIRA ERROR DE TIMEOUT ----------------
+        plazas_entrada_transiciones = new int[][] {
+                //  T0
+                {1}, // P0
+        };
+        marcado_inicial             = new int[] { 1 };
+
+        tiempos                     = new long[][] {
+                //  alfa ,    beta
+                {100L,  500L        }, // T0
+        };
+
+        vectorSensibilizadas = new VectorSensibilizadas(
+                plazas_entrada_transiciones,
+                marcado_inicial,
+                tiempos
+        );
+        try {
+            // pasan 100ms, no deberia tirar error
+            assertTrue(vectorSensibilizadas.isSensibilizada(0));
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Thread.sleep(tiempos[0][1]); // espero mas alla del beta -> debe tirar error
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        VectorSensibilizadas finalVectorSensibilizadas = vectorSensibilizadas;
+        assertThrows(TimeoutException.class, ()-> finalVectorSensibilizadas.isSensibilizada(0));
+
+    }
+
+    @Test
+    void actualizarSensibilizadas() {
+        int[][]     plazas_entrada_transiciones = new int[][] {
+            //  T0 T1 T2
+                {0, 1, 1}, // P0
+                {1, 0, 1}, // P1
+        };
+        int[]       marcado_inicial             = new int[] { 0, 0 };
+
+        // ------------------ SENSIBILIZADO DE TRANSICIONES INMEDIATAS ------------------
+        long[][]    tiempos                     = new long[][] {
+            //  alfa ,    beta
+                {0L  ,  MAX_TIME    }, // T0
+                {0L  ,  MAX_TIME    }, // T1
+                {0L  ,  MAX_TIME    }, // T2
+        };
+
+        VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
+                plazas_entrada_transiciones,
+                marcado_inicial,
+                tiempos
+        );
+
+        boolean sensibilizada;
+        try {
+            sensibilizada = vectorSensibilizadas.isSensibilizada(0);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertFalse(sensibilizada);
+
+        int[] nuevo_marcado = new int[] { 0, 1 }; // sensibilizo T0
+
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            sensibilizada = vectorSensibilizadas.isSensibilizada(0);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(sensibilizada);
+
+
+        nuevo_marcado = new int[] { 1, 0 }; // sensibilizo T1
+
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            assertFalse(vectorSensibilizadas.isSensibilizada(0));
+            assertTrue(vectorSensibilizadas.isSensibilizada(1));
+            assertFalse(vectorSensibilizadas.isSensibilizada(2));
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T0,T1,T2
+
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            assertTrue(vectorSensibilizadas.isSensibilizada(0));
+            assertTrue(vectorSensibilizadas.isSensibilizada(1));
+            assertTrue(vectorSensibilizadas.isSensibilizada(2));
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        // ------------------ SENSIBILIZADO DE TRANSICIONES TEMPORIZADAS ------------------
+        marcado_inicial             = new int[] { 0, 0 };
+        tiempos                     = new long[][] {
+                //  alfa ,    beta
+                {50L  ,  MAX_TIME    }, // T0
+                {100L ,  MAX_TIME    }, // T1
+                {40L  ,  MAX_TIME    }, // T2
+        };
+
+        vectorSensibilizadas = new VectorSensibilizadas(
+                plazas_entrada_transiciones,
+                marcado_inicial,
+                tiempos
+        );
+
+        try {
+            long tic = System.currentTimeMillis();
+            assertFalse(vectorSensibilizadas.isSensibilizada(0));
+            long toc = System.currentTimeMillis();
+            assertTrue(toc - tic < tiempos[0][0]); // porque no alcanzan los tokens
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        nuevo_marcado = new int[] { 0, 1 }; // sensibilizo T0
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            long tic = System.currentTimeMillis();
+            assertTrue(vectorSensibilizadas.isSensibilizada(0));
+            long toc = System.currentTimeMillis();
+            assertTrue(toc - tic >= tiempos[0][0]); // tiempo que demora en disparar
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T0, T1, T2
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            // veo si T2 se sensibiliza
+            long tic = System.currentTimeMillis();
+            assertTrue(vectorSensibilizadas.isSensibilizada(2));
+            long toc = System.currentTimeMillis();
+            assertTrue(toc - tic >= tiempos[2][0]); // tiempo que demora en disparar
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        // verifico que se actualice el timestamp de la transicion
+        nuevo_marcado = new int[] { 0, 0 };
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        try {
+            // veo si T2 se desensibiliza
+            long tic = System.currentTimeMillis();
+            assertFalse(vectorSensibilizadas.isSensibilizada(2));
+            long toc = System.currentTimeMillis();
+            assertTrue(toc - tic < tiempos[2][0]);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        nuevo_marcado = new int[] { 1, 1 };
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        try {
+            // veo si T2 actualizo su timestamp
+            long tic = System.currentTimeMillis();
+            assertTrue(vectorSensibilizadas.isSensibilizada(2));
+            long toc = System.currentTimeMillis();
+            // si no se actualizo, el tiempo de sensibilizado deberia ser menor a alfa
+            assertTrue(toc - tic >= tiempos[2][0]);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+
+        // -------------------------------------------------------------------------------------
+        nuevo_marcado = new int[] { 0, 0 };
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        nuevo_marcado = new int[] { 1, 0 }; // sensibilizo T1
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            Thread.sleep(tiempos[1][0]);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T1 de nuevo -> no debe cambiar el timestamp
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+
+        try {
+            long tic = System.currentTimeMillis();
+            assertTrue(vectorSensibilizadas.isSensibilizada(1));
+            long toc = System.currentTimeMillis();
+            // ya habia pasado alfa por lo que deberia sensibilizarse inmediatamente
+            assertTrue(toc - tic < tiempos[1][0]);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void esperando(){
+        // verifico que cuando hay una transicion esperando no se intente disparar otra
+        int[][]     plazas_entrada_transiciones = new int[][] {
+                //  T0 T1 T2
+                {0, 1, 1}, // P0
+                {1, 0, 1}, // P1
+        };
+        int[]       marcado_inicial             = new int[] { 1, 1 };
+
+        long[][]    tiempos                     = new long[][] {
+                //  alfa ,    beta
+                {200L  ,  MAX_TIME    }, // T0
+                {100L  ,  MAX_TIME    }, // T1
+                {100L  ,  MAX_TIME    }, // T2
+        };
+
+        VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
+                plazas_entrada_transiciones,
+                marcado_inicial,
+                tiempos
+        );
+
+        CountDownLatch latch = new CountDownLatch(3);
+
+        // si pregunto por todas distintas no debe haber problema
+        Thread[] threads = new Thread[3];
+        for (int i = 0; i < 3; i++) {
+            int finalI = i;
+            threads[i] = new Thread(()->{
+                try {
+                    assertTrue(vectorSensibilizadas.isSensibilizada(finalI));
+                } catch (TimeoutException e) {
+                    throw new RuntimeException(e);
+                }
+                latch.countDown();
+            });
+            threads[i].start();
+        }
+
+        boolean passed;
+        try {
+            passed = latch.await(10000L, java.util.concurrent.TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(passed);
+
+        // todo verificar si disparando la misma seguido solo una tiene que devolver true (para esto hace falta usar el mutex)
+
+
+    }
+}
