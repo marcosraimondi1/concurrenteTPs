@@ -54,24 +54,25 @@ public class Constants {
 
     };
 
-    public static double[][] TIEMPOS = new double[][] {
-            // alfa ,  beta
-            {  40.0 ,  -1.0  }, // T0
-            {  0.0  ,   0.0  }, // T1
-            {  0.0  ,   0.0  }, // T2
-            {  20.0 ,  -1.0  }, // T3
-            {  20.0 ,  -1.0  }, // T4
-            {  0.0  ,   0.0  }, // T5
-            {  0.0  ,   0.0  }, // T6
-            {  20.0 ,  -1.0  }, // T7
-            {  20.0 ,  -1.0  }, // T8
-            {  0.0  ,   0.0  }, // T9
-            {  0.0  ,   0.0  }, // T10
-            {  20.0 ,  -1.0  }, // T11
-            {  20.0 ,  -1.0  }, // T12
-            {  0.0  ,   0.0  }, // T13
-            {  10.0 ,  -1.0  }, // T14
-    };
+    public static long[][] TIEMPOS = new long[][] {
+            // alfa ,       beta
+            {    40L,    MAX_TIME }, // T0
+            {     0L,    MAX_TIME }, // T1
+            {     0L,    MAX_TIME }, // T2
+            {    20L,    MAX_TIME }, // T3
+            {    20L,    MAX_TIME }, // T4
+            {     0L,    MAX_TIME }, // T5
+            {     0L,    MAX_TIME }, // T6
+            {    20L,    MAX_TIME }, // T7
+            {    20L,    MAX_TIME }, // T8
+            {     0L,    MAX_TIME }, // T9
+            {     0L,    MAX_TIME }, // T10
+            {    20L,    MAX_TIME }, // T11
+            {    20L,    MAX_TIME }, // T12
+            {     0L,    MAX_TIME }, // T13
+            {    10L,    MAX_TIME }  // T14
+
+};
 
     public static int[][] CONFLICTOS_TP2 = new int[][] {
             { 1, 2         },
