@@ -77,7 +77,7 @@ class RdPTest {
         int[][] plaza_entrada = getMatrices(false);    // plazas a la entrada de la transición
         int[] marcado = getMarcadoInicial();                    // marcado inicial
         int[][] invariantes_plazas = getInvariantesPlazas();
-        int invariante_MAX = 50;
+        int invariante_MAX = 250;
         RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas,invariante_MAX);
 
         assertEquals(0,rdp.getCuentaInvariantes());
