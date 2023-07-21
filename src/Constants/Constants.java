@@ -1,6 +1,9 @@
 package Constants;
 
 public class Constants {
+
+    public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
+
     // Constantes de TP2 -----------------------------------------------------------------------------
 
     public static int[] MI_TP2 = new int[] { 0, 1, 0, 3, 0, 1, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 0, 1 }; // P0 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18
