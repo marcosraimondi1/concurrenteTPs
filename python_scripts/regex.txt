@@ -2,11 +2,36 @@ Busqueda de Invariantes:
 
 - grupos:   (?: ), define un grupo no capturador
             (?P<name> ), define un grupo capturador de nombre name
+
 - (?:T(?:\d+))*? : grupo no capturador que hace match con cero o mas 'Tx' donde x es numero de al menos un digito, para reemplazar a (.*?) que hace match con cualquier cosa
+
+- (?!1T): lookahead negativo, verifica que la secuencia siguiente no contenga '1T'.
+
+- (?P<T1>(?:T(?!1T)(?:\d+))*?): grupo capturador llamado T1, matchea con 0 o más Tx donde x puede ser cualquier numero de uno o mas digitos excepto 1 (Rechaza T1T3 pero acepta T12T3). 
 
 - regex:    T0(?P<T0>(?:T(?:\d+))*?)(?:(?:T1(?P<T1>(?:T(?:\d+))*?)T3)|(?:T2(?P<T2>(?:T(?:\d+))*?)T4))(?P<T3T4>(?:T(?:\d+))*?)(?:(?:T5(?P<T5>(?:T(?:\d+))*?)T7)|(?:T6(?P<T6>(?:T(?:\d+))*?)T8))(?P<T7T8>(?:T(?:\d+))*?)(?:(?:T10(?P<T10>(?:T(?:\d+))*?)T12)|(?:T9(?P<T9>(?:T(?:\d+))*?)T11))(?P<T11T12>(?:T(?:\d+))*?)T13(?P<T13>(?:T(?:\d+))*?)T14(?P<T14>(?:T(?:\d+))*?)
             Los grupos capturantes no tienen restricciones
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> lo siguiente no se capaz no hace falta
+            T0(?P<T0>(?:T(?:\d+))*?)(?:(?:T1(?P<T1>(?:T(?!1T)(?:\d+))*?)T3)|(?:T2(?P<T2>(?:T(?!2T)(?:\d+))*?)T4))(?P<T3T4>(?:T(?:\d+))*?)(?:(?:T5(?P<T5>(?:T(?!5T)(?:\d+))*?)T7)|(?:T6(?P<T6>(?:T(?!6T)(?:\d+))*?)T8))(?P<T7T8>(?:T(?:\d+))*?)(?:(?:T10(?P<T10>(?:T(?!(?:9T|10T|11T))(?:\d+))*?)T12)|(?:T9(?P<T9>(?:T(?!(?:9T|10T|12T))(?:\d+))*?)T11))(?P<T11T12>(?:T(?:\d+))*?)T13(?P<T13>(?:T(?!13T)(?:\d+))*?)T14(?P<T14>(?:T(?:\d+))*?)
+            Los grupos capturantes tienen restricciones
+
+- restricciones:  Despues de disparar una transicion, hay ciertas transiciones que quedan desensibilizadas siempre debido a algun recurso limitante
+            - T0: despues de T0 se puede disparar cualquier transicion
+            - T1: despues de T1 no se puede volver a disparar T1 hasta que no se dispare T3
+            - T2: despues de T2 no se puede volver a disparar T2 hasta que no se dispare T4
+            - T5: despues de T5 no se puede volver a disparar T5 hasta que no se dispare T7
+            - T6: despues de T6 no se puede volver a disparar T6 hasta que no se dispare T8
+            - T9: despues de T9 no se puede disparar T9, T10 ni T12 hasta que no se dispare T11
+            - T10: despues de T9 no se puede disparar T9, T10 ni T11 hasta que no se dispare T12
+            - T13: despues de T13 no se puede volver a disparar T13 hasta que no se dispare T14
+            - T3, T4, T7, T8, T12, T14: despues de alguna de estas transiciones se puede disparar cualquier transicion. No se pueden disparar dos veces consecutivas.
+
+            Para verificar que se cumplan estas condicines en la secuencia a verificar, se agrega en los grupos capturadores los llamados lookahead negativos (?! xT) donde x es el numero de la transicion que no esta permitada. Estos verifican que ciertos caracteres no aparezcan en la seccion siguiente.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- replace: \\g<T0>\\g<T1>\\g<T2>\\g<T3T4>\\g<T5>\\g<T6>\\g<T7T8>\\g<T9>\\g<T10>\\g<T11T12>\\g<T13>\\g<T14>
 Invariantes:
 
 T0T1T3T5T7T10T12T13T14
