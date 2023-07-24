@@ -44,7 +44,7 @@ class MonitorTest {
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
-        Monitor monitor = new Monitor(rdp,politica);
+        Monitor monitor = Monitor.getMonitor(rdp,politica);
 
         //------------------------------Test-1--------------------------------------------------------//
         // Testea que el hilo tome el mutex y no se quede esperando
@@ -126,7 +126,7 @@ class MonitorTest {
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
-        Monitor monitor = new Monitor(rdp,politica);
+        Monitor monitor = Monitor.getMonitor(rdp,politica);
 
         // Declaro las secuencias de disparo para los hilos
         int[] secuencia1 = {6,7,8,9}; //Caso 1 segmento S_e implica plazas P9,P10,P11

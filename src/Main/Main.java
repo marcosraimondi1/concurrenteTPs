@@ -28,7 +28,7 @@ public class Main {
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
-        Monitor monitor = new Monitor(rdp,politica2);
+        Monitor monitor = Monitor.getMonitor(rdp,politica2);
         // Declaro las secuencias de disparo para los hilos
         /*
         int[] secuencia1 = {0};

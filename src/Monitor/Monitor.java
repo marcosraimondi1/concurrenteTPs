@@ -1,27 +1,40 @@
 package Monitor;
 
-
-
-import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 import Politica.Politica;
 import RdP.RdP;
 import Cola.Colas;
 
-
+/**
+ * Clase que representa el monitor de concurrencia de una Red De Petri
+ * Utiliza el patron Singleton
+ * @see RdP
+ */
 public class Monitor {
+    private static Monitor monitor = null;
     private final Semaphore mutex;
     private final Politica politica;
     private final RdP red;
     private final Colas colas;
     private boolean k;
-    public Monitor(RdP red, Politica politica){
+    private Monitor(RdP red, Politica politica){
         mutex           = new Semaphore(1);
         this.politica   = politica;
         this.red        = red;
         this.colas      = new Colas(red.getCantidadTransiciones());
         k = false;
+    }
+
+    public static Monitor getMonitor(RdP red, Politica politica){
+        if(monitor == null){
+            monitor = new Monitor(red, politica);
+        }
+        return monitor;
+    }
+
+    public static Monitor getMonitor(){
+        return monitor;
     }
 
     /**
@@ -130,5 +143,4 @@ public class Monitor {
     public Semaphore getMutex() {
         return mutex;
     }
-
 }
