@@ -1,5 +1,6 @@
 package RdP;
 
+import Monitor.Monitor;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
@@ -75,10 +76,10 @@ public class VectorSensibilizadas {
         if (ventana) {
 
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
-
+            System.out.println("Esperando: "+esperando +" Thread: "+Thread.currentThread().getName());
             if (!esperando) {
                 // nadie durmiendo, esta sensibilizada
-                // todo : sensibilizadoConTiempo.setTimeStamp(transicion); // ver si es necesario
+//                sensibilizadoConTiempo.setTimeStamp(transicion); // ver si es necesario
                 return true;
             }
             // esta sensibilizada pero hay alguien durmiendo
@@ -91,7 +92,8 @@ public class VectorSensibilizadas {
             if (antes) {
                 // si es antes libero el mutex y me voy a dormir
                 sensibilizadoConTiempo.setEsperando(transicion);    // aviso que esta esperando
-                // todo: Monitor.getMutex.release();
+                System.out.println("A esperar: "+transicion +" Thread: "+Thread.currentThread().getName());
+                Monitor.getMonitor().getMutex().release();
 
                 long tiempoRestante = sensibilizadoConTiempo.getTiempoRestante(transicion);
                 try {
@@ -101,7 +103,12 @@ public class VectorSensibilizadas {
                     throw new RuntimeException(e);
                 }
 
-                // todo: Monitor.getMutex.acquire();
+                try {
+                    Monitor.getMonitor().getMutex().acquire();
+                    System.out.println("Fin Espera: "+transicion +" Thread: "+Thread.currentThread().getName());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
                 sensibilizadoConTiempo.resetEsperando(transicion);  // aviso que ya no esta esperando
 

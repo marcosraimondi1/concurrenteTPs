@@ -1,9 +1,11 @@
 package RdP;
 
+import Monitor.Monitor;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static Constants.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -262,17 +264,29 @@ class VectorSensibilizadasTest {
         // verifico que cuando hay una transicion esperando no se intente disparar otra
         int[][]     plazas_entrada_transiciones = new int[][] {
                 //  T0 T1 T2
-                {0, 1, 1}, // P0
-                {1, 0, 1}, // P1
+                    {0, 1, 1}, // P0
+                    {1, 0, 1}, // P1
         };
+
+        int[][]     plazas_salida_transiciones = new int[][] {
+                //  T0 T1 T2
+                    {1, 0, 0}, // P0
+                    {0, 1, 0}, // P1
+        };
+
         int[]       marcado_inicial             = new int[] { 1, 1 };
 
         long[][]    tiempos                     = new long[][] {
                 //  alfa ,    beta
-                {200L  ,  MAX_TIME    }, // T0
-                {100L  ,  MAX_TIME    }, // T1
-                {100L  ,  MAX_TIME    }, // T2
+                {1000L  ,  MAX_TIME    }, // T0
+                {1000L  ,  MAX_TIME    }, // T1
+                {2000L  ,  MAX_TIME    }, // T2
         };
+
+        Monitor monitor = Monitor.getMonitor(
+                new RdP(plazas_salida_transiciones, plazas_entrada_transiciones, marcado_inicial, new int[] {1,2}, new int [][] {{1,1,2}}, tiempos, 500),
+                new Politica.Politica()
+        );
 
         VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
@@ -288,7 +302,13 @@ class VectorSensibilizadasTest {
             int finalI = i;
             threads[i] = new Thread(()->{
                 try {
+                    try {
+                        Monitor.getMonitor().getMutex().acquire();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     assertTrue(vectorSensibilizadas.isSensibilizada(finalI));
+                    Monitor.getMonitor().getMutex().release();
                 } catch (TimeoutException e) {
                     throw new RuntimeException(e);
                 }
@@ -299,15 +319,62 @@ class VectorSensibilizadasTest {
 
         boolean passed;
         try {
-            passed = latch.await(10000L, java.util.concurrent.TimeUnit.MILLISECONDS);
+            passed = latch.await(600000L, java.util.concurrent.TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         assertTrue(passed);
 
-        // todo verificar si disparando la misma seguido solo una tiene que devolver true (para esto hace falta usar el mutex)
+        CountDownLatch latch2 = new CountDownLatch(3);
 
+        // disparando al msima seguido solo una tiene q devolveer true
+        System.out.println("PARTE 2 -----------------");
+        VectorSensibilizadas vectorSensibilizadas2 = new VectorSensibilizadas(
+                plazas_entrada_transiciones,
+                marcado_inicial,
+                tiempos
+        );
 
+        threads = new Thread[3];
+        AtomicInteger count = new AtomicInteger();
+
+        for (int i = 0; i < 3; i++) {
+            threads[i] = new Thread(()->{
+                try {
+                    try {
+                        Monitor.getMonitor().getMutex().acquire();
+
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Verificando "+Thread.currentThread().getName());
+                   if(vectorSensibilizadas2.isSensibilizada(0))
+                       count.getAndIncrement();
+                    Monitor.getMonitor().getMutex().release();
+
+                } catch (TimeoutException e) {
+                    throw new RuntimeException(e);
+                }
+                latch2.countDown();
+            });
+            threads[i].start();
+
+        }
+
+        try {
+            passed = latch2.await(10000L, java.util.concurrent.TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(passed);
+        assertEquals(1, count.get());
     }
 }
