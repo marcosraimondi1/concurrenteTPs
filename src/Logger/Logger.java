@@ -56,7 +56,6 @@ public class Logger {
             return false;
         }
 
-        System.out.println(out);
         System.out.println("LOG VALIDATION SUCCESS");
         return true;
     }
