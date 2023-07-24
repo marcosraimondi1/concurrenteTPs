@@ -18,7 +18,6 @@ public class RdP {
     private final int cantidad_plazas;                      // cantidad de plazas de la RdP
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     private final int[] marcado_actual;                     // estado de la RdP
-    private final int[] marcado_inicial;                    // estado inicial de la RdP
     private final int invariantes_MAX;
     private int cuenta_invariantes = 0;
     private final int[] trans_invariantes;
@@ -28,6 +27,7 @@ public class RdP {
     private final ReadWriteLock lock;
     public final Logger logger = new Logger(".\\data\\log.txt");
     private final VectorSensibilizadas vectorSensibilizadas;
+    private final int[] contadores; // cuenta la cantidad de veces que se disparo cada transicion
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
@@ -39,14 +39,12 @@ public class RdP {
         this.trans_invariantes = trans_invariantes;
         this.invariantes_MAX = invariantes_MAX;
         this.apagar = false;
-        // guardo copia del marcado inicial
-        this.marcado_inicial = new int[cantidad_plazas];
-        for (int i = 0; i < cantidad_plazas; i++) {
-            this.marcado_inicial[i] = marcado_inicial[i];
-        }
+
         this.invariantes_plazas = invariantes_plazas;
         this.lock = new ReentrantReadWriteLock(); //creo lock para el Apagado
         vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
+        contadores = new int[cantidad_transiciones];
+        Arrays.fill(contadores, 0);
     }
 
     /**
@@ -79,6 +77,8 @@ public class RdP {
         // log transicion
         String trans = "T"+ transicion;
         logger.log(trans);
+
+        contadores[transicion]++;
 
         verificarInvarianteTransicion(transicion);
 
@@ -140,22 +140,6 @@ public class RdP {
         return vectorSensibilizadas.getSensibilizadas();
     }
 
-    /**
-     * Verifica si una transicion esta sensibilizada
-     * @param transicion transicion a verificar
-     * @return  true si esta sensibilizada, false si no
-     */
-    private boolean isSensibilizada(int transicion) {
-
-        for (int i = 0; i < cantidad_plazas; i++) {
-            // verifico si la plaza i tiene los tokens necesarios en el marcada actual
-            if (marcado_actual[i] < plazas_entrada_transiciones[i][transicion]) {
-               return false;
-            }
-        }
-        return true;
-    }
-
     public boolean getApagar() {
         lock.readLock().lock();
         boolean aux = apagar;
@@ -179,5 +163,9 @@ public class RdP {
 
     public int getCuentaInvariantes(){
         return cuenta_invariantes;
+    }
+
+    public int[] getContadores() {
+        return contadores;
     }
 }

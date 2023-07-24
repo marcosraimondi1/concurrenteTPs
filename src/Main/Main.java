@@ -3,7 +3,6 @@ package Main;
 import Monitor.Monitor;
 import Politica.*;
 import RdP.RdP;
-import Constants.*;
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -73,6 +72,9 @@ public class Main {
             System.out.println("Cantidad De Invariantes Completados : "+rdp.getCuentaInvariantes());
             System.out.println("Marcado Final: ");
             System.out.println(Arrays.toString(rdp.getMarcadoActual()));
+
+            System.out.println("Contadores de transiciones: ");
+            System.out.println(Arrays.toString(rdp.getContadores()));
         });
 
 
