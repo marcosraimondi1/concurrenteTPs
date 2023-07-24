@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class VectorSensibilizadas {
-    boolean[] sensibilizadas;
-    boolean[] sensibilizadasAnterior;
+    private final boolean[] sensibilizadas;
+    private final boolean[] sensibilizadasAnterior;
 
     private final int[][] plazas_entrada_transiciones;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
 
@@ -76,10 +76,9 @@ public class VectorSensibilizadas {
         if (ventana) {
 
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
-            System.out.println("Esperando: "+esperando +" Thread: "+Thread.currentThread().getName());
             if (!esperando) {
                 // nadie durmiendo, esta sensibilizada
-//                sensibilizadoConTiempo.setTimeStamp(transicion); // ver si es necesario
+                sensibilizadoConTiempo.setTimeStamp(transicion);
                 return true;
             }
             // esta sensibilizada pero hay alguien durmiendo
@@ -92,7 +91,6 @@ public class VectorSensibilizadas {
             if (antes) {
                 // si es antes libero el mutex y me voy a dormir
                 sensibilizadoConTiempo.setEsperando(transicion);    // aviso que esta esperando
-                System.out.println("A esperar: "+transicion +" Thread: "+Thread.currentThread().getName());
                 Monitor.getMonitor().getMutex().release();
 
                 long tiempoRestante = sensibilizadoConTiempo.getTiempoRestante(transicion);
@@ -105,7 +103,6 @@ public class VectorSensibilizadas {
 
                 try {
                     Monitor.getMonitor().getMutex().acquire();
-                    System.out.println("Fin Espera: "+transicion +" Thread: "+Thread.currentThread().getName());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -127,5 +124,9 @@ public class VectorSensibilizadas {
                 throw new TimeoutException("La transicion " + transicion + " se paso del tiempo maximo y no se puede disparar");
             }
         }
+    }
+
+    public boolean[] getSensibilizadas (){
+        return sensibilizadas;
     }
 }

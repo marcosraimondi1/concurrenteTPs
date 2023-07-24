@@ -19,7 +19,6 @@ public class RdP {
     private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
     private final int[] marcado_actual;                     // estado de la RdP
     private final int[] marcado_inicial;                    // estado inicial de la RdP
-    private boolean cortarEjecucion;
     private final int invariantes_MAX;
     private int cuenta_invariantes = 0;
     private final int[] trans_invariantes;
@@ -40,7 +39,6 @@ public class RdP {
         this.trans_invariantes = trans_invariantes;
         this.invariantes_MAX = invariantes_MAX;
         this.apagar = false;
-        this.cortarEjecucion = false;
         // guardo copia del marcado inicial
         this.marcado_inicial = new int[cantidad_plazas];
         for (int i = 0; i < cantidad_plazas; i++) {
@@ -57,11 +55,11 @@ public class RdP {
      * @return true si se pudo disparar, false si no
      */
     public boolean disparar(int transicion) {
-        if(CortarEjecucion()){
+        if(cuenta_invariantes >= invariantes_MAX){
             setApagar();
             return false;
         }
-        //System.out.println("T"+transicion);
+
         try {
             if (!vectorSensibilizadas.isSensibilizada(transicion)) {
                 return false;
@@ -77,6 +75,10 @@ public class RdP {
             marcado_actual[i] -= plazas_entrada_transiciones[i][transicion];
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
         }
+
+        // log transicion
+        String trans = "T"+ transicion;
+        logger.log(trans);
 
         verificarInvarianteTransicion(transicion);
 
@@ -120,23 +122,14 @@ public class RdP {
     }
 
     private void verificarInvarianteTransicion(int transicion) {
-        boolean es_invariante = false;
-        for (int inv : trans_invariantes)
-            if (inv == transicion ){
-                cuenta_invariantes ++;
-                es_invariante = true;
-                break;
-            }
+        for (int inv : trans_invariantes) {
+            if (inv != transicion)
+                continue;
 
-        String invariante = "T"+ transicion;
-
-        if (es_invariante){
-            //System.out.println(Arrays.toString(marcado_actual));
-            if(cuenta_invariantes == invariantes_MAX){
-                cortarEjecucion = true;
-            }
+            cuenta_invariantes++;
+            System.out.println(cuenta_invariantes);
+            break;
         }
-        logger.log(invariante);
     }
 
     /**
@@ -144,14 +137,7 @@ public class RdP {
      * @return transiciones sensibilizadas
      */
     public boolean[] getSensibilizadas (){
-        boolean[] sensibilizadas = new boolean[cantidad_transiciones];
-        
-        for (int i = 0; i < cantidad_transiciones; i++) {
-            // por cada transicion verifico si esta sensibilizada
-            sensibilizadas[i] = isSensibilizada(i);
-        }
-
-        return sensibilizadas;
+        return vectorSensibilizadas.getSensibilizadas();
     }
 
     /**
@@ -181,9 +167,6 @@ public class RdP {
         this.apagar = true;
         lock.writeLock().unlock();
     }
-    public boolean CortarEjecucion() {
-        return (cortarEjecucion );
-    } //&& Arrays.equals(marcado_actual,marcado_inicial)
 
     public int[] getMarcadoActual() {
         return marcado_actual;
