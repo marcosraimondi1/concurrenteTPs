@@ -37,12 +37,13 @@ public class Logger {
             throw new RuntimeException(e);
         }
 
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(log);
-        String out = matcher.replaceAll(replace);
+        Pattern pattern = Pattern.compile(regex);   // creo el objeto de la regex
+        Matcher matcher = pattern.matcher(log);     // busco los patrones en el log
+        String out = matcher.replaceAll(replace);   // reemplazo los grupos
         String prev = "";
 
         while (true){
+            // reemplazo y busco con la regex hasta que no se pueda mas
             matcher = pattern.matcher(out);
             out = matcher.replaceAll(replace);
             if (Objects.equals(out,prev))
@@ -50,6 +51,7 @@ public class Logger {
             prev = out;
         }
 
+        // verifico si sobraron transiciones
         if (!Objects.equals(out, "")){
             System.out.println("LOG VALIDATION FAILED");
             System.out.println(out);
