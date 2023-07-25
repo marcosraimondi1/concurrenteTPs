@@ -6,10 +6,11 @@ public class Constants {
 
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 
-    public static int INVARIANTES_MAX = 200;
+    public static int INVARIANTES_MAX = 100;
 
     // Constantes de TP2 -----------------------------------------------------------------------------
-    public static boolean POLITICA1 = false;
+    public static boolean POLITICA1 = true;
+    public static boolean POLITICA2 = false;
 
     public static long[][] TIEMPOS = new long[][] {
             // alfa ,       beta
@@ -86,7 +87,7 @@ public class Constants {
 
     public static int [] T_INV_TP2 = new int[] {14};
 
-    /*
+    /*  INVARIANTES DE PLAZA TP
         0. M(P0) + M(P2) + M(P4) + M(P6) + M(P8) + M(P10) + M(P12) + M(P13) + M(P15) + M(P16) + M(P17) = N (Numero de tokens en P0) ESTA MAL SI CONSIDERAMOS TRANSICIÓN FUENTE
         1. M(P1) + M(P2) = 1
         2. M(P4) + M(P5) = 1
@@ -163,7 +164,7 @@ public class Constants {
             { 0, MAX_TIME},
     };
 
-    /*
+    /*      INVARIANTES DE PLAZA PAPER
             1. M(P1) + M(P2) + M(P3) + M(P4) + M(P5) = 2
             2. M(P10) + M(P12) = 1
             3. M(P11) + M(P13) + M(P2) + M(P5) + M(P9) = 1

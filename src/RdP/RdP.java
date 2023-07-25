@@ -54,6 +54,7 @@ public class RdP {
      * @return true si se pudo disparar, false si no
      */
     public boolean disparar(int transicion) {
+
         if(cuenta_invariantes >= invariantes_MAX){
             setApagar();
             return false;
@@ -128,7 +129,7 @@ public class RdP {
                 continue;
 
             cuenta_invariantes++;
-            System.out.println(cuenta_invariantes);
+            //System.out.println(cuenta_invariantes);
             break;
         }
     }

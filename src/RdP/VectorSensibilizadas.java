@@ -64,10 +64,10 @@ public class VectorSensibilizadas {
             return false;
         }
 
-         if (sensibilizadoConTiempo.isInmediata(transicion)) {
+        if (sensibilizadoConTiempo.isInmediata(transicion)) {
              // si es inmediata, esta sensibilizada solo con los tokens
              return true;
-         }
+        }
 
         // verifico la ventana de tiempo
         boolean ventana = sensibilizadoConTiempo.testVentana(transicion);
@@ -96,7 +96,7 @@ public class VectorSensibilizadas {
                 try {
                     Thread.sleep(tiempoRestante);
                 } catch (InterruptedException e) {
-                    // no deberia ser interrumpido creo
+                    // no deberia ser interrumpido
                     throw new RuntimeException(e);
                 }
 
