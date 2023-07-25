@@ -10,8 +10,6 @@ public class Politica2 extends Politica {
 
     private final int[][] conflictos;
     private final boolean[] flags;
-    private int contadorT9 = 0;
-    private int contadorT10 = 0;
 
     /**
      * Constructor de la clase Politica2,
@@ -52,12 +50,9 @@ public class Politica2 extends Politica {
                 // politica 80% hacia la izquierda
                 boolean trans_izquierda = definirProbabilidad();
                 if(trans_izquierda){
-                    contadorT9++;
                     return 9;
-                }else {
-                    contadorT10++;
-                    return 10;
                 }
+                return 10;
             }
 
             // aplico politica 50% para el resto de los conflictos
@@ -81,18 +76,9 @@ public class Politica2 extends Politica {
         //System.out.println(numeroAleatorio);
 
         // Compara el número aleatorio con la probabilidad asociada
-        boolean dispararT9 = numeroAleatorio > probabilidadDerecha;
+        boolean izquierda = numeroAleatorio > probabilidadDerecha;
 
-        return dispararT9;
+        return izquierda;
 
     }
-
-    public int getContadorT9() {
-        return contadorT9;
-    }
-
-    public int getContadorT10() {
-        return contadorT10;
-    }
-
 }

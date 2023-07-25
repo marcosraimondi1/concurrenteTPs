@@ -2,10 +2,34 @@ package Constants;
 
 public class Constants {
 
+    public static String INV_LOG_PATH = ".\\data\\log.txt";
+
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 
-    // Constantes de TP2 -----------------------------------------------------------------------------
+    public static int INVARIANTES_MAX = 200;
 
+    // Constantes de TP2 -----------------------------------------------------------------------------
+    public static boolean POLITICA1 = false;
+
+    public static long[][] TIEMPOS = new long[][] {
+            // alfa ,       beta
+            {    10L,    MAX_TIME }, // T0
+            {     0L,    MAX_TIME }, // T1
+            {     0L,    MAX_TIME }, // T2
+            {    20L,    MAX_TIME }, // T3
+            {    20L,    MAX_TIME }, // T4
+            {     0L,    MAX_TIME }, // T5
+            {     0L,    MAX_TIME }, // T6
+            {    20L,    MAX_TIME }, // T7
+            {    20L,    MAX_TIME }, // T8
+            {     0L,    MAX_TIME }, // T9
+            {     0L,    MAX_TIME }, // T10
+            {    20L,    MAX_TIME }, // T11
+            {    20L,    MAX_TIME }, // T12
+            {     0L,    MAX_TIME }, // T13
+            {    10L,    MAX_TIME }  // T14
+
+    };
     public static int[] MI_TP2 = new int[] { 0, 1, 0, 3, 0, 1, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 0, 1 }; // P0 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18
     public static int[][] W_MENOS_TP2 = new int[][] {
             // T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14
@@ -53,26 +77,6 @@ public class Constants {
             {   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  1 }, // P18
 
     };
-
-    public static long[][] TIEMPOS = new long[][] {
-            // alfa ,       beta
-            {    80L,    MAX_TIME }, // T0
-            {     0L,    MAX_TIME }, // T1
-            {     0L,    MAX_TIME }, // T2
-            {    20L,    MAX_TIME }, // T3
-            {    20L,    MAX_TIME }, // T4
-            {     0L,    MAX_TIME }, // T5
-            {     0L,    MAX_TIME }, // T6
-            {    20L,    MAX_TIME }, // T7
-            {    20L,    MAX_TIME }, // T8
-            {     0L,    MAX_TIME }, // T9
-            {     0L,    MAX_TIME }, // T10
-            {    20L,    MAX_TIME }, // T11
-            {    20L,    MAX_TIME }, // T12
-            {     0L,    MAX_TIME }, // T13
-            {    10L,    MAX_TIME }  // T14
-
-};
 
     public static int[][] CONFLICTOS_TP2 = new int[][] {
             { 1, 2         },

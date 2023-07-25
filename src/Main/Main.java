@@ -12,62 +12,65 @@ import static Constants.Constants.*;
 public class Main {
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-        int[][]     conflictos  = CONFLICTOS_TP2;
-        Politica    politica1   = new Politica1(conflictos);
-        Politica2   politica2   = new Politica2(conflictos);
+        boolean     usarPolitica1   = POLITICA1;
+
+        Politica    politica1   = new Politica1(CONFLICTOS_TP2);
+        Politica    politica2   = new Politica2(CONFLICTOS_TP2);
+        Politica    politica    = usarPolitica1 ? politica1 : politica2;
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
-        int[][]     plaza_salida        = W_MAS_TP2     ; // plazas a la salida de la transición (Matriz)
-        int[][]     plaza_entrada       = W_MENOS_TP2   ; // plazas a la entrada de la transición
-        int[]       marcado             = MI_TP2        ; // marcado inicial
-        long[][]    tiempos             = TIEMPOS       ;
-        int         invariantes_MAX     = 200           ;
-        int[]       trans_invariantes   = T_INV_TP2     ; // transiciones para contar invariantes (T14 marca una vuelta)
-        int[][]     invariantes_plazas  = P_INV_TP2     ;
+        int[][]     plaza_salida        = W_MAS_TP2         ; // plazas a la salida de la transición (Matriz)
+        int[][]     plaza_entrada       = W_MENOS_TP2       ; // plazas a la entrada de la transición
+        int[]       marcado             = MI_TP2            ; // marcado inicial
+        long[][]    tiempos             = TIEMPOS           ;
+        int         invariantes_MAX     = INVARIANTES_MAX   ;
+        int[]       trans_invariantes   = T_INV_TP2         ; // transiciones para contar invariantes (T14 marca una vuelta)
+        int[][]     invariantes_plazas  = P_INV_TP2         ;
 
         RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
-        Monitor monitor = Monitor.getMonitor(rdp,politica2);
+        Monitor monitor = Monitor.getMonitor(rdp,politica);
 
         // Declaro las secuencias de disparo para los hilos
-        /*
-        int[] secuencia1 = {0};
-        int[] secuencia2 = {1,3};
-        int[] secuencia3 = {2,4};
-        int[] secuencia4 = {5,7};
-        int[] secuencia5 = {6,8};
-        int[] secuencia6 = {9,11};
-        int[] secuencia7 = {10,12};
-        int[] secuencia8 = {13,14};
-        */
+        int[] secuencia1    = {0        };
+        int[] secuencia2    = {1,   3   };
+        int[] secuencia3    = {2,   4   };
+        int[] secuencia4    = {5,   7   };
+        int[] secuencia5    = {6,   8   };
+        int[] secuencia6    = {11       };
+        int[] secuencia7    = {12       };
+        int[] secuencia8    = {13   ,14 };
 
-        // Declaro las secuencias de disparo para los hilos
-        int[] secuencia1    = {0}       ;
-        int[] secuencia2    = {1}       ;
-        int[] secuencia3    = {3}       ;
-        int[] secuencia4    = {2}       ;
-        int[] secuencia5    = {4}       ;
-        int[] secuencia6    = {5}       ;
-        int[] secuencia7    = {7}       ;
-        int[] secuencia8    = {6}       ;
-        int[] secuencia9    = {8}       ;
-        int[] secuencia10   = {9}       ; // Hilo 9
-        int[] secuencia11   = {11}      ;
-        int[] secuencia12   = {10}      ; // Hilo 11
-        int[] secuencia13   = {12}      ;
-        int[] secuencia14   = {13,14}   ;
+        // poner hilos de  dicados a 9 y 10 para que funcione bien la politica2
+        int[] secuencia9    = {9};
+        int[] secuencia10   = {10};
 
-        int[][] secuencias  = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5,secuencia6,secuencia7,secuencia8,secuencia9,secuencia10,secuencia11,secuencia12,secuencia13,secuencia14};
+
+//        Declaro las secuencias de disparo para los hilos
+//        int[] secuencia1    = {0}       ;
+//        int[] secuencia2    = {1}       ;
+//        int[] secuencia3    = {3}       ;
+//        int[] secuencia4    = {2}       ;
+//        int[] secuencia5    = {4}       ;
+//        int[] secuencia6    = {5}       ;
+//        int[] secuencia7    = {7}       ;
+//        int[] secuencia8    = {6}       ;
+//        int[] secuencia9    = {8}       ;
+//        int[] secuencia10   = {9}       ; // Hilo 9
+//        int[] secuencia11   = {11}      ;
+//        int[] secuencia12   = {10}      ; // Hilo 11
+//        int[] secuencia13   = {12}      ;
+//        int[] secuencia14   = {13,14}   ;
+
+        int[][] secuencias  = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5,secuencia6,secuencia7,secuencia8,secuencia9,secuencia10};//,secuencia11,secuencia12,secuencia13,secuencia14};
 
         Thread [] threads   = new Thread[secuencias.length];
 
         CyclicBarrier cyclic = new CyclicBarrier( threads.length + 1,() -> {
             // al terminar el programa verifico que se cumplan los invariantes
-            System.out.println("Verificando invariantes");
-            rdp.logger.validateLog(REGEX,REPLACE);
 
             System.out.println("Cantidad De Invariantes Completados : "+rdp.getCuentaInvariantes());
             System.out.println("Marcado Final: ");
@@ -75,6 +78,8 @@ public class Main {
 
             System.out.println("Contadores de transiciones: ");
             System.out.println(Arrays.toString(rdp.getContadores()));
+
+            rdp.logger.validateLog(REGEX,REPLACE);
         });
 
 
@@ -97,6 +102,12 @@ public class Main {
                         }else {
                             monitor.dispararTransicion(k);
                             contadorDisparos++;
+                            if (finalI == 0 && contadorDisparos >= invariantes_MAX)
+                            {
+                                // la transicion 0 se disparo 200 veces
+                                condicion = false;
+                                break;
+                            }
                         }
 
                     }
@@ -104,7 +115,7 @@ public class Main {
 
 
                 }
-                System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió y disparo: "+contadorDisparos+" Transiciones");
+                System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+contadorDisparos+" Transiciones de la secuencia "+ finalI);
                 try {
                     cyclic.await();
                 } catch (InterruptedException | BrokenBarrierException e) {

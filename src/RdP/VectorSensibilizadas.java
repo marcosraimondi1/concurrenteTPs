@@ -5,11 +5,10 @@ import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class VectorSensibilizadas {
-    private final boolean[] sensibilizadas;
-    private final boolean[] sensibilizadasAnterior;
+    private final boolean[] sensibilizadas              ;
+    private final boolean[] sensibilizadasAnterior      ;
 
-    private final int[][] plazas_entrada_transiciones;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
-
+    private final int[][]   plazas_entrada_transiciones ;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
     private final SensibilizadoConTiempo sensibilizadoConTiempo;
 
     public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {

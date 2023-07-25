@@ -9,25 +9,26 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import static Constants.Constants.INV_LOG_PATH;
+
 /**
  * Clase que representa una Red de Petri
  */
 public class RdP {
-    private final int[][] plazas_salida_transiciones;      // matriz de incidencia + (denota las plazas a la salida de una transición)
-    private final int[][] plazas_entrada_transiciones;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
-    private final int cantidad_plazas;                      // cantidad de plazas de la RdP
-    private final int cantidad_transiciones;                // cantidad de transiciones de la RdP
-    private final int[] marcado_actual;                     // estado de la RdP
-    private final int invariantes_MAX;
-    private int cuenta_invariantes = 0;
-    private final int[] trans_invariantes;
-    private final int[][] invariantes_plazas;
-    //private String invariante_real = "";
-    private boolean apagar;
-    private final ReadWriteLock lock;
-    public final Logger logger = new Logger(".\\data\\log.txt");
-    private final VectorSensibilizadas vectorSensibilizadas;
-    private final int[] contadores; // cuenta la cantidad de veces que se disparo cada transicion
+    private final int[][]   plazas_salida_transiciones  ;   // matriz de incidencia + (denota las plazas a la salida de una transición)
+    private final int[][]   plazas_entrada_transiciones ;   // matriz de incidencia - (denota las plazas a la entrada de una transición)
+    private final int       cantidad_plazas             ;   // cantidad de plazas de la RdP
+    private final int       cantidad_transiciones       ;   // cantidad de transiciones de la RdP
+    private final int[]     marcado_actual              ;   // estado de la RdP
+    private final int       invariantes_MAX             ;
+    private int             cuenta_invariantes = 0      ;
+    private final int[]     trans_invariantes           ;
+    private final int[][]   invariantes_plazas          ;
+    private boolean         apagar                      ;
+    public final Logger     logger = new Logger(INV_LOG_PATH)   ;
+    private final int[]     contadores                          ;   // cuenta la cantidad de veces que se disparo cada transicion
+    private final ReadWriteLock         lock                    ;
+    private final VectorSensibilizadas  vectorSensibilizadas    ;
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
         // Las columnas de la matriz de incidencia son transiciones
         // Las filas de la matriz de incidencia son plazas
