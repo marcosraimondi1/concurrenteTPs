@@ -95,6 +95,7 @@ class MonitorTest {
     }
     @Test
     void invarianteDeTransicionCheck() {
+        // todo : este test esta fallando
         //------------------------------Inicio Politica----------------------------------------------//
 
         PoliticaTest politica = new PoliticaTest();
