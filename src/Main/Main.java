@@ -6,7 +6,6 @@ import RdP.RdP;
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
 
 import static Constants.Constants.*;
 
@@ -35,46 +34,9 @@ public class Main {
 
         Monitor monitor = Monitor.getMonitor(rdp,politica);
 
-        // Declaro las secuencias de disparo para los hilos segun el algoritmo del paper
-        int[] secuencia0    = {0        };
-        int[] secuencia1    = {1,   3   };
-        int[] secuencia2    = {2,   4   };
-        int[] secuencia3    = {5,   7   };
-        int[] secuencia4    = {6,   8   };
-        int[] secuencia5    = {9,   11  };
-        int[] secuencia6    = {10,  12  };
-        int[] secuencia7    = {13,  14  };
+        //------------------------------Inicio Hilos-------------------------------------------------//
 
-        // Declaro las secuencias de disparo para los hilos implementando un hilo para T9 Y T10
-        // poner hilos de  dicados a 9 y 10 para que funcione bien la politica2
-        /*int[] secuencia0    = {0        };
-        int[] secuencia1    = {1,   3   };
-        int[] secuencia2    = {2,   4   };
-        int[] secuencia3    = {5,   7   };
-        int[] secuencia4    = {6,   8   };
-        int[] secuencia5    = {11       };
-        int[] secuencia6    = {12       };
-        int[] secuencia7    = {13,  14  };
-        int[] secuencia8    = {9        };
-        int[] secuencia9    = {10       };*/
-
-        //Declaro las secuencias de disparo implementando un hilo para el disparo de transiciónes con conflicto
-        /*int[] secuencia0    = {0}       ;
-        int[] secuencia1    = {1}       ;
-        int[] secuencia2    = {3}       ;
-        int[] secuencia3    = {2}       ;
-        int[] secuencia4    = {4}       ;
-        int[] secuencia5    = {5}       ;
-        int[] secuencia6    = {7}       ;
-        int[] secuencia7    = {6}       ;
-        int[] secuencia8    = {8}       ;
-        int[] secuencia9    = {9}       ;
-        int[] secuencia10   = {10}      ;
-        int[] secuencia11   = {11}      ;
-        int[] secuencia12   = {12}      ;
-        int[] secuencia13   = {13,14}   ;*/
-
-        int[][] secuencias  = {secuencia0,secuencia1,secuencia2,secuencia3,secuencia4,secuencia5,secuencia6,secuencia7};//,secuencia8,secuencia9,secuencia10,secuencia11,secuencia12,secuencia13};
+        int[][] secuencias = GET_SECUENCIAS_TP2(); // secuencias de disparo para cada hilo
 
         Thread [] threads   = new Thread[secuencias.length];
 
@@ -151,6 +113,7 @@ public class Main {
         }
 
     }
+
 
 }
 

@@ -12,6 +12,11 @@ public class Constants {
     public static boolean POLITICA1 = true;
     public static boolean POLITICA2 = false;
 
+    public static int[][] GET_SECUENCIAS_TP2(){
+        return getSecuencias1(); // hilos del paper
+//        return getSecuencias2(); // se agrega para T9 y T10
+//        return getSecuencias3(); // se agrega para cada transicion en conflicto
+    }
     public static long[][] TIEMPOS = new long[][] {
             // alfa ,       beta
             {    10L,    MAX_TIME }, // T0
@@ -112,6 +117,68 @@ public class Constants {
 
     public static String REGEX = "T0(?<T0>(?:T(?:\\d+))*?)(?:(?:T1(?<T1>(?:T(?:\\d+))*?)T3)|(?:T2(?<T2>(?:T(?:\\d+))*?)T4))(?<T3T4>(?:T(?:\\d+))*?)(?:(?:T5(?<T5>(?:T(?:\\d+))*?)T7)|(?:T6(?<T6>(?:T(?:\\d+))*?)T8))(?<T7T8>(?:T(?:\\d+))*?)(?:(?:T10(?<T10>(?:T(?:\\d+))*?)T12)|(?:T9(?<T9>(?:T(?:\\d+))*?)T11))(?<T11T12>(?:T(?:\\d+))*?)T13(?<T13>(?:T(?:\\d+))*?)T14(?<T14>(?:T(?:\\d+))*?)";
     public static String REPLACE = "${T0}${T1}${T2}${T3T4}${T5}${T6}${T7T8}${T9}${T10}${T11T12}${T13}${T14}";
+
+    /**
+     * A cada hilo se le asigna una secuencia de disparo.
+     * Segun el algoritmo del paper
+     * @return int[][] secuencias
+     */
+    private static int[][] getSecuencias1() {
+        return new int[][]{
+                { 0       } ,
+                { 1, 3    } ,
+                { 2, 4    } ,
+                { 5, 7    } ,
+                { 6, 8    } ,
+                { 9, 11   } ,
+                { 10, 12  } ,
+                { 13, 14  }
+        };
+    }
+
+    /**
+     * A cada hilo se le asigna una secuencia de disparo.
+     * Se agregan dos hilos dedicados para disparar T9 y T10 para que funcione bien la politica2
+     * @return int[][] secuencias
+     */
+    private static int[][] getSecuencias2() {
+        return new int[][]{
+                { 0       } ,
+                { 1, 3    } ,
+                { 2, 4    } ,
+                { 5, 7    } ,
+                { 6, 8    } ,
+                { 11      } ,
+                { 12      } ,
+                { 13, 14  } ,
+                { 9       } ,
+                { 10      }
+        };
+    }
+
+    /**
+     * A cada hilo se le asigna una secuencia de disparo.
+     * Se agrega un hilo para cada transición con conflicto
+     * @return int[][] secuencias
+     */
+    private static int[][] getSecuencias3() {
+        return new int[][]{
+                { 0       } ,
+                { 1       } ,
+                { 3       } ,
+                { 2       } ,
+                { 4       } ,
+                { 5       } ,
+                { 7       } ,
+                { 6       } ,
+                { 8       } ,
+                { 9       } ,
+                { 10      } ,
+                { 11      } ,
+                { 12      } ,
+                { 13, 14  }
+        };
+    }
 
 
     // Constantes de PAPER (para pruebas) ------------------------------------------------------------
