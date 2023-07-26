@@ -24,6 +24,12 @@ public class Logger {
         pw.flush();
     }
 
+    public void logn(String s){
+        pw.printf(s);
+        pw.println();
+        pw.flush();
+    }
+
     public boolean validateLog(String regex,String replace){
         File file = new File(file_path);
         String log = "";

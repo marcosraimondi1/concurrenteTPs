@@ -3,6 +3,7 @@ package Constants;
 public class Constants {
 
     public static String INV_LOG_PATH = ".\\data\\log.txt";
+    public static String STATE_LOG_PATH = ".\\data\\stateLog.txt";
 
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 

@@ -1,15 +1,21 @@
 package Main;
 
+import Logger.Logger;
 import Monitor.Monitor;
 import Politica.*;
 import RdP.RdP;
+
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 import static Constants.Constants.*;
 
 public class Main {
+    public final static Logger stateLogger = new Logger(STATE_LOG_PATH);
+    private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
         boolean     usarPolitica   = POLITICA2;
@@ -28,7 +34,7 @@ public class Main {
         int[]       trans_invariantes   = T_INV_TP2         ; // transiciones para contar invariantes (T14 marca una vuelta)
         int[][]     invariantes_plazas  = P_INV_TP2         ;
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
+        rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
@@ -105,6 +111,9 @@ public class Main {
         for (Thread thread : threads) {
             thread.start();
         }
+
+        stateLogger(threads);
+
         System.out.println("Inicio los hilos");
         try {
             cyclic.await();
@@ -114,6 +123,54 @@ public class Main {
 
     }
 
+    private static void stateLogger(Thread[] threads){
+        long startTime = System.currentTimeMillis();
+        Thread stateLoggerThread = new Thread(()->{
+            while (true) {
+                String  marcadoActual = Arrays.toString(rdp.getMarcadoActual());
+                String  contadores    = Arrays.toString(rdp.getContadores());
+                int     invariantes   = rdp.getCuentaInvariantes();
+                long    runningTime   = System.currentTimeMillis() - startTime;
 
+
+                stateLogger.logn(formatLog("INFO", "MAIN", "TIME"    , String.valueOf(runningTime)   ));
+                stateLogger.logn(formatLog("INFO", "MAIN", "MARCADO" , marcadoActual                 ));
+                stateLogger.logn(formatLog("INFO", "MAIN", "SHOTS"   , contadores                    ));
+                stateLogger.logn(formatLog("INFO", "MAIN", "INV"     , String.valueOf(invariantes)   ));
+
+                int aliveThreads = 0;
+                int runningThreads = 0;
+                for (Thread thread : threads) {
+                    if (thread.isAlive())
+                        aliveThreads++;
+                    if (thread.getState() == Thread.State.RUNNABLE)
+                        runningThreads++;
+
+                    stateLogger.logn(formatLog("INFO", "MAIN", "THREAD", thread.getName() + " " + thread.getState()));
+                }
+
+                String threadInfo = String.format("Alive: %1$d , Running: %2$d", aliveThreads, runningThreads);
+                stateLogger.logn(formatLog("INFO", "MAIN", "THREAD"  , threadInfo                    ));
+                stateLogger.logn(formatLog("INFO", "MAIN", "EOM"  , "--------------------------------"));
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        stateLoggerThread.setDaemon(true);
+        stateLoggerThread.start();
+    }
+
+    private static String formatLog(String logLevel, String step, String caller, String message){
+        // Get the current date in the desired format
+        String date = new SimpleDateFormat("dd-MM-yy HH:mm:ss").format(new Date());
+
+        // Format the log message
+        return String.format("[%1$-10s] %2$s [%3$-4s] %4$s: %5$s",
+                logLevel, date, step, caller, message);
+    }
 }
 
