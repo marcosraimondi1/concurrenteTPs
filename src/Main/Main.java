@@ -29,10 +29,10 @@ public class Main {
         int[][]     plaza_salida        = W_MAS_TP2         ; // plazas a la salida de la transición (Matriz)
         int[][]     plaza_entrada       = W_MENOS_TP2       ; // plazas a la entrada de la transición (Matriz)
         int[]       marcado             = MI_TP2            ; // marcado inicial
-        long[][]    tiempos             = TIEMPOS           ;
-        int         invariantes_MAX     = INVARIANTES_MAX   ;
+        long[][]    tiempos             = TIEMPOS           ; // tiempo de cada transicion
+        int         invariantes_MAX     = INVARIANTES_MAX   ; // cantidad de invariantes a realizar
         int[]       trans_invariantes   = T_INV_TP2         ; // transiciones para contar invariantes (T14 marca una vuelta)
-        int[][]     invariantes_plazas  = P_INV_TP2         ;
+        int[][]     invariantes_plazas  = P_INV_TP2         ; // invariantes de plaza de la red
 
         rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
 
@@ -42,7 +42,7 @@ public class Main {
 
         //------------------------------Inicio Hilos-------------------------------------------------//
 
-        int[][] secuencias = GET_SECUENCIAS_TP2(); // secuencias de disparo para cada hilo
+        int[][] secuencias = GET_SECUENCIAS_TP2(); // secuencias de disparo asignadas para cada hilo
 
         Thread [] threads   = new Thread[secuencias.length];
 
@@ -69,17 +69,19 @@ public class Main {
         for (int i = 0; i< threads.length; i++)
         {
             int finalI = i;
+
             threads[i] = new Thread(()->{
 
                 boolean condicion = true;
                 int contadorDisparos = 0;
+
                 while(condicion){
 
-                    int[] secuencia = secuencias[finalI]; // selecciono una de las 5 secuancias
+                    int[] secuencia = secuencias[finalI]; // selecciono una de las 8 secuencias
 
-                    // disparo la secuencia invariante
+                    // disparo la secuencia invariante recientemente asignada
                     for (int k : secuencia) {
-                        if(!monitor.seAvanza()){
+                        if(!monitor.seAvanza()){ //no se puede avanzar. apagar es true
                             condicion = false;
                             break;
                         }else {
@@ -87,16 +89,12 @@ public class Main {
                             contadorDisparos++;
                             if (finalI == 0 && contadorDisparos >= invariantes_MAX)
                             {   contadorDisparos++;
-                                // la transicion 0 se disparo 200 veces
+                                // la transicion 0 se disparo INVARIANTES_MAX veces
                                 condicion = false;
                                 break;
                             }
                         }
-
                     }
-
-
-
                 }
                 System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+(contadorDisparos-1)+" Transiciones de la secuencia "+ finalI);
                 try {
@@ -104,7 +102,6 @@ public class Main {
                 } catch (InterruptedException | BrokenBarrierException e) {
                     throw new RuntimeException(e);
                 }
-
             });
         }
 

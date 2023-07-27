@@ -26,6 +26,10 @@ public class Monitor {
         k = false;
     }
 
+    /**
+     * @param red,politica .
+     * @return monitor.
+     */
     public static Monitor getMonitor(RdP red, Politica politica){
         if(monitor == null){
             monitor = new Monitor(red, politica);
@@ -33,6 +37,9 @@ public class Monitor {
         return monitor;
     }
 
+    /**
+     * @return monitor.
+     */
     public static Monitor getMonitor(){
         return monitor;
     }
@@ -111,10 +118,8 @@ public class Monitor {
         mutex.release();
     }
 
-
-
     /**
-     * Devuelve true si el array esta todos en falso
+     * Devuelve true si en el array estan todos los elementos en falso
      * @return boolean
      */
     private boolean todoFalso(boolean[] m){
@@ -125,6 +130,10 @@ public class Monitor {
         }
         return true;
     }
+
+    /**
+     * @return boolean
+     */
     private boolean liberar(){
         boolean libero =false;
         boolean[] HilosEnEspera = colas.hayEsperando();
@@ -137,9 +146,18 @@ public class Monitor {
         }
         return libero;
     }
+
+    /**
+     * lee el estado de la variable "apagar" de la red. Si es apagar es true entonces NO seAvanza, sino si.
+     * @return boolean
+     */
     public boolean seAvanza(){
         return !red.getApagar();
     }
+
+    /**
+     * @return mutex
+     */
     public Semaphore getMutex() {
         return mutex;
     }

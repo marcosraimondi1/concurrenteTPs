@@ -7,17 +7,25 @@ public class Constants {
 
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 
-    public static int INVARIANTES_MAX = 100;
+    public static int INVARIANTES_MAX = 100; //cantidad de invariantes a realizar
 
     // Constantes de TP2 -----------------------------------------------------------------------------
     public static boolean POLITICA1 = true;
     public static boolean POLITICA2 = false;
 
+    /**
+     * Secuencias de disparo asignadas a cada hilo.
+     * @return int[][] .
+     */
     public static int[][] GET_SECUENCIAS_TP2(){
         return getSecuencias1(); // hilos del paper
 //        return getSecuencias2(); // se agrega para T9 y T10
 //        return getSecuencias3(); // se agrega para cada transicion en conflicto
     }
+
+    /**
+     * Tiempos (en ms) para cada transicion de la red del tp
+     */
     public static long[][] TIEMPOS = new long[][] {
             // alfa ,       beta
             {    10L,    MAX_TIME }, // T0
@@ -37,10 +45,14 @@ public class Constants {
             {    10L,    MAX_TIME }  // T14
 
     };
+
+    /**
+     * Marcado inicial de la red del tp
+     */
     public static int[] MI_TP2 = new int[] { 0, 1, 0, 3, 0, 1, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 0, 1 }; // P0 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18
 
     /**
-     * Matriz de incidencia de entrada, contiene el peso de los brazos que entran a las transiciones.
+     * Matriz de incidencia de entrada, contiene el peso de los brazos que entran a las transiciones desde las plazas.
      */
     public static int[][] W_MENOS_TP2 = new int[][] {
             // T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14
@@ -66,7 +78,7 @@ public class Constants {
     };
 
     /**
-     * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones.
+     * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones desde las plazas.
      */
     public static int[][] W_MAS_TP2 = new int[][] {
             // T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14
@@ -102,7 +114,7 @@ public class Constants {
     };
 
     /**
-     * Invariantes de transicion
+     * transicion para contar invariantes (T14 marca una vuelta)
      */
     public static int [] T_INV_TP2 = new int[] {14};
 
@@ -117,6 +129,10 @@ public class Constants {
         7. M(P17) + M(P18) = 1
         8. M(P2) + M(P3) + M(P4) + M(P17) = 3
     */
+
+    /**
+     * Invariantes de plaza de la red del tp
+     */
     public static int[][] P_INV_TP2 = new int[][]{
         // P0 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18 = X
         {0, 1, 1, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0, 0,    1 },
@@ -129,12 +145,18 @@ public class Constants {
         {0, 0, 1, 1, 1, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  1, 0,    3 },
     };
 
+    /**
+     * Expresion regular
+     */
     public static String REGEX = "T0(?<T0>(?:T(?:\\d+))*?)(?:(?:T1(?<T1>(?:T(?:\\d+))*?)T3)|(?:T2(?<T2>(?:T(?:\\d+))*?)T4))(?<T3T4>(?:T(?:\\d+))*?)(?:(?:T5(?<T5>(?:T(?:\\d+))*?)T7)|(?:T6(?<T6>(?:T(?:\\d+))*?)T8))(?<T7T8>(?:T(?:\\d+))*?)(?:(?:T10(?<T10>(?:T(?:\\d+))*?)T12)|(?:T9(?<T9>(?:T(?:\\d+))*?)T11))(?<T11T12>(?:T(?:\\d+))*?)T13(?<T13>(?:T(?:\\d+))*?)T14(?<T14>(?:T(?:\\d+))*?)";
+
+    /**
+     * Grupos de reemplazo
+     */
     public static String REPLACE = "${T0}${T1}${T2}${T3T4}${T5}${T6}${T7T8}${T9}${T10}${T11T12}${T13}${T14}";
 
     /**
-     * A cada hilo se le asigna una secuencia de disparo.
-     * Segun el algoritmo del paper
+     * A cada hilo se le asigna una secuencia de disparo, segun el algoritmo del paper.
      * @return int[][] secuencias
      */
     private static int[][] getSecuencias1() {

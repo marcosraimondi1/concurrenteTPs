@@ -95,6 +95,9 @@ public class RdP {
         return true;
     }
 
+    /**
+     *
+     */
     private void verificarInvariantePlaza () throws InvariantePlazaException {
         // la matriz de invariantes de plaza es una matriz que representa un conjunto de ecuaciones
         /*
@@ -123,6 +126,10 @@ public class RdP {
         }
     }
 
+    /**
+     *
+     * @param transicion  transicion a disparar
+     */
     private void verificarInvarianteTransicion(int transicion) {
         for (int inv : trans_invariantes) {
             if (inv != transicion)
@@ -142,12 +149,20 @@ public class RdP {
         return vectorSensibilizadas.getSensibilizadas();
     }
 
+    /**
+     * Nos permite leer el estado de la variable apagar.
+     * @return boolean
+     */
     public boolean getApagar() {
         lock.readLock().lock();
         boolean aux = apagar;
         lock.readLock().unlock();
         return aux;
     }
+
+    /**
+     * seteamos apagar en true . con lock nos aseguramos que solamente haya un hilo escribiendo esa variable.
+     */
     private void setApagar() {
         lock.writeLock().lock();
         this.apagar = true;
@@ -157,7 +172,6 @@ public class RdP {
     public int[] getMarcadoActual() {
         return marcado_actual;
     }
-
 
     public int getCantidadTransiciones() {
         return cantidad_transiciones;
