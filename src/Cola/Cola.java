@@ -4,9 +4,17 @@ import java.util.concurrent.Semaphore;
 public class Cola {
     private final Semaphore cola;
 
+    /**
+     * Cola es implementada a traves de Semaphore
+     */
     public Cola(){
         cola = new Semaphore(0,true);
     }
+
+    /**
+     * Devuelve true si hay algun hilo esperando en la cola, o false si no lo hay
+     * @return boolean .
+     */
     public boolean hayEsperando(){
         return cola.hasQueuedThreads();
     }

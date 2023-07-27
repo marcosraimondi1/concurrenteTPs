@@ -18,16 +18,16 @@ public class Main {
     private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-        boolean     usarPolitica   = POLITICA2;
+        boolean     usarPolitica   = POLITICA2; //politica a usar
 
-        Politica    politica1   = new Politica1(CONFLICTOS_TP2);
-        Politica    politica2   = new Politica2(CONFLICTOS_TP2);
-        Politica    politica    = usarPolitica ? politica1 : politica2;
+        Politica    politica1   = new Politica1(CONFLICTOS_TP2); //pasamos a la politica 50-50 las transiciones en conflicto de la red
+        Politica    politica2   = new Politica2(CONFLICTOS_TP2); //pasamos a la politica 80-20 las transiciones en conflicto de la red
+        Politica    politica    = usarPolitica ? politica1 : politica2; //guardamos la politica a utilizar
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
         int[][]     plaza_salida        = W_MAS_TP2         ; // plazas a la salida de la transición (Matriz)
-        int[][]     plaza_entrada       = W_MENOS_TP2       ; // plazas a la entrada de la transición
+        int[][]     plaza_entrada       = W_MENOS_TP2       ; // plazas a la entrada de la transición (Matriz)
         int[]       marcado             = MI_TP2            ; // marcado inicial
         long[][]    tiempos             = TIEMPOS           ;
         int         invariantes_MAX     = INVARIANTES_MAX   ;

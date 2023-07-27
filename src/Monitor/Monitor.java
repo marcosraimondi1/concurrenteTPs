@@ -16,7 +16,7 @@ public class Monitor {
     private final Semaphore mutex;
     private final Politica politica;
     private final RdP red;
-    private final Colas colas;
+    private final Colas colas;//tendremos una cola por cada transicion
     private boolean k;
     private Monitor(RdP red, Politica politica){
         mutex           = new Semaphore(1);

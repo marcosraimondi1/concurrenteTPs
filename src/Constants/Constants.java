@@ -38,6 +38,10 @@ public class Constants {
 
     };
     public static int[] MI_TP2 = new int[] { 0, 1, 0, 3, 0, 1, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 0, 1 }; // P0 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18
+
+    /**
+     * Matriz de incidencia de entrada, contiene el peso de los brazos que entran a las transiciones.
+     */
     public static int[][] W_MENOS_TP2 = new int[][] {
             // T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14
             {   0, 1, 1, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0 }, // P0
@@ -61,6 +65,9 @@ public class Constants {
             {   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  1,  0 }, // P18
     };
 
+    /**
+     * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones.
+     */
     public static int[][] W_MAS_TP2 = new int[][] {
             // T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14
             {   1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0 }, // P0
@@ -85,12 +92,18 @@ public class Constants {
 
     };
 
+    /**
+     * Conflictos (3) de la red surgidos debido a transiciones que tienen el mismo conjunto de plazas de entrada
+     */
     public static int[][] CONFLICTOS_TP2 = new int[][] {
-            { 1, 2         },
-            { 5, 6         },
-            { 9, 10        },
+            { 1, 2         },   //conflicto1
+            { 5, 6         },   //conflicto2
+            { 9, 10        },   //conflicto3
     };
 
+    /**
+     * Invariantes de transicion
+     */
     public static int [] T_INV_TP2 = new int[] {14};
 
     /*  INVARIANTES DE PLAZA TP
