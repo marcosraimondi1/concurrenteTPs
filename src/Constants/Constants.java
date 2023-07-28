@@ -7,7 +7,7 @@ public class Constants {
 
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 
-    public static int INVARIANTES_MAX = 100; //cantidad de invariantes a realizar
+    public static int INVARIANTES_MAX = 100; // cantidad de invariantes a realizar
 
     // Constantes de TP2 -----------------------------------------------------------------------------
     public static boolean POLITICA1 = true;
@@ -108,9 +108,9 @@ public class Constants {
      * Conflictos (3) de la red surgidos debido a transiciones que tienen el mismo conjunto de plazas de entrada
      */
     public static int[][] CONFLICTOS_TP2 = new int[][] {
-            { 1, 2         },   //conflicto1
-            { 5, 6         },   //conflicto2
-            { 9, 10        },   //conflicto3
+            { 1, 2         },   // conflicto1
+            { 5, 6         },   // conflicto2
+            { 9, 10        },   // conflicto3
     };
 
     /**
@@ -156,7 +156,7 @@ public class Constants {
     public static String REPLACE = "${T0}${T1}${T2}${T3T4}${T5}${T6}${T7T8}${T9}${T10}${T11T12}${T13}${T14}";
 
     /**
-     * A cada hilo se le asigna una secuencia de disparo, segun el algoritmo del paper.
+     * Devuelve la secuencia de disparo asignada a cada hilo, segun el algoritmo del paper.
      * @return int[][] secuencias
      */
     private static int[][] getSecuencias1() {

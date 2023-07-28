@@ -20,9 +20,9 @@ public class Main {
         //------------------------------Inicio Politica----------------------------------------------//
         boolean     usarPolitica   = POLITICA2;
 
-        Politica    politica1   = new Politica1(CONFLICTOS_TP2); //pasamos a la politica 50-50 las transiciones en conflicto de la red
-        Politica    politica2   = new Politica2(CONFLICTOS_TP2); //pasamos a la politica 80-20 las transiciones en conflicto de la red
-        Politica    politica    = usarPolitica ? politica1 : politica2; //guardamos la politica a utilizar
+        Politica    politica1   = new Politica1(CONFLICTOS_TP2); // politica1 es la de 50-50
+        Politica    politica2   = new Politica2(CONFLICTOS_TP2); // politica2 es la de 80-20
+        Politica    politica    = usarPolitica ? politica1 : politica2; // guardamos la politica a utilizar
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
@@ -81,14 +81,16 @@ public class Main {
 
                     // disparo la secuencia invariante recientemente asignada
                     for (int k : secuencia) {
-                        if(!monitor.seAvanza()){ //no se puede avanzar. apagar es true
+                        if(!monitor.seAvanza()){ // NO se puede avanzar. apagar es true
                             condicion = false;
                             break;
                         }else {
+                            // se puede avanzar. apagar es false
                             monitor.dispararTransicion(k);
                             contadorDisparos++;
                             if (finalI == 0 && contadorDisparos >= invariantes_MAX)
-                            {   contadorDisparos++;
+                            {
+                                contadorDisparos++;
                                 // la transicion 0 se disparo INVARIANTES_MAX veces
                                 condicion = false;
                                 break;

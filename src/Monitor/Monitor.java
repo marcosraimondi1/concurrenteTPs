@@ -69,7 +69,7 @@ public class Monitor {
             k = red.disparar(transicion);
 
             if (k) {
-                //se puede disparar la transicion
+                // se puede disparar la transicion
                 boolean[] sensibilizadas        = red.getSensibilizadas();
                 boolean[] transicionesConEspera = colas.hayEsperando();
                 boolean[] transicionesConEsperaySensibilizadas = new boolean[sensibilizadas.length];

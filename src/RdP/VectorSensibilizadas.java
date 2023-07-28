@@ -78,7 +78,7 @@ public class VectorSensibilizadas {
         boolean ventana = sensibilizadoConTiempo.testVentana(transicion);
 
         if (ventana) {
-            //llego el hilo dentro de la ventana de tiempo
+            // llego el hilo dentro de la ventana de tiempo
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
             if (!esperando) {
                 // nadie durmiendo, esta sensibilizada
@@ -89,7 +89,7 @@ public class VectorSensibilizadas {
             // si alguien esta esperando, no esta sensibilizada
             return false;
         } else {
-            //NO llego el hilo dentro de la ventana de tiempo
+            // NO llego el hilo dentro de la ventana de tiempo
             boolean antes = sensibilizadoConTiempo.antesDeLaVentana(transicion);
             if (antes) {
                 // si es antes libero el mutex y me voy a dormir
