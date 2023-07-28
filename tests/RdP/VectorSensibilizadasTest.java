@@ -319,7 +319,7 @@ class VectorSensibilizadasTest {
 
         boolean passed;
         try {
-            passed = latch.await(600000L, java.util.concurrent.TimeUnit.MILLISECONDS);
+            passed = latch.await(10000L, java.util.concurrent.TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
