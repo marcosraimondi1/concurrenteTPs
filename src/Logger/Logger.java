@@ -19,6 +19,10 @@ public class Logger {
         }
     }
 
+    /**
+     * añade transicion disparada a log.
+     * @param s . string de transicion a añadir.
+     */
     public void log(String s){
         pw.printf(s);
         pw.flush();
@@ -30,6 +34,13 @@ public class Logger {
         pw.flush();
     }
 
+    /**
+     * Recorre el log en busca de las transiciones que forman los T-invariantes, y verifica si efectivamente el log
+     * se queda sin transiciones o no.
+     * @param regex . Expresion regular utilizada
+     * @param replace . Grupos a reemplazar
+     * @return true , si no quedo ningun caracter en el log ,false en caso contrario.
+     */
     public boolean validateLog(String regex,String replace){
         File file = new File(file_path);
         String log = "";
@@ -64,6 +75,7 @@ public class Logger {
             return false;
         }
 
+        // No sobro ninguna transicion
         System.out.println("LOG VALIDATION SUCCESS");
         return true;
     }

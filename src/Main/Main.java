@@ -18,7 +18,7 @@ public class Main {
     private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-        boolean     usarPolitica   = POLITICA2; //politica a usar
+        boolean     usarPolitica   = POLITICA2;
 
         Politica    politica1   = new Politica1(CONFLICTOS_TP2); //pasamos a la politica 50-50 las transiciones en conflicto de la red
         Politica    politica2   = new Politica2(CONFLICTOS_TP2); //pasamos a la politica 80-20 las transiciones en conflicto de la red

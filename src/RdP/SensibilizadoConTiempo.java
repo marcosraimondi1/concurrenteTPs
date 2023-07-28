@@ -7,7 +7,7 @@ import static Constants.Constants.MAX_TIME;
 public class SensibilizadoConTiempo {
     long [] timeStamps;     // en ms
     long [][] tiempos;      // en ms
-    boolean [] esperando;
+    boolean [] esperando;   //indica si hay hilos esperando para ingresar en la ventana de tiempo en cada transicion
     public SensibilizadoConTiempo(long[][] tiempos) {
         timeStamps = new long[tiempos.length];
         esperando = new boolean[tiempos.length];
@@ -74,7 +74,7 @@ public class SensibilizadoConTiempo {
     }
 
     /**
-     * Verifica si esta antes de la ventana de tiempo (ahora-timestamp <= alfa)
+     * Verifica si esta antes de la ventana de tiempo (ahora-timestamp < alfa)
      * @param transicion transicion a verificar
      * @return true si esta antes de la ventana, false si no
      */

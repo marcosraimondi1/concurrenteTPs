@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import static Constants.Constants.INV_LOG_PATH;
 
 /**
- * Clase que representa una Red de Petri
+ * Clase que representa la Red de Petri
  */
 public class RdP {
     private final int[][]   plazas_salida_transiciones  ;   // matriz de incidencia + (denota las plazas a la salida de una transición)
@@ -29,6 +29,7 @@ public class RdP {
     private final int[]     contadores                          ;   // cuenta la cantidad de veces que se disparo cada transicion
     private final ReadWriteLock         lock                    ;
     private final VectorSensibilizadas  vectorSensibilizadas    ;
+
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
@@ -54,7 +55,7 @@ public class RdP {
     public boolean disparar(int transicion) {
 
         if(cuenta_invariantes >= invariantes_MAX){
-            setApagar();
+            setApagar();    //apagar = true
             return false;
         }
 
@@ -94,10 +95,10 @@ public class RdP {
     }
 
     /**
-     *
+     * Verifica el cumplimiento de los invariantes de transicion debido a que previamente disparamos la transicion
      */
     private void verificarInvariantePlaza () throws InvariantePlazaException {
-        // la matriz de invariantes de plaza es una matriz que representa un conjunto de ecuaciones
+        // la matriz de invariantes de plaza es una matriz que representa un conjunto de ecuaciones.A modo de ejemplo:
         /*
         [ 0 1 1   1 ] -> P2 + P3 = 1
         [ 1 1 1   2 ] -> P1 + P2 + P3 = 2
@@ -125,8 +126,8 @@ public class RdP {
     }
 
     /**
-     *
-     * @param transicion  transicion a disparar
+     * verifica si se disparo la transicion T14, para aumentar la cuenta_invariantes(marca una vuelta mas)
+     * @param transicion  transicion disparada
      */
     private void verificarInvarianteTransicion(int transicion) {
         for (int inv : trans_invariantes) {
