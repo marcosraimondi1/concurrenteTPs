@@ -30,8 +30,6 @@ public class RdP {
     private final ReadWriteLock         lock                    ;
     private final VectorSensibilizadas  vectorSensibilizadas    ;
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
-        // Las columnas de la matriz de incidencia son transiciones
-        // Las filas de la matriz de incidencia son plazas
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
         this.marcado_actual = marcado_inicial;
@@ -39,10 +37,10 @@ public class RdP {
         this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
         this.trans_invariantes = trans_invariantes;
         this.invariantes_MAX = invariantes_MAX;
-        this.apagar = false;
-
         this.invariantes_plazas = invariantes_plazas;
-        this.lock = new ReentrantReadWriteLock(); //creo lock para el Apagado
+
+        this.apagar = false;
+        this.lock = new ReentrantReadWriteLock(); // creo lock para proteger variable apagar
         vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
         contadores = new int[cantidad_transiciones];
         Arrays.fill(contadores, 0);
@@ -51,7 +49,7 @@ public class RdP {
     /**
      * Dispara una transicion de la RdP si es posible, actualizando el marcado actual
      * @param transicion  transicion a disparar
-     * @return true si se pudo disparar, false si no
+     * @return true , si se pudo disparar, false si no
      */
     public boolean disparar(int transicion) {
 

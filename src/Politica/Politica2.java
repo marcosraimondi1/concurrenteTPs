@@ -34,7 +34,7 @@ public class Politica2 extends Politica {
             int ty = conflicto[1];
 
             if (index != tx && index != ty)
-                continue; // no se eligieron las transiciones del conflicto
+                continue; // la transicion elegida no forma parte de este conflicto
 
             // verifico que ambas transiciones esten sensibilizdasa
             if (!transiciones[tx]) {
@@ -45,7 +45,6 @@ public class Politica2 extends Politica {
             }
 
             // hay conflicto efectivo -> aplico la politica
-
             if (tx == 9 || tx == 10) {
                 // politica 80% hacia la izquierda
                 boolean trans_izquierda = definirProbabilidad();
@@ -63,7 +62,10 @@ public class Politica2 extends Politica {
         return index;
     }
 
-
+    /**
+     * metodo utilizado por el metodo cual para aplicar el 80-20
+     * @return boolean,
+     */
     private boolean definirProbabilidad() {
 
         double probabilidadDerecha = 0.2; // Probabilidad asociada a la T10

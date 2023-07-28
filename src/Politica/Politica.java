@@ -7,6 +7,12 @@ import java.util.Random;
  * Clase que define una politica de disparo aleatoria.
  */
 public class Politica {
+
+    /**
+     * Metodo que nos devuelve una unica transicion la cual sera disparada. si o si debe devolver una.
+     * @param transiciones, los conflictos de la RdP
+     * @retunr int . transicion a disparar
+     */
     public int cual(boolean[] transiciones) {
         ArrayList<Integer> sensibilizadas = new ArrayList<>();
         for (int i = 0; i < transiciones.length; i++) {
@@ -14,9 +20,14 @@ public class Politica {
                 sensibilizadas.add(i);
         }
 
-        return getRandomElement(sensibilizadas);
+        return getRandomElement(sensibilizadas); // seleccionamos una de sensibilizadas,de manera aleatoria
     }
 
+    /**
+     * Metodo utilizado por el metodo cual,que elije una sola transcion de manera aleatoria, que luego sera disapara
+     * @param list, lista de transiciones sensibilizadas
+     * @retunr int . transicion elegida
+     */
     protected int getRandomElement(ArrayList<Integer> list)
     {
         Random rand = new Random();

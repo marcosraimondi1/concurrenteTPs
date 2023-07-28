@@ -3,8 +3,7 @@ package Politica;
 import java.util.Arrays;
 
 /**
- * Politica1: para cada conflicto, se dispara la transicion que
- * no se haya disparado antes (Politica del 50%)
+ * Politica1: para cada conflicto, se dispara la transicion que no se haya disparado antes (Politica del 50%)
  */
 public class Politica1 extends Politica {
     private final int[][] conflictos;
@@ -24,7 +23,7 @@ public class Politica1 extends Politica {
     @Override
     public int cual(boolean[] transiciones){
 
-        int index = super.cual(transiciones); // transicion aleatoria
+        int index = super.cual(transiciones); // transicion a disparar selecionada aleatoriamente
 
         for (int i = 0; i < conflictos.length; i++) {
             int[] conflicto = conflictos[i];
@@ -34,19 +33,18 @@ public class Politica1 extends Politica {
             int ty = conflicto[1];
 
             if (index != tx && index != ty)
-                continue; // no se eligieron las transiciones del conflicto
+                continue; // la transicion elegida no forma parte de este conflicto
 
             // verifico que ambas transiciones esten sensibilizdas
             if (!transiciones[tx]) {
                 return ty;
             }
-
             if (!transiciones[ty]) {
                 return tx;
             }
 
             // hay conflicto efectivo -> aplico la politica
-            flags[i] = !flags[i];           // cambio el valor de la bandera
+            flags[i] = !flags[i];           // cambio el valor de la bandera. togleo.
             return flags[i] ? tx : ty;     // elijo la transicion correspondiente
         }
 
