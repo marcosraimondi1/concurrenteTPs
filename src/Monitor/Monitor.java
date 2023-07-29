@@ -85,8 +85,9 @@ public class Monitor {
                     colas.getCola(indexDisparo).sacar();      // debe liberar el hilo que va a disparar
                     return;                                   // me vuelvo porque termine
                 }else{
-                    k = false;
+                    k = false;                                // salgo del while para hacer el release del mutex e ingrese otro hilo
                 }
+
             } else{
                 // NO se puede disparar la transicion
                 // libero el acceso al monitor
@@ -101,7 +102,7 @@ public class Monitor {
                     colas.getCola(transicion).esperar();    // acquire
                 }
                 else{
-                    // apagar es true
+                    // apagar es true. Llegamos a los 200 invariantes
                     // si se corto la ejecución despierto a los hilos uno a uno.
                     boolean libero = liberar(); // veo si puedo liberar un hilo que espera en una cola de condición
                     if(libero)
@@ -109,7 +110,7 @@ public class Monitor {
                         k = true; // si libero pongo el k en true para que cuando despierte no se vaya del while
                         return;
                     }
-                    mutex.release(); // no habia hilos esperando en la cola de condición libero el mutex por si esperan en la entrada
+                    mutex.release(); // no habia hilos esperando en la cola de condición, libero el mutex por si esperan en la entrada
                     return;
                 }
             }
