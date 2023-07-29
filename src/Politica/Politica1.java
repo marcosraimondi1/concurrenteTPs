@@ -18,6 +18,7 @@ public class Politica1 extends Politica {
 
         // inicializa todas las banderas en false
         flags = new boolean[conflictos.length];
+        System.out.println("cant de conflictos:"+conflictos.length);
         Arrays.fill(flags, false);
     }
     @Override
@@ -35,7 +36,7 @@ public class Politica1 extends Politica {
             if (index != tx && index != ty)
                 continue; // la transicion elegida no forma parte de este conflicto
 
-            // verifico que ambas transiciones esten sensibilizdas
+            // verifico que ambas transiciones esten sensibilizdas y con algun hilo esperando
             if (!transiciones[tx]) {
                 return ty;
             }

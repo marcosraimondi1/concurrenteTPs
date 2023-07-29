@@ -36,7 +36,7 @@ public class Politica2 extends Politica {
             if (index != tx && index != ty)
                 continue; // la transicion elegida no forma parte de este conflicto
 
-            // verifico que ambas transiciones esten sensibilizdasa
+            // verifico que ambas transiciones esten sensibilizadas y con algun hilo esperando
             if (!transiciones[tx]) {
                 return ty;
             }

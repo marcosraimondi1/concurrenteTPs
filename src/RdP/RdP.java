@@ -68,6 +68,7 @@ public class RdP {
             throw new RuntimeException(e);
         }
 
+        // Se puede disparar la transicion
         // actualizo el marcado actual
         // saco tokens de las entradas y agrego a las salidas
         for (int i = 0; i < cantidad_plazas; i++) {
