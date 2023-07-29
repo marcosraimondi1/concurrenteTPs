@@ -2,7 +2,7 @@ from xml.dom.minidom import parse
 import numpy as np
 pipe_xml_path = "../rdp_pipe/rdp_TP2.xml"
 
-document = parse(pipe_xml_path)
+document = parse(pipe_xml_path) # analiza la gramatrica
 
 places          = document.getElementsByTagName("place")
 transitions     = document.getElementsByTagName("transition")
@@ -22,8 +22,9 @@ W_menos = np.zeros((len(places), len(transitions)), dtype=int)  # plazas filas y
 # matriz W+ : transiciones -> plazas
 W_mas = np.zeros((len(places), len(transitions)), dtype=int)    # plazas filas y transiciones columnas
 
-for i in range(len(places)):
-    for j in range(len(transitions)):
+# llena las matrices
+for i in range(len(places)): # tantas filas como transiciones
+    for j in range(len(transitions)): # tantas columnas como plazas
         for arc in arcs:
             if arc.attributes["source"].value == places_ids[i] and arc.attributes["target"].value == transitions_ids[j]:
                 W_menos[i][j]   = int(arc.getElementsByTagName("inscription")[0].getElementsByTagName("value")[0].firstChild.nodeValue.split(',')[1])
@@ -35,15 +36,17 @@ for i in range(len(places)):
 tiempos = [ [str(int(float(t.getElementsByTagName("rate")[0].getElementsByTagName("value")[0].firstChild.nodeValue)))+"L" if t.getElementsByTagName("timed")[0].getElementsByTagName("value")[0].firstChild.nodeValue == "true" else "0L", "MAX_TIME"] for t in transitions ]
 
 # encontrar conflictos (estructurales)
+# las filas son plazas y las columnas son transiciones
 conflictos = []
 for i in range(len(W_menos)):
+    # empiezo tomando una plaza i y veo cuantas transiciones tiene asociadas a la salida
     conflicto = []
     for j in range(len(W_menos[i])):
         if W_menos[i][j] >= 1:
-            conflicto.append(j)
-    if len(conflicto) > 1:
+            conflicto.append(j) # agrego todos los indices de las transiciones que tienen asociada la plaza i como entrada
+    if len(conflicto) > 1: # si luego de recorrer una fila completa este vector aux es mayor a 1 tengo un conflicto estructural
         if (conflicto not in conflictos):
-            conflictos.append(conflicto)
+            conflictos.append(conflicto) # agrego ese conflicto
 
 
 def imprimir_matriz(matriz):
