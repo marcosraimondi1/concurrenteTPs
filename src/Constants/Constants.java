@@ -9,18 +9,17 @@ public class Constants {
 
     public static int INVARIANTES_MAX = 100; // cantidad de invariantes a realizar
 
-    // Constantes de TP2 -----------------------------------------------------------------------------
-    public static boolean POLITICA1 = true;
-    public static boolean POLITICA2 = false;
+    //------------------------------Constantes de TP2----------------------------------------------//
+    public static boolean POLITICA1 = false;
 
     /**
      * Secuencias de disparo asignadas a cada hilo.
      * @return int[][] .
      */
     public static int[][] GET_SECUENCIAS_TP2(){
-        return getSecuencias1(); // hilos del paper
-//        return getSecuencias2(); // se agrega para T9 y T10
-//        return getSecuencias3(); // se agrega para cada transicion en conflicto
+      //  return getSecuencias1(); // hilos del paper
+      //  return getSecuencias2(); // se agrega secuencia para hilos para T9 y T10
+        return getSecuencias3(); // se agrega secuencia para hilos para cada transicion en conflicto
     }
 
     /**
@@ -78,7 +77,7 @@ public class Constants {
     };
 
     /**
-     * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones desde las plazas.
+     * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones y van hacia las plazas.
      */
     public static int[][] W_MAS_TP2 = new int[][] {
             // T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14
@@ -105,12 +104,21 @@ public class Constants {
     };
 
     /**
-     * Conflictos (3) de la red surgidos debido a transiciones que tienen el mismo conjunto de plazas de entrada
+     * Conflictos (3) de la red, surgidos debido a transiciones que tienen el mismo conjunto de plazas de entrada
      */
     public static int[][] CONFLICTOS_TP2 = new int[][] {
             { 1, 2         },   // conflicto1
             { 5, 6         },   // conflicto2
             { 9, 10        },   // conflicto3
+    };
+
+    /**
+     * Conflictos (3) de la red que tienen una politica del 80%/20%
+     */
+    public static boolean[] CONFLICTOS_TP2_80 = new boolean[]{
+            false, // conflicto1
+            false, // conflicto2
+            true   // conflicto3
     };
 
     /**
@@ -175,6 +183,7 @@ public class Constants {
     /**
      * A cada hilo se le asigna una secuencia de disparo.
      * Se agregan dos hilos dedicados para disparar T9 y T10 para que funcione bien la politica2
+     * Devuelve la secuencia de disparo asignada a cada hilo.
      * @return int[][] secuencias
      */
     private static int[][] getSecuencias2() {
@@ -195,6 +204,7 @@ public class Constants {
     /**
      * A cada hilo se le asigna una secuencia de disparo.
      * Se agrega un hilo para cada transición con conflicto
+     * Devuelve la secuencia de disparo asignada a cada hilo.
      * @return int[][] secuencias
      */
     private static int[][] getSecuencias3() {
@@ -217,8 +227,16 @@ public class Constants {
     }
 
 
-    // Constantes de PAPER (para pruebas) ------------------------------------------------------------
+    //------------------------------Constantes de PAPER (para pruebas)--------------------------------------//
+    /**
+     * Marcado inicial de la red del Paper
+     */
     public static int[] MI_PAPER = new int[] { 2, 0, 0, 0, 0, 1, 1, 2, 0, 0, 0, 1, 1, 1 };
+
+    /**
+     * Matriz de incidencia negativa Paper
+     * Matriz de incidencia de entrada, contiene el peso de los brazos que entran a las transiciones desde las plazas.
+     */
     public static int[][] W_MENOS_PAPER = new int[][] {
             // T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
             {   1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // P1
@@ -237,6 +255,10 @@ public class Constants {
             {   1, 0, 0, 0, 0, 0, 1, 0, 0, 0 }, // P14
     };
 
+    /**
+     *  Matriz de incidencia positiva Paper
+     * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones y van hacia las plazas.
+     */
     public static int[][] W_MAS_PAPER = new int[][] {
             // T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
             {   0, 0, 0, 0, 0, 1, 0, 0, 0, 0 }, // P1
@@ -254,6 +276,9 @@ public class Constants {
             {   0, 1, 1, 0, 0, 1, 0, 1, 0, 1 }, // P13
             {   0, 1, 1, 0, 0, 0, 0, 0, 1, 0 }, // P14
     };
+    /**
+     * Tiempos (en ms) para cada transicion de la red del Paper (inmediata)
+     */
     public static long[][] TIEMPOS_PAPER = {
             { 0, MAX_TIME},
             { 0, MAX_TIME},
@@ -276,6 +301,9 @@ public class Constants {
             6. M(P4) + M(P7) = 1
             7. M(P10) + M(P11) + M(P8) + M(P9) = 2
     */
+    /**
+     * Invariantes de plaza de la red del Paper
+     */
     public static int[][] P_INV_PAPER = new int[][]{
         // P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14  =  X
         {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,         2},
@@ -287,5 +315,8 @@ public class Constants {
         {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0,         2},
     };
 
-    public static int[] T_INV_PAPER = new int[]{5,9};
+    /**
+     * transicion para contar invariantes (T6 y T10 marcan una vuelta)
+     */
+    public static int[] T_INV_PAPER = new int[]{5,9}; // index respectivo de T6 = 5 y de T10 = 9
 }

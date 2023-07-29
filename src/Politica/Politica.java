@@ -11,7 +11,7 @@ public class Politica {
     /**
      * Metodo que nos devuelve una unica transicion la cual sera disparada. si o si debe devolver una.
      * @param transiciones, los conflictos de la RdP
-     * @retunr int . transicion a disparar
+     * @return int . transicion a disparar
      */
     public int cual(boolean[] transiciones) {
         ArrayList<Integer> sensibilizadas = new ArrayList<>();

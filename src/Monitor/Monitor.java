@@ -90,20 +90,20 @@ public class Monitor {
 
             } else{
                 // NO se puede disparar la transicion
-                // libero el acceso al monitor
+                // libero ó cedo el acceso al monitor
                 if (mutex.availablePermits() != 0) {
                     throw new RuntimeException("Se corrompio el mutex de entrada");
                 }
 
                 if(seAvanza()) {
                     // osea si apagar es false
-                    // me voy a esperar a la cola correspondiente a la transicion que quiero disparar
+                    // me voy a esperar a la cola correspondiente a la transicion que quiero disparar y libero mutex
                     mutex.release();
                     colas.getCola(transicion).esperar();    // acquire
                 }
                 else{
                     // apagar es true. Llegamos a los 200 invariantes
-                    // si se corto la ejecución despierto a los hilos uno a uno.
+                    // corto la ejecución y despierto a los hilos uno a uno.
                     boolean libero = liberar(); // veo si puedo liberar un hilo que espera en una cola de condición
                     if(libero)
                     {
@@ -120,7 +120,8 @@ public class Monitor {
         //------------------------------------ Fin Seccion Critica -----------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
 
-        mutex.release();
+        mutex.release(); // si disparé pero no liberé a nadie libero el mutex y me voy
+
     }
 
     /**
@@ -138,7 +139,7 @@ public class Monitor {
     }
 
     /**
-     * Hace release a cada hilo que se encuentra esperando en la cola de su respectiva transicion, una vez que
+     * Hace release a un hilo que se encuentra esperando en la cola de su respectiva transicion, una vez que
      * seAvanza sea false
      * @return boolean
      */

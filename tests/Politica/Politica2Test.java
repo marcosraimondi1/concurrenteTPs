@@ -12,8 +12,8 @@ class Politica2Test {
         int[][] conflictos = new int[][] {
                 {9, 10} // T9 y T10
         };
-
-        Politica politica = new Politica2(conflictos);
+        boolean[] conflictosporbabilidad = new boolean[] {true};
+        Politica politica = new Politica2(conflictos,conflictosporbabilidad);
 
         boolean[] transiciones = new boolean[16];
 

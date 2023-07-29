@@ -63,6 +63,7 @@ public class Logger {
             // reemplazo y busco con la regex hasta que no se pueda mas
             matcher = pattern.matcher(out);
             out = matcher.replaceAll(replace);
+            // si la salida es igual a la anterior ==> no puedo reemplazar mas y corto el bucle
             if (Objects.equals(out,prev))
                 break;
             prev = out;

@@ -18,7 +18,7 @@ public class Politica1 extends Politica {
 
         // inicializa todas las banderas en false
         flags = new boolean[conflictos.length];
-        System.out.println("cant de conflictos:"+conflictos.length);
+        System.out.println("Cantidad de conflictos en la RdP:"+conflictos.length);
         Arrays.fill(flags, false);
     }
     @Override
@@ -34,9 +34,9 @@ public class Politica1 extends Politica {
             int ty = conflicto[1];
 
             if (index != tx && index != ty)
-                continue; // la transicion elegida no forma parte de este conflicto
+                continue; // la transicion elegida aleatoreamente no forma parte de este conflicto
 
-            // verifico que ambas transiciones esten sensibilizdas y con algun hilo esperando
+            // verifico que ambas transiciones esten sensibilizadas y con algun hilo esperando
             if (!transiciones[tx]) {
                 return ty;
             }
@@ -44,12 +44,12 @@ public class Politica1 extends Politica {
                 return tx;
             }
 
-            // hay conflicto efectivo -> aplico la politica
-            flags[i] = !flags[i];           // cambio el valor de la bandera. togleo.
+            // hay conflicto efectivo y hay hilos esperando para disparar ambas transiciones -> aplico la politica
+            flags[i] = !flags[i];          // cambio el valor de la bandera. togleo.
             return flags[i] ? tx : ty;     // elijo la transicion correspondiente
         }
 
-        return index;
+        return index; // retorno el index aleatorio una vez verificado que no pertenece a un conflicto
     }
 
 }

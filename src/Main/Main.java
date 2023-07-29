@@ -18,11 +18,11 @@ public class Main {
     private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-        boolean     usarPolitica   = POLITICA2;
+        boolean     usarPolitica1   = POLITICA1;
 
         Politica    politica1   = new Politica1(CONFLICTOS_TP2); // politica1 es la de 50-50
-        Politica    politica2   = new Politica2(CONFLICTOS_TP2); // politica2 es la de 80-20
-        Politica    politica    = usarPolitica ? politica1 : politica2; // guardamos la politica a utilizar
+        Politica    politica2   = new Politica2(CONFLICTOS_TP2,CONFLICTOS_TP2_80); // politica2 es la de 80-20
+        Politica    politica    = usarPolitica1? politica1 : politica2; // guardamos la politica a utilizar
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
@@ -113,7 +113,10 @@ public class Main {
 
         stateLogger(threads);
 
-        System.out.println("Inicio los hilos");
+        System.out.println("Hilos iniciados");
+
+        //------------------------------Sincronizo Hilos al finalizar---------------------------------------//
+
         try {
             cyclic.await();
         } catch (InterruptedException | BrokenBarrierException e) {
@@ -123,14 +126,17 @@ public class Main {
     }
 
     private static void stateLogger(Thread[] threads){
+
         long startTime = System.currentTimeMillis();
+
         Thread stateLoggerThread = new Thread(()->{
+
             while (true) {
+
                 String  marcadoActual = Arrays.toString(rdp.getMarcadoActual());
                 String  contadores    = Arrays.toString(rdp.getContadores());
                 int     invariantes   = rdp.getCuentaInvariantes();
                 long    runningTime   = System.currentTimeMillis() - startTime;
-
 
                 stateLogger.logn(formatLog("INFO", "MAIN", "TIME"    , String.valueOf(runningTime)   ));
                 stateLogger.logn(formatLog("INFO", "MAIN", "MARCADO" , marcadoActual                 ));
@@ -157,10 +163,12 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
+
         });
 
         stateLoggerThread.setDaemon(true);
         stateLoggerThread.start();
+
     }
 
     private static String formatLog(String logLevel, String step, String caller, String message){

@@ -4,19 +4,23 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Politica2: para cada conflicto, se dispara la transicion izquierda un 80% de las veces
+ * Politica2: para el conflicto de la Rdp del TP2
+ * se dispara la transicion izquierda (T9) un 80% de las veces y (T10) un 20% de las veces
+ * El resto de conflictos se dispara con una politica del 50%
  */
 public class Politica2 extends Politica {
 
     private final int[][] conflictos;
+    private final boolean[] conflictosProbabilisticos;
     private final boolean[] flags;
 
     /**
      * Constructor de la clase Politica2,
      * @param conflictos, los conflictos de la RdP
      */
-    public Politica2(int[][] conflictos) {
+    public Politica2(int[][] conflictos, boolean[] conflictosProbabilisticos) {
         this.conflictos = conflictos;
+        this.conflictosProbabilisticos = conflictosProbabilisticos;
         // inicializa todas las banderas en false
         flags = new boolean[conflictos.length];
         Arrays.fill(flags, false);
@@ -28,6 +32,7 @@ public class Politica2 extends Politica {
 
         for (int i = 0; i < conflictos.length; i++) {
             int[] conflicto = conflictos[i];
+            boolean conflicto80 = conflictosProbabilisticos[i];
 
             // transiciones en conflicto
             int tx = conflicto[0];
@@ -44,14 +49,16 @@ public class Politica2 extends Politica {
                 return tx;
             }
 
-            // hay conflicto efectivo -> aplico la politica
-            if (tx == 9 || tx == 10) {
+            // hay conflicto efectivo y hay hilos esperando para disparar ambas transiciones -> aplico la politica
+
+            // pregunto si al conflicto se le aplica una politica del 80 %
+            if (conflicto80) {
                 // politica 80% hacia la izquierda
                 boolean trans_izquierda = definirProbabilidad();
                 if(trans_izquierda){
-                    return 9;
+                    return tx;
                 }
-                return 10;
+                return ty;
             }
 
             // aplico politica 50% para el resto de los conflictos
@@ -68,7 +75,7 @@ public class Politica2 extends Politica {
      */
     private boolean definirProbabilidad() {
 
-        double probabilidadDerecha = 0.2; // Probabilidad asociada a la T10
+        double probabilidadDerecha = 0.2; // Probabilidad asociada a la T10 (Tp) ó probabilidad asociada a ty en general
 
         // Crea una instancia de la clase Random
         Random random = new Random();
