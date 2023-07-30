@@ -49,19 +49,8 @@ public class Main {
         long time = System.currentTimeMillis(); // tiempo al inicio del programa
 
         CyclicBarrier cyclic = new CyclicBarrier( threads.length + 1,() -> {
-
             // al terminar el programa verifico que se cumplan los invariantes
-
-            System.out.println("Cantidad de Invariantes Completados : "+rdp.getCuentaInvariantes());
-            System.out.println("Marcado Final: ");
-            System.out.println(Arrays.toString(rdp.getMarcadoActual()));
-
-            System.out.println("Contadores de transiciones: ");
-            System.out.println(Arrays.toString(rdp.getContadores()));
-
-            long timeFinal = System.currentTimeMillis();// tiempo al final del programa
-            System.out.println("Tiempo final de ejecución: "+ (timeFinal-time)+" [mSeg]");
-
+            System.out.println("Tiempo Total: "+(System.currentTimeMillis()-time)+" ms");
             rdp.logger.validateLog(REGEX,REPLACE);
         });
 
@@ -123,6 +112,13 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        System.out.println("FIN DE PROGRAMA");
+
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void stateLogger(Thread[] threads){
@@ -130,45 +126,47 @@ public class Main {
         long startTime = System.currentTimeMillis();
 
         Thread stateLoggerThread = new Thread(()->{
-
             while (true) {
-
-                String  marcadoActual = Arrays.toString(rdp.getMarcadoActual());
-                String  contadores    = Arrays.toString(rdp.getContadores());
-                int     invariantes   = rdp.getCuentaInvariantes();
-                long    runningTime   = System.currentTimeMillis() - startTime;
-
-                STATE_LOG("INFO", "MAIN", "TIME"    , String.valueOf(runningTime)   );
-                STATE_LOG("INFO", "MAIN", "MARCADO" , marcadoActual                 );
-                STATE_LOG("INFO", "MAIN", "SHOTS"   , contadores                    );
-                STATE_LOG("INFO", "MAIN", "INV"     , String.valueOf(invariantes)   );
-
-                int aliveThreads = 0;
-                int runningThreads = 0;
-                for (Thread thread : threads) {
-                    if (thread.isAlive())
-                        aliveThreads++;
-                    if (thread.getState() == Thread.State.RUNNABLE)
-                        runningThreads++;
-
-                    STATE_LOG("INFO", "MAIN", "THREAD", thread.getName() + " " + thread.getState());
-                }
-
-                String threadInfo = String.format("Alive: %1$d , Running: %2$d", aliveThreads, runningThreads);
-                STATE_LOG("INFO", "MAIN", "THREAD"  , threadInfo                    );
-                STATE_LOG("INFO", "MAIN", "EOM"  , "--------------------------------");
+                logState(threads, startTime);
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }
 
+            }
         });
 
         stateLoggerThread.setDaemon(true);
         stateLoggerThread.start();
 
+    }
+
+    private static void logState(Thread[] threads, long startTime) {
+        String  marcadoActual = Arrays.toString(rdp.getMarcadoActual());
+        String  contadores    = Arrays.toString(rdp.getContadores());
+        int     invariantes   = rdp.getCuentaInvariantes();
+        long    runningTime   = System.currentTimeMillis() - startTime;
+
+        STATE_LOG("INFO", Thread.currentThread().getName(), "TIME"    , String.valueOf(runningTime)   );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "MARCADO" , marcadoActual                 );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "SHOTS"   , contadores                    );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "INV"     , String.valueOf(invariantes)   );
+
+        int aliveThreads = 0;
+        int runningThreads = 0;
+        for (Thread thread : threads) {
+            if (thread.isAlive())
+                aliveThreads++;
+            if (thread.getState() == Thread.State.RUNNABLE)
+                runningThreads++;
+
+            STATE_LOG("INFO", Thread.currentThread().getName(), "THREAD", thread.getName() + " " + thread.getState());
+        }
+
+        String threadInfo = String.format("Alive: %1$d , Running: %2$d", aliveThreads, runningThreads);
+        STATE_LOG("INFO", Thread.currentThread().getName(), "THREAD"  , threadInfo                    );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "EOM"  , "--------------------------------");
     }
 
     private static String formatLog(String logLevel, String step, String caller, String message){
