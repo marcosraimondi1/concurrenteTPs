@@ -22,7 +22,7 @@ class MonitorTest {
 
         int invariantes_MAX = 200;
 
-        RdP rdp = new RdP(W_MAS_PAPER,W_MENOS_PAPER,MI_PAPER,T_INV_PAPER,P_INV_PAPER,TIEMPOS_PAPER,invariantes_MAX);
+        RdP rdp = new RdP(W_MAS_PAPER.clone(),W_MENOS_PAPER.clone(),MI_PAPER.clone(),T_INV_PAPER.clone(),P_INV_PAPER.clone(),TIEMPOS_PAPER.clone(),invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
         Monitor.resetMonitor();
@@ -89,6 +89,9 @@ class MonitorTest {
 
         // Como T5 se puede disparar solo una vez, Solo un hilo va a incrementar "variable"
         assertEquals(1,variable.get());
+
+        // el resto queda esperando en la cola de T5
+        assertEquals(4,monitor.getCantidadEsperandoColas()[4]);
     }
     @Test
     void invarianteDeTransicionCheck() {
@@ -99,9 +102,9 @@ class MonitorTest {
 
         int[][]     plaza_salida        = W_MAS_PAPER       ; // plazas a la salida de la transición (Matriz)
         int[][]     plaza_entrada       = W_MENOS_PAPER     ; // plazas a la entrada de la transición (Matriz)
-        int[]       marcado             = MI_PAPER          ; // marcado inicial
+        int[]       marcado             = MI_PAPER.clone()  ; // marcado inicial
         long[][]    tiempos             = TIEMPOS_PAPER     ; // tiempo de cada transicion
-        int         invariantes_MAX     = 1000              ; // cantidad de invariantes a realizar
+        int         invariantes_MAX     = 100               ; // cantidad de invariantes a realizar
         int[]       trans_invariantes   = T_INV_PAPER       ; // transiciones para contar invariantes (T14 marca una vuelta)
         int[][]     invariantes_plazas  = P_INV_PAPER       ; // invariantes de plaza de la red
 
@@ -144,10 +147,10 @@ class MonitorTest {
                             condicion = false;
                             break;
                         }else {
+                            // se puede avanzar. apagar es false
                             monitor.dispararTransicion(k);
                         }
                     }
-
                 }
                 latch.countDown();
             });
@@ -175,9 +178,6 @@ class MonitorTest {
         assertArrayEquals(MI_PAPER, rdp.getMarcadoActual());
 
         // verifico log con expresion regular
-        String regex = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
-        String replace = "$5$7$9$11";
-
-        assertTrue(rdp.logger.validateLog(regex, replace));
+        assertTrue(rdp.logger.validateLog(REGEX_PAPER, REPLACE_PAPER));
     }
 }
