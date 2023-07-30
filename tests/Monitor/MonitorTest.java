@@ -16,7 +16,7 @@ class MonitorTest {
         // Testeo con la RdP del paper
         //------------------------------Inicio Politica----------------------------------------------//
 
-        PoliticaTest politica = new PoliticaTest();
+        Politica politica = new Politica1(CONFLICTOS_PAPER.clone()); // politica1 es la de 50-50
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
