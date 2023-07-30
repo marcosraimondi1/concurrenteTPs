@@ -14,7 +14,7 @@ import java.util.concurrent.CyclicBarrier;
 import static Constants.Constants.*;
 
 public class Main {
-    public final static Logger stateLogger = new Logger(STATE_LOG_PATH);
+    private final static Logger stateLogger = new Logger(STATE_LOG_PATH);
     private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
@@ -138,10 +138,10 @@ public class Main {
                 int     invariantes   = rdp.getCuentaInvariantes();
                 long    runningTime   = System.currentTimeMillis() - startTime;
 
-                stateLogger.logn(formatLog("INFO", "MAIN", "TIME"    , String.valueOf(runningTime)   ));
-                stateLogger.logn(formatLog("INFO", "MAIN", "MARCADO" , marcadoActual                 ));
-                stateLogger.logn(formatLog("INFO", "MAIN", "SHOTS"   , contadores                    ));
-                stateLogger.logn(formatLog("INFO", "MAIN", "INV"     , String.valueOf(invariantes)   ));
+                STATE_LOG("INFO", "MAIN", "TIME"    , String.valueOf(runningTime)   );
+                STATE_LOG("INFO", "MAIN", "MARCADO" , marcadoActual                 );
+                STATE_LOG("INFO", "MAIN", "SHOTS"   , contadores                    );
+                STATE_LOG("INFO", "MAIN", "INV"     , String.valueOf(invariantes)   );
 
                 int aliveThreads = 0;
                 int runningThreads = 0;
@@ -151,12 +151,12 @@ public class Main {
                     if (thread.getState() == Thread.State.RUNNABLE)
                         runningThreads++;
 
-                    stateLogger.logn(formatLog("INFO", "MAIN", "THREAD", thread.getName() + " " + thread.getState()));
+                    STATE_LOG("INFO", "MAIN", "THREAD", thread.getName() + " " + thread.getState());
                 }
 
                 String threadInfo = String.format("Alive: %1$d , Running: %2$d", aliveThreads, runningThreads);
-                stateLogger.logn(formatLog("INFO", "MAIN", "THREAD"  , threadInfo                    ));
-                stateLogger.logn(formatLog("INFO", "MAIN", "EOM"  , "--------------------------------"));
+                STATE_LOG("INFO", "MAIN", "THREAD"  , threadInfo                    );
+                STATE_LOG("INFO", "MAIN", "EOM"  , "--------------------------------");
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -178,6 +178,9 @@ public class Main {
         // Format the log message
         return String.format("[%1$-10s] %2$s [%3$-4s] %4$s: %5$s",
                 logLevel, date, step, caller, message);
+    }
+    public static void STATE_LOG(String logLevel, String step, String caller, String message){
+        stateLogger.logn(formatLog(logLevel, step, caller, message));
     }
 }
 

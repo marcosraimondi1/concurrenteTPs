@@ -3,7 +3,7 @@ package RdP;
 import Exceptions.InvariantePlazaException;
 import Logger.Logger;
 
-
+import Main.*;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -87,6 +87,7 @@ public class RdP {
         try {
             verificarInvariantePlaza();
         } catch (InvariantePlazaException e) {
+            Main.STATE_LOG("ERROR", "RdP", Thread.currentThread().getName(), e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
 
