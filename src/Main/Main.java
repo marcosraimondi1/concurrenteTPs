@@ -148,10 +148,11 @@ public class Main {
         int     invariantes   = rdp.getCuentaInvariantes();
         long    runningTime   = System.currentTimeMillis() - startTime;
 
-        STATE_LOG("INFO", Thread.currentThread().getName(), "TIME"    , String.valueOf(runningTime)   );
-        STATE_LOG("INFO", Thread.currentThread().getName(), "MARCADO" , marcadoActual                 );
-        STATE_LOG("INFO", Thread.currentThread().getName(), "SHOTS"   , contadores                    );
-        STATE_LOG("INFO", Thread.currentThread().getName(), "INV"     , String.valueOf(invariantes)   );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "TIME"      , String.valueOf(runningTime)  );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "MARCADO"   , marcadoActual                );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "CONT TRANS", contadores                   );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "CONT INV"  , String.valueOf(invariantes)  );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "COLAS"     , Arrays.toString(Monitor.getMonitor().getCantidadEsperandoColas()));
 
         int aliveThreads = 0;
         int runningThreads = 0;
