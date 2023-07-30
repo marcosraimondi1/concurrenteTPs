@@ -18,7 +18,6 @@ public class Politica1 extends Politica {
 
         // inicializa todas las banderas en false
         flags = new boolean[conflictos.length];
-        System.out.println("Cantidad de conflictos en la RdP:"+conflictos.length);
         Arrays.fill(flags, false);
     }
     @Override

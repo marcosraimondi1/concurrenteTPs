@@ -82,7 +82,6 @@ public class Politica2 extends Politica {
 
         // Genera un número aleatorio entre 0 y 1
         double numeroAleatorio = random.nextDouble();
-        //System.out.println(numeroAleatorio);
 
         // Compara el número aleatorio con la probabilidad asociada
         boolean izquierda = numeroAleatorio > probabilidadDerecha;

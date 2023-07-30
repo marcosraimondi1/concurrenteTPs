@@ -282,8 +282,8 @@ class VectorSensibilizadasTest {
                 {1000L  ,  MAX_TIME    }, // T1
                 {2000L  ,  MAX_TIME    }, // T2
         };
-
-        Monitor monitor = Monitor.getMonitor(
+        Monitor.resetMonitor();
+        Monitor.getMonitor(
                 new RdP(plazas_salida_transiciones, plazas_entrada_transiciones, marcado_inicial, new int[] {1,2}, new int [][] {{1,1,2}}, tiempos, 500),
                 new Politica.Politica()
         );
@@ -302,13 +302,7 @@ class VectorSensibilizadasTest {
             int finalI = i;
             threads[i] = new Thread(()->{
                 try {
-                    try {
-                        Monitor.getMonitor().getMutex().acquire();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
                     assertTrue(vectorSensibilizadas.isSensibilizada(finalI));
-                    Monitor.getMonitor().getMutex().release();
                 } catch (TimeoutException e) {
                     throw new RuntimeException(e);
                 }

@@ -1,10 +1,9 @@
 package Monitor;
 
-import Politica.PoliticaTest;
+import Politica.*;
 import RdP.RdP;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,7 +25,7 @@ class MonitorTest {
         RdP rdp = new RdP(W_MAS_PAPER,W_MENOS_PAPER,MI_PAPER,T_INV_PAPER,P_INV_PAPER,TIEMPOS_PAPER,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
-
+        Monitor.resetMonitor();
         Monitor monitor = Monitor.getMonitor(rdp,politica);
 
         //------------------------------Test-1--------------------------------------------------------//
@@ -93,20 +92,27 @@ class MonitorTest {
     }
     @Test
     void invarianteDeTransicionCheck() {
-        // todo : este test esta fallando
         //------------------------------Inicio Politica----------------------------------------------//
-
-        PoliticaTest politica = new PoliticaTest();
+        Politica    politica   = new Politica1(CONFLICTOS_PAPER); // politica1 es la de 50-50
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
-        int     invariantes_MAX     = 100                       ;
+        int[][]     plaza_salida        = W_MAS_PAPER       ; // plazas a la salida de la transición (Matriz)
+        int[][]     plaza_entrada       = W_MENOS_PAPER     ; // plazas a la entrada de la transición (Matriz)
+        int[]       marcado             = MI_PAPER          ; // marcado inicial
+        long[][]    tiempos             = TIEMPOS_PAPER     ; // tiempo de cada transicion
+        int         invariantes_MAX     = 1000              ; // cantidad de invariantes a realizar
+        int[]       trans_invariantes   = T_INV_PAPER       ; // transiciones para contar invariantes (T14 marca una vuelta)
+        int[][]     invariantes_plazas  = P_INV_PAPER       ; // invariantes de plaza de la red
 
-        RdP rdp = new RdP(W_MAS_PAPER, W_MENOS_PAPER, MI_PAPER, T_INV_PAPER, P_INV_PAPER, TIEMPOS_PAPER, invariantes_MAX);
+        RdP rdp = new RdP(plaza_salida, plaza_entrada, marcado, trans_invariantes, invariantes_plazas, tiempos, invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 
+        Monitor.resetMonitor(); // porque se comparte entre metodos de test de una misma clase test
         Monitor monitor = Monitor.getMonitor(rdp,politica);
+
+        //------------------------------Inicio Hilos-------------------------------------------------//
 
         // Declaro las secuencias de disparo para los hilos
         int[] secuencia1 = {6,7,8,9}; // Caso 1 segmento S_e implica plazas P9,P10,P11
@@ -116,7 +122,9 @@ class MonitorTest {
         int[] secuencia5 = {5};       // Caso 3 segmento S_d implica plazas P5
 
         int[][] secuencias      = {secuencia1,secuencia2,secuencia3,secuencia4,secuencia5};
-        Thread [] threads       = new Thread[5];
+
+        Thread [] threads       = new Thread[secuencias.length];
+
         CountDownLatch latch    = new CountDownLatch(threads.length);
 
         for (int i = 0; i< threads.length; i++)
@@ -141,7 +149,6 @@ class MonitorTest {
                     }
 
                 }
-                System.out.println("El "+Thread.currentThread().getName()+" Termino de ejecutar y volvió");
                 latch.countDown();
             });
         }
@@ -153,25 +160,21 @@ class MonitorTest {
         boolean success;
 
         try {
-            success = latch.await(10000,java.util.concurrent.TimeUnit.MILLISECONDS);
+            success = latch.await(15000,java.util.concurrent.TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
+        // verifico que termine porque el countdown latch llego a 0 y no por timeout
         assertTrue(success);
 
         // verifico que se hayan ejecutado 100 invariantes
-
-        System.out.println(rdp.getCuentaInvariantes());
-
-        assertEquals(100,rdp.getCuentaInvariantes());
+        assertEquals(invariantes_MAX,rdp.getCuentaInvariantes());
 
         // verifico que se termine en el marcado Inicial
-
-        System.out.println(Arrays.toString(rdp.getMarcadoActual()));
         assertArrayEquals(MI_PAPER, rdp.getMarcadoActual());
 
-        // verifico expresion regular
+        // verifico log con expresion regular
         String regex = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
         String replace = "$5$7$9$11";
 

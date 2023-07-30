@@ -30,7 +30,8 @@ public class Cola {
             throw new RuntimeException(e);
         }
     }
-    public Semaphore getCola() {
-        return cola;
+
+    public int getCantidadEsperando() {
+        return cola.getQueueLength();
     }
 }

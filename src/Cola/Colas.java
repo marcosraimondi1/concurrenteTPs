@@ -30,4 +30,12 @@ public class Colas {
         }
         return colasConEspera;
     }
+
+    public int[] getCantidadEsperando() {
+        int[] contadores = new int[colas.length];
+        for (int i = 0; i<contadores.length; i++) {
+            contadores[i] = colas[i].getCantidadEsperando();
+        }
+        return contadores;
+    }
 }

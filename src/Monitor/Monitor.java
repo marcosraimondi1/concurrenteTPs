@@ -29,8 +29,8 @@ public class Monitor {
 
     /**
      * crea el monitor en caso de que no se lo haya hecho antes y lo retorna
-     * @param red
-     * @param politica
+     * @param red red de petri a la que se le va a aplicar el monitor
+     * @param politica politica a utilizar
      * @return monitor.
      */
     public static Monitor getMonitor(RdP red, Politica politica){
@@ -38,6 +38,10 @@ public class Monitor {
             monitor = new Monitor(red, politica);
         }
         return monitor;
+    }
+
+    public static void resetMonitor(){
+        monitor = null;
     }
 
     /**
@@ -130,8 +134,8 @@ public class Monitor {
      * @return boolean
      */
     private boolean todoFalso(boolean[] m){
-        for (int i = 0 ; i < m.length ; i++) {
-            if (m[i]) {
+        for (boolean b : m) {
+            if (b) {
                 return false;
             }
         }
@@ -166,5 +170,9 @@ public class Monitor {
 
     public Semaphore getMutex() {
         return mutex;
+    }
+
+    public int[] getCantidadEsperandoColas(){
+        return colas.getCantidadEsperando();
     }
 }

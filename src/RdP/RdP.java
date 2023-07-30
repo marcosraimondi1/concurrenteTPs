@@ -136,7 +136,6 @@ public class RdP {
                 continue;
 
             cuenta_invariantes++;
-            //System.out.println(cuenta_invariantes);
             break;
         }
     }

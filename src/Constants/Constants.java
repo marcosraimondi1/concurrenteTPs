@@ -319,4 +319,9 @@ public class Constants {
      * transicion para contar invariantes (T6 y T10 marcan una vuelta)
      */
     public static int[] T_INV_PAPER = new int[]{5,9}; // index respectivo de T6 = 5 y de T10 = 9
+
+    public static int[][] CONFLICTOS_PAPER = new int[][]{
+            { 1, 2 }
+    };
+
 }
