@@ -42,7 +42,12 @@ public class Logger {
      * @return true , si no quedo ningun caracter en el log ,false en caso contrario.
      */
     public boolean validateLog(String regex,String replace){
-        String log = getLog();
+        String log;
+        try {
+            log = getLog();
+        } catch (FileNotFoundException e) {
+            return false;
+        }
 
         Pattern pattern = Pattern.compile(regex);   // creo el objeto de la regex
         Matcher matcher = pattern.matcher(log);     // busco los patrones en el log
@@ -71,18 +76,16 @@ public class Logger {
         return true;
     }
 
-    public String getLog() {
+    public String getLog() throws FileNotFoundException {
         File file = new File(file_path);
         String log = "";
-        try {
-            Scanner scanner = new Scanner(file);
 
-            while (scanner.hasNextLine()) {
-                log += scanner.nextLine();
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        Scanner scanner = new Scanner(file);
+
+        while (scanner.hasNextLine()) {
+            log += scanner.nextLine();
         }
+
         return log;
     }
 
