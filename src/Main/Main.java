@@ -44,6 +44,16 @@ public class Main {
 
         int[][] secuencias = GET_SECUENCIAS_TP2(); // secuencias de disparo asignadas para cada hilo
 
+//        int[][] secuencias = new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
+//        int[][] secuencias = new int[][] {
+//                {0},
+//                {1, 3},
+//                {2, 4},
+//                {5, 7},
+//                {6, 8},
+//                {9, 11, 13, 14},
+//        }; // para semi secuencializado
+
         Thread [] threads   = new Thread[secuencias.length];
 
         long time = System.currentTimeMillis(); // tiempo al inicio del programa
@@ -69,6 +79,7 @@ public class Main {
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 8 secuencias
 
                     // disparo la secuencia invariante recientemente asignada
+//                    int contador_secuencia = 0;
                     for (int k : secuencia) {
                         if(!monitor.seAvanza()){ // NO se puede avanzar. apagar es true
                             condicion = false;
@@ -86,6 +97,9 @@ public class Main {
                             }
                         }
                     }
+//                    contador_secuencia ++;
+//                    if (contador_secuencia == invariantes_MAX)
+//                        break;
                 }
                 System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+(contadorDisparos-1)+" Transiciones de la secuencia "+ finalI);
                 try {
@@ -115,7 +129,7 @@ public class Main {
         System.out.println("FIN DE PROGRAMA");
 
         try {
-            Thread.sleep(20);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

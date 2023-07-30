@@ -27,7 +27,7 @@ public class Constants {
      */
     public static long[][] TIEMPOS = new long[][] {
             // alfa ,       beta
-            {    20L,    MAX_TIME }, // T0
+            {    10L,    MAX_TIME }, // T0
             {     0L,    MAX_TIME }, // T1
             {     0L,    MAX_TIME }, // T2
             {    20L,    MAX_TIME }, // T3
@@ -211,12 +211,12 @@ public class Constants {
         return new int[][]{
                 { 0       } ,
                 { 1       } ,
-                { 3       } ,
                 { 2       } ,
+                { 3       } ,
                 { 4       } ,
                 { 5       } ,
-                { 7       } ,
                 { 6       } ,
+                { 7       } ,
                 { 8       } ,
                 { 9       } ,
                 { 10      } ,
