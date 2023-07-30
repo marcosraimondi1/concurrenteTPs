@@ -324,4 +324,14 @@ public class Constants {
             { 1, 2 }
     };
 
+    /**
+     * Expresion regular
+     */
+    public static String REGEX_PAPER = "((T0)((T1)(.*?)(T3)(.*?)|(T2)(.*?)(T4)(.*?))(T5))|((T6)(T7)(T8)(T9))";
+
+    /**
+     * Grupos de reemplazo
+     */
+    public static String REPLACE_PAPER = "$5$7$9$11";
+
 }
