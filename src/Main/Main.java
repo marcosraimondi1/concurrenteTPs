@@ -71,42 +71,46 @@ public class Main {
 
             threads[i] = new Thread(()->{
 
-                boolean condicion = true;
-                int contadorDisparos = 0;
+                boolean continuar = true;
+                int contadorDisparos  = 0;
+                int contadorSecuencia = 0;
 
-                while(condicion){
+                while(continuar){
 
                     int[] secuencia = secuencias[finalI]; // selecciono una de las 8 secuencias
 
                     // disparo la secuencia invariante recientemente asignada
-//                    int contador_secuencia = 0;
                     for (int k : secuencia) {
-                        if(!monitor.seAvanza()){ // NO se puede avanzar. apagar es true
-                            condicion = false;
+
+                        if (rdp.isApagada())
+                        {
+                            continuar = false;
                             break;
-                        }else {
-                            // se puede avanzar. apagar es false
-                            monitor.dispararTransicion(k);
-                            contadorDisparos++;
-                            if (finalI == 0 && contadorDisparos >= invariantes_MAX)
-                            {
-                                contadorDisparos++;
-                                // la transicion 0 se disparo INVARIANTES_MAX veces
-                                condicion = false;
-                                break;
-                            }
                         }
+
+                        // se puede avanzar. apagar es false
+                        monitor.dispararTransicion(k);
+                        contadorDisparos++;
+
                     }
-//                    contador_secuencia ++;
-//                    if (contador_secuencia == invariantes_MAX)
-//                        break;
+
+                    contadorSecuencia ++;
+
+                    if (finalI == 0 && contadorSecuencia == invariantes_MAX)
+                    {
+                        contadorDisparos++;
+                        break;
+                    }
                 }
+
                 System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+(contadorDisparos-1)+" Transiciones de la secuencia "+ finalI);
+
                 try {
                     cyclic.await();
                 } catch (InterruptedException | BrokenBarrierException e) {
                     throw new RuntimeException(e);
                 }
+
             });
         }
 

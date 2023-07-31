@@ -82,6 +82,10 @@ public class Monitor {
                     transicionesConEsperaySensibilizadas[i] = sensibilizadas[i] && transicionesConEspera[i];
                 }
 
+                if (red.isApagada())
+                    // si la red esta apagada saco todos los hilos que esten esperando sin importar si estan sensibilizados
+                    transicionesConEsperaySensibilizadas = transicionesConEspera;
+
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
                     // hay transiciones que se pueden disparar, la politica elige una
                     int indexDisparo = politica.cual(transicionesConEsperaySensibilizadas);
@@ -99,24 +103,9 @@ public class Monitor {
                     throw new RuntimeException("Se corrompio el mutex de entrada");
                 }
 
-                if(seAvanza()) {
-                    // osea si apagar es false
-                    // me voy a esperar a la cola correspondiente a la transicion que quiero disparar y libero mutex
-                    mutex.release();
-                    colas.getCola(transicion).esperar();    // acquire
-                }
-                else{
-                    // apagar es true. Llegamos a los 200 invariantes
-                    // corto la ejecución y despierto a los hilos uno a uno.
-                    boolean libero = liberar(); // veo si puedo liberar un hilo que espera en una cola de condición
-                    if(libero)
-                    {
-                        k = true; // si libero pongo el k en true para que cuando despierte no se vaya del while
-                        return;
-                    }
-                    mutex.release(); // no habia hilos esperando en la cola de condición, libero el mutex por si esperan en la entrada
-                    return;
-                }
+                // me voy a esperar a la cola correspondiente a la transicion que quiero disparar y libero mutex
+                mutex.release();
+                colas.getCola(transicion).esperar();    // acquire
             }
         }
 
@@ -143,29 +132,11 @@ public class Monitor {
     }
 
     /**
-     * Hace release a un hilo que se encuentra esperando en la cola de su respectiva transicion, una vez que
-     * seAvanza sea false
-     * @return boolean
-     */
-    private boolean liberar(){
-        boolean libero =false;
-        boolean[] HilosEnEspera = colas.hayEsperando();
-        for (int i = 0; i < HilosEnEspera.length ; i++) {
-            if(HilosEnEspera[i]){
-                libero = true;
-                colas.getCola(i).sacar();
-                break;
-            }
-        }
-        return libero;
-    }
-
-    /**
      * lee el estado de la variable "apagar" de la red. Si apagar es true entonces NO seAvanza, sino si.
      * @return boolean
      */
     public boolean seAvanza(){
-        return !red.getApagar();
+        return !red.isApagada();
     }
 
     public Semaphore getMutex() {

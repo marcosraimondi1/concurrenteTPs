@@ -54,9 +54,12 @@ public class RdP {
      */
     public boolean disparar(int transicion) {
 
+        if (isApagada())
+            return true;
+
         if(cuenta_invariantes >= invariantes_MAX){
-            setApagar();    //apagar = true
-            return false;
+            setApagar();    // apagar = true
+            return true;
         }
 
         try {
@@ -153,7 +156,7 @@ public class RdP {
      * Nos permite leer el estado de la variable apagar.
      * @return boolean
      */
-    public boolean getApagar() {
+    public boolean isApagada() {
         lock.readLock().lock();
         boolean aux = apagar;
         lock.readLock().unlock();
