@@ -56,9 +56,9 @@ public class Main {
 
         //----------------------------- Inicio Hilos ------------------------------------------------//
 
-        threads[0] = new Thread(new Proceso(secuencias[0], monitor, rdp, barrier, INVARIANTES_MAX));
+        threads[0] = new Thread(new Proceso(secuencias[0], monitor, barrier, INVARIANTES_MAX));
         for (int i = 1; i< threads.length; i++)
-            threads[i] = new Thread(new Proceso(secuencias[i], monitor, rdp, barrier, -1));
+            threads[i] = new Thread(new Proceso(secuencias[i], monitor, barrier, -1));
 
         for (int i = 0; i< threads.length; i++){
             threads[i].setName("Secuencia "+i);

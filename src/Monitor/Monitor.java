@@ -82,8 +82,8 @@ public class Monitor {
                     transicionesConEsperaySensibilizadas[i] = sensibilizadas[i] && transicionesConEspera[i];
                 }
 
-                if (red.isApagada())
-                    // si la red esta apagada saco todos los hilos que esten esperando sin importar si estan sensibilizados
+                if (!seAvanza())
+                    // si no se avanza la red esta apagada saco todos los hilos que esten esperando sin importar si estan sensibilizados
                     transicionesConEsperaySensibilizadas = transicionesConEspera;
 
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
@@ -98,7 +98,6 @@ public class Monitor {
 
             } else{
                 // NO se puede disparar la transicion
-                // libero ó cedo el acceso al monitor
                 if (mutex.availablePermits() != 0) {
                     throw new RuntimeException("Se corrompio el mutex de entrada");
                 }
@@ -113,7 +112,7 @@ public class Monitor {
         //------------------------------------ Fin Seccion Critica -----------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
 
-        mutex.release(); // si disparé pero no liberé a nadie libero el mutex y me voy
+        mutex.release(); // si no liberé a nadie, libero el mutex y me voy
 
     }
 

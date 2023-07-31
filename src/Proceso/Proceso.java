@@ -8,14 +8,12 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Proceso implements Runnable {
     private final Monitor monitor;
-    private final RdP rdp;
     private final CyclicBarrier barrier;
     private final int[] secuencia;
     private final int secuencias_MAX;
 
-    public Proceso(int[] secuencia, Monitor monitor, RdP rdp, CyclicBarrier barrier, int secuencias_MAX){
+    public Proceso(int[] secuencia, Monitor monitor, CyclicBarrier barrier, int secuencias_MAX){
         this.monitor    = monitor   ;
-        this.rdp        = rdp       ;
         this.barrier    = barrier   ;
         this.secuencia  = secuencia ;
         this.secuencias_MAX = secuencias_MAX;
@@ -36,7 +34,7 @@ public class Proceso implements Runnable {
                 // se puede avanzar. apagar es false
                 monitor.dispararTransicion(k);
 
-                if (rdp.isApagada())
+                if (!monitor.seAvanza())
                 {
                     // SE TERMINO EL PROGRAMA
                     continuar = false;
@@ -45,14 +43,14 @@ public class Proceso implements Runnable {
 
                 // ACA HAGO LO QUE TENGA QUE HACER (TRABAJO FUERA DEL MONITOR)
                 // --------------- TRABAJO ------------------
-                for (int j = 0; j < 10000; j++)
-                {
-                    int trabajo_duro = 0;
-                    for (int p = 0; p < 10000; p++)
-                    {
-                        trabajo_duro ++;
-                    }
-                }
+                //for (int j = 0; j < 10000; j++)
+                //{
+                //    int trabajo_duro = 0;
+                //    for (int p = 0; p < 10000; p++)
+                //    {
+                //        trabajo_duro ++;
+                //    }
+                //}
                 // --------------------------------------------
                 contadorDisparos++;
             }
