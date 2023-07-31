@@ -2,8 +2,9 @@ package Main;
 
 import Logger.Logger;
 import Monitor.Monitor;
-import Politica.*;
+import Proceso.Proceso;
 import RdP.RdP;
+import Politica.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -18,14 +19,67 @@ public class Main {
     private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
-        boolean     usarPolitica1   = POLITICA1;
-
-        Politica    politica1   = new Politica1(CONFLICTOS_TP2); // politica1 es la de 50-50
-        Politica    politica2   = new Politica2(CONFLICTOS_TP2,CONFLICTOS_TP2_80); // politica2 es la de 80-20
-        Politica    politica    = usarPolitica1? politica1 : politica2; // guardamos la politica a utilizar
+        Politica politica = getPolitica();
 
         //------------------------------Inicio RdP---------------------------------------------------//
 
+        iniciarRdP();
+
+        //------------------------------Inicio Monitor-----------------------------------------------//
+
+        Monitor monitor = Monitor.getMonitor(rdp,politica);
+
+        //------------------------------Inicio de Prgrama -------------------------------------------------//
+
+        iniciarPrograma(monitor);
+
+
+        System.out.println("\n------------- FIN DE PROGRAMA -----------------\n");
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static void iniciarPrograma(Monitor monitor) {
+        int[][] secuencias  = GET_SECUENCIAS_TP2()      ;   // secuencias de disparo asignadas para cada hilo
+        long    time        = System.currentTimeMillis();   // tiempo al inicio del programa
+
+        Thread[] threads    = new Thread[secuencias.length];
+
+        CyclicBarrier barrier = new CyclicBarrier( threads.length + 1,() -> {
+            // al terminar el programa verifico que se cumplan los invariantes
+            System.out.println("\nTiempo Total: "+(System.currentTimeMillis()-time)+" ms\n");
+            rdp.logger.validateLog(REGEX,REPLACE);
+        });
+
+        //----------------------------- Inicio Hilos ------------------------------------------------//
+
+        threads[0] = new Thread(new Proceso(secuencias[0], monitor, rdp, barrier, INVARIANTES_MAX));
+        for (int i = 1; i< threads.length; i++)
+            threads[i] = new Thread(new Proceso(secuencias[i], monitor, rdp, barrier, -1));
+
+        for (int i = 0; i< threads.length; i++){
+            threads[i].setName("Secuencia "+i);
+            threads[i].start();
+        }
+
+        System.out.println("Hilos iniciados");
+
+        stateLogger(threads);             // inicio el logger de estado
+
+        //----------------------------- Sincronizo Hilos al finalizar --------------------------------------//
+
+        try {
+            barrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static void iniciarRdP() {
         int[][]     plaza_salida        = W_MAS_TP2         ; // plazas a la salida de la transición (Matriz)
         int[][]     plaza_entrada       = W_MENOS_TP2       ; // plazas a la entrada de la transición (Matriz)
         int[]       marcado             = MI_TP2            ; // marcado inicial
@@ -35,119 +89,14 @@ public class Main {
         int[][]     invariantes_plazas  = P_INV_TP2         ; // invariantes de plaza de la red
 
         rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
+    }
 
-        //------------------------------Inicio Monitor-----------------------------------------------//
+    private static Politica getPolitica() {
+        boolean     usarPolitica1   = POLITICA1;
 
-        Monitor monitor = Monitor.getMonitor(rdp,politica);
-
-        //------------------------------Inicio Hilos-------------------------------------------------//
-
-        int[][] secuencias = GET_SECUENCIAS_TP2(); // secuencias de disparo asignadas para cada hilo
-
-//        int[][] secuencias = new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
-//        int[][] secuencias = new int[][] {
-//                {0},
-//                {1, 3},
-//                {2, 4},
-//                {5, 7},
-//                {6, 8},
-//                {9, 11, 13, 14},
-//        }; // para semi secuencializado
-
-        Thread [] threads   = new Thread[secuencias.length];
-
-        long time = System.currentTimeMillis(); // tiempo al inicio del programa
-
-        CyclicBarrier cyclic = new CyclicBarrier( threads.length + 1,() -> {
-            // al terminar el programa verifico que se cumplan los invariantes
-            System.out.println("Tiempo Total: "+(System.currentTimeMillis()-time)+" ms");
-            rdp.logger.validateLog(REGEX,REPLACE);
-        });
-
-
-        for (int i = 0; i< threads.length; i++)
-        {
-            int finalI = i;
-
-            threads[i] = new Thread(()->{
-
-                boolean continuar = true;
-                int contadorDisparos  = 0;
-                int contadorSecuencia = 0;
-
-                while(continuar){
-
-                    int[] secuencia = secuencias[finalI]; // selecciono una de las 8 secuencias
-
-                    // disparo la secuencia invariante recientemente asignada
-                    for (int k : secuencia) {
-
-                        // se puede avanzar. apagar es false
-                        monitor.dispararTransicion(k);
-
-                        if (rdp.isApagada())
-                        {
-                            // SE TERMINO EL PROGRAMA
-                            continuar = false;
-                            break;
-                        }
-
-                        // ACA HAGO LO QUE TENGA QUE HACER (TRABAJO FUERA DEL MONITOR)
-                        // --------------- TRABAJO ------------------
-                        for (int j = 0; j < 10000; j++)
-                        {
-                            int trabajo_duro = 0;
-                            for (int p = 0; p < 10000; p++)
-                            {
-                                trabajo_duro ++;
-                            }
-                        }
-                        contadorDisparos++;
-                        // --------------------------------------------
-                    }
-
-                    contadorSecuencia ++;
-
-                    // para la secuencia 0 (T0), solo la disparo invariantes_MAX para que la rdp vuelva al marcado incial
-                    // y se pueda usar la regex para validar el log
-                    if (finalI == 0 && contadorSecuencia == invariantes_MAX)
-                        break;
-                }
-
-                System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+contadorDisparos+" Transiciones de la secuencia "+ finalI);
-
-                try {
-                    cyclic.await();
-                } catch (InterruptedException | BrokenBarrierException e) {
-                    throw new RuntimeException(e);
-                }
-
-            });
-        }
-
-        for (Thread thread : threads) {
-            thread.start();
-        }
-
-        stateLogger(threads);
-
-        System.out.println("Hilos iniciados");
-
-        //------------------------------Sincronizo Hilos al finalizar---------------------------------------//
-
-        try {
-            cyclic.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("FIN DE PROGRAMA");
-
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        Politica    politica1   = new Politica1(CONFLICTOS_TP2); // politica1 es la de 50-50
+        Politica    politica2   = new Politica2(CONFLICTOS_TP2,CONFLICTOS_TP2_80); // politica2 es la de 80-20
+        return usarPolitica1 ? politica1 : politica2;
     }
 
     private static void stateLogger(Thread[] threads){

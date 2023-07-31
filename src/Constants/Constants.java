@@ -20,6 +20,16 @@ public class Constants {
       //  return getSecuencias1(); // hilos del paper
 //        return getSecuencias2(); // se agrega secuencia para hilos para T9 y T10
         return getSecuencias3(); // se agrega secuencia para hilos para cada transicion en conflicto
+
+//      return new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
+//      return new int[][] {
+//                {0},
+//                {1, 3},
+//                {2, 4},
+//                {5, 7},
+//                {6, 8},
+//                {9, 11, 13, 14},
+//        }; // para semi secuencializado
     }
 
     /**
@@ -227,7 +237,9 @@ public class Constants {
     }
 
 
-    //------------------------------Constantes de PAPER (para pruebas)--------------------------------------//
+    //------------------------------------------------------------------------------------------------------//
+    //----------------------------- Constantes de PAPER (para pruebas) -------------------------------------//
+    //------------------------------------------------------------------------------------------------------//
     /**
      * Marcado inicial de la red del Paper
      */
