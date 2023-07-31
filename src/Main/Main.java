@@ -82,28 +82,39 @@ public class Main {
                     // disparo la secuencia invariante recientemente asignada
                     for (int k : secuencia) {
 
+                        // se puede avanzar. apagar es false
+                        monitor.dispararTransicion(k);
+
                         if (rdp.isApagada())
                         {
+                            // SE TERMINO EL PROGRAMA
                             continuar = false;
                             break;
                         }
 
-                        // se puede avanzar. apagar es false
-                        monitor.dispararTransicion(k);
+                        // ACA HAGO LO QUE TENGA QUE HACER (TRABAJO FUERA DEL MONITOR)
+                        // --------------- TRABAJO ------------------
+                        for (int j = 0; j < 10000; j++)
+                        {
+                            int trabajo_duro = 0;
+                            for (int p = 0; p < 10000; p++)
+                            {
+                                trabajo_duro ++;
+                            }
+                        }
                         contadorDisparos++;
-
+                        // --------------------------------------------
                     }
 
                     contadorSecuencia ++;
 
+                    // para la secuencia 0 (T0), solo la disparo invariantes_MAX para que la rdp vuelva al marcado incial
+                    // y se pueda usar la regex para validar el log
                     if (finalI == 0 && contadorSecuencia == invariantes_MAX)
-                    {
-                        contadorDisparos++;
                         break;
-                    }
                 }
 
-                System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+(contadorDisparos-1)+" Transiciones de la secuencia "+ finalI);
+                System.out.println(Thread.currentThread().getName()+" FINALIZO, disparo: "+contadorDisparos+" Transiciones de la secuencia "+ finalI);
 
                 try {
                     cyclic.await();
