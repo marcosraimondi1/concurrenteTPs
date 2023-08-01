@@ -10,7 +10,7 @@ public class Constants {
     public static int INVARIANTES_MAX = 200; // cantidad de invariantes a realizar
 
     //------------------------------Constantes de TP2----------------------------------------------//
-    public static boolean POLITICA1 = false;
+    public static boolean POLITICA1 = true;
 
     /**
      * Secuencias de disparo asignadas a cada hilo.
