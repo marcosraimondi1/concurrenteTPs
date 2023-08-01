@@ -25,15 +25,20 @@ public class Proceso implements Runnable {
         boolean continuar = true;
         int contadorDisparos  = 0;
         int contadorSecuencia = 0;
+        long tiempoConHandling = 0;
 
         while(continuar){
 
+            long timeFinal = 0;
             // disparo la secuencia invariante recientemente asignada
             for (int k : secuencia) {
+                long timeInicial = System.currentTimeMillis();
 
-                // se puede avanzar. apagar es false
                 monitor.dispararTransicion(k);
 
+                timeFinal = System.currentTimeMillis();
+                tiempoConHandling += timeFinal-timeInicial;
+                // se puede avanzar. apagar es false
                 if (!monitor.seAvanza())
                 {
                     // SE TERMINO EL PROGRAMA
@@ -55,6 +60,7 @@ public class Proceso implements Runnable {
                 contadorDisparos++;
             }
 
+
             contadorSecuencia ++;
 
             // para la secuencia 0 (T0), solo la disparo invariantes_MAX para que la rdp vuelva al marcado incial
@@ -66,7 +72,7 @@ public class Proceso implements Runnable {
         }
 
         contadorSecuencia --;
-        System.out.println(Thread.currentThread().getName()+" \tFINALIZO, disparo: "+contadorDisparos+" \tTransiciones y "+ contadorSecuencia+" \tSecuencias" );
+        System.out.println(Thread.currentThread().getName()+" \tFINALIZO, disparo: "+contadorDisparos+" \tTransiciones y "+ contadorSecuencia+" \tSecuencias, observando un" +" Tiempo promedio con Handling: "+(tiempoConHandling/contadorDisparos)+ "[ms]");
 
         try {
             barrier.await();

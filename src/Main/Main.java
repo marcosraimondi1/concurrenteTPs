@@ -19,6 +19,7 @@ public class Main {
     private static RdP rdp;
     public static void main(String[] args) {
         //------------------------------Inicio Politica----------------------------------------------//
+
         Politica politica = getPolitica();
 
         //------------------------------Inicio RdP---------------------------------------------------//
@@ -32,7 +33,6 @@ public class Main {
         //------------------------------Inicio de Prgrama -------------------------------------------------//
 
         iniciarPrograma(monitor);
-
 
         System.out.println("\n------------- FIN DE PROGRAMA -----------------\n");
 
