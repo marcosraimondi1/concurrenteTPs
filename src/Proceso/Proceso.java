@@ -26,18 +26,16 @@ public class Proceso implements Runnable {
         int contadorDisparos  = 0;
         int contadorSecuencia = 0;
         long tiempoConHandling = 0;
+        long timeInicial = System.currentTimeMillis();
 
         while(continuar){
 
-            long timeFinal = 0;
             // disparo la secuencia invariante recientemente asignada
             for (int k : secuencia) {
-                long timeInicial = System.currentTimeMillis();
+
 
                 monitor.dispararTransicion(k);
 
-                timeFinal = System.currentTimeMillis();
-                tiempoConHandling += timeFinal-timeInicial;
                 // se puede avanzar. apagar es false
                 if (!monitor.seAvanza())
                 {
@@ -72,6 +70,8 @@ public class Proceso implements Runnable {
         }
 
         contadorSecuencia --;
+        long timeFinal = System.currentTimeMillis();
+        tiempoConHandling = tiempoConHandling+(timeFinal-timeInicial);
         System.out.println(Thread.currentThread().getName()+" \tFINALIZO, disparo: "+contadorDisparos+" \tTransiciones y "+ contadorSecuencia+" \tSecuencias, observando un" +" Tiempo promedio con Handling: "+(tiempoConHandling/contadorDisparos)+ "[ms]");
 
         try {

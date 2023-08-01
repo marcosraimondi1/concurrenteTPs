@@ -14,18 +14,23 @@ public class SensibilizadoConTiempo {
 
         this.tiempos = tiempos;
 
-        Arrays.fill(esperando, false);
-        Arrays.fill(timeStamps, MAX_TIME);
+        Arrays.fill(esperando, false); // Inicializo como que no hay nadie esperando
+        Arrays.fill(timeStamps, MAX_TIME); // inicializo el tiempo en el que las transiciones empiezan a estar sensibilizadas en el maximo
     }
+
 
     /**
      * Setea el timestamp de la transicion con el tiempo actual
      * @param transicion transicion a setear el timestamp
      */
     public void setTimeStamp(int transicion) {
+
         timeStamps[transicion] = System.currentTimeMillis();
     }
+    public void setTimeStampReset(int transicion) {
 
+        timeStamps[transicion] = MAX_TIME;
+    }
     /**
      * Verifica si una transicion es inmediata (alfa == 0)
      * @param transicion transicion a verificar
@@ -44,8 +49,8 @@ public class SensibilizadoConTiempo {
         long alfa = tiempos[transicion][0];
         long beta = tiempos[transicion][1];
         long ahora = System.currentTimeMillis();
-        long timeStamp = timeStamps[transicion];
-        return (ahora - timeStamp) >= alfa && (ahora - timeStamp) <= beta;
+        long timeStamp = timeStamps[transicion]; //Tiempo desde el cual empezo a estar sensibilizada
+        return ((ahora - timeStamp) >= alfa) && ((ahora - timeStamp) <= beta);
     }
 
     /**

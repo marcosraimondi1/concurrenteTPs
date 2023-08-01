@@ -19,17 +19,19 @@ public class VectorSensibilizadas {
 
         Arrays.fill             (sensibilizadas         , false );
         Arrays.fill             (sensibilizadasAnterior , false );
-        actualizarSensibilizadas(marcado_inicial);
+        actualizarSensibilizadas(marcado_inicial,0);
+
     }
 
     /**
      * Actualiza las transiciones sensibilizadas ya que al disparar la transicion se modifico el marcado.
      * En caso de que haya cambiado el estado de la transicion, seteo el time stamp.
      */
-    public void actualizarSensibilizadas(int[] marcado) {
+    public void actualizarSensibilizadas(int[] marcado, int transicion) {
+        // para el caso de T0 el timeStamp correspondiente se actualiza siempre que se dispare esta transición
         for (int i = 0; i < sensibilizadas.length; i++) {
             sensibilizadas[i] = isSensibilizada(i, marcado); //verifico si es sensibilizado por tokens solamente
-            if (sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])) {
+            if (sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])|| transicion == 0) {
                 // se sensibilizo la transicion i, actualizo el timestamp de la transicion
                  sensibilizadoConTiempo.setTimeStamp(i);
             }
@@ -82,7 +84,7 @@ public class VectorSensibilizadas {
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
             if (!esperando) {
                 // nadie durmiendo, esta sensibilizada
-                sensibilizadoConTiempo.setTimeStamp(transicion);
+                sensibilizadoConTiempo.setTimeStampReset(transicion); // si puedo disparar reseteo mi timesStamp al maximo como muestra de que se debe actualizar
                 return true;
             }
             // esta sensibilizada pero hay alguien durmiendo(esperando = true)

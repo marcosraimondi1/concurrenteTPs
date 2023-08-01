@@ -101,7 +101,7 @@ public class RdP {
             throw new RuntimeException(e.getMessage());
         }
 
-        vectorSensibilizadas.actualizarSensibilizadas(marcado_actual);
+        vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,transicion);
 
         return true;
     }

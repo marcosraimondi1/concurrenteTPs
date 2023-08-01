@@ -121,7 +121,7 @@ class VectorSensibilizadasTest {
 
         int[] nuevo_marcado = new int[] { 0, 1 }; // sensibilizo T0
 
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             sensibilizada = vectorSensibilizadas.isSensibilizada(0);
@@ -134,7 +134,7 @@ class VectorSensibilizadasTest {
 
         nuevo_marcado = new int[] { 1, 0 }; // sensibilizo T1
 
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             assertFalse(vectorSensibilizadas.isSensibilizada(0));
@@ -147,7 +147,7 @@ class VectorSensibilizadasTest {
 
         nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T0,T1,T2
 
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             assertTrue(vectorSensibilizadas.isSensibilizada(0));
@@ -182,7 +182,7 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 0, 1 }; // sensibilizo T0
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             long tic = System.currentTimeMillis();
@@ -194,7 +194,7 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T0, T1, T2
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             // veo si T2 se sensibiliza
@@ -209,7 +209,7 @@ class VectorSensibilizadasTest {
 
         // verifico que se actualice el timestamp de la transicion
         nuevo_marcado = new int[] { 0, 0 };
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
         try {
             // veo si T2 se desensibiliza
             long tic = System.currentTimeMillis();
@@ -221,7 +221,7 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 1, 1 };
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
         try {
             // veo si T2 actualizo su timestamp
             long tic = System.currentTimeMillis();
@@ -235,9 +235,9 @@ class VectorSensibilizadasTest {
 
         // -------------------------------------------------------------------------------------
         nuevo_marcado = new int[] { 0, 0 };
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
         nuevo_marcado = new int[] { 1, 0 }; // sensibilizo T1
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             Thread.sleep(tiempos[1][0]);
@@ -246,7 +246,7 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T1 de nuevo -> no debe cambiar el timestamp
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
 
         try {
             long tic = System.currentTimeMillis();
