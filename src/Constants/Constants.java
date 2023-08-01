@@ -17,10 +17,20 @@ public class Constants {
      * @return int[][] .
      */
     public static int[][] GET_SECUENCIAS_TP2(){
-      //  return getSecuencias1(); // hilos del paper
-//        return getSecuencias2(); // se agrega secuencia para hilos para T9 y T10
+//          return getSecuencias1(); // hilos del paper
+//          return getSecuencias2(); // se agrega secuencia para hilos para T9 y T10
         return getSecuencias3(); // se agrega secuencia para hilos para cada transicion en conflicto
 
+//        return new int[][] {
+//                {0,1,3,5,7,10,12,13,14},
+//                {0,1,3,5,7,9,11,13,14},
+//                {0,1,3,6,8,10,12,13,14},
+//                {0,1,3,6,8,9,11,13,14},
+//                {0,2,4,5,7,10,12,13,14},
+//                {0,2,4,5,7,9,11,13,14},
+//                {0,2,4,6,8,10,12,13,14},
+//                {0,1,3,6,8,9,11,13,14},
+//        };
 //      return new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
 //      return new int[][] {
 //                {0},
@@ -166,12 +176,25 @@ public class Constants {
     /**
      * Expresion regular
      */
-    public static String REGEX = "T0(?<T0>(?:T(?:\\d+))*?)(?:(?:T1(?<T1>(?:T(?:\\d+))*?)T3)|(?:T2(?<T2>(?:T(?:\\d+))*?)T4))(?<T3T4>(?:T(?:\\d+))*?)(?:(?:T5(?<T5>(?:T(?:\\d+))*?)T7)|(?:T6(?<T6>(?:T(?:\\d+))*?)T8))(?<T7T8>(?:T(?:\\d+))*?)(?:(?:T10(?<T10>(?:T(?:\\d+))*?)T12)|(?:T9(?<T9>(?:T(?:\\d+))*?)T11))(?<T11T12>(?:T(?:\\d+))*?)T13(?<T13>(?:T(?:\\d+))*?)T14(?<T14>(?:T(?:\\d+))*?)";
+//    public static String REGEX = "T0(?<T0>(?:T(?:\\d+))*?)(?:(?:T1(?<T1>(?:T(?:\\d+))*?)T3)|(?:T2(?<T2>(?:T(?:\\d+))*?)T4))(?<T3T4>(?:T(?:\\d+))*?)(?:(?:T5(?<T5>(?:T(?:\\d+))*?)T7)|(?:T6(?<T6>(?:T(?:\\d+))*?)T8))(?<T7T8>(?:T(?:\\d+))*?)(?:(?:T10(?<T10>(?:T(?:\\d+))*?)T12)|(?:T9(?<T9>(?:T(?:\\d+))*?)T11))(?<T11T12>(?:T(?:\\d+))*?)T13(?<T13>(?:T(?:\\d+))*?)T14(?<T14>(?:T(?:\\d+))*?)";
+    public static String REGEX = "(T0)(?<T0>(?:T(?:\\d+))*?)(?:(?:(T1)(?<T1>(?:T(?:\\d+))*?)(T3))|(?:(T2)(?<T2>(?:T(?:\\d+))*?)(T4)))(?<T3T4>(?:T(?:\\d+))*?)(?:(?:(T5)(?<T5>(?:T(?:\\d+))*?)(T7))|(?:(T6)(?<T6>(?:T(?:\\d+))*?)(T8)))(?<T7T8>(?:T(?:\\d+))*?)(?:(?:(T10)(?<T10>(?:T(?:\\d+))*?)(T12))|(?:(T9)(?<T9>(?:T(?:\\d+))*?)(T11)))(?<T11T12>(?:T(?:\\d+))*?)(T13)(?<T13>(?:T(?:\\d+))*?)(T14)(?<T14>(?:T(?:\\d+))*?)";
 
     /**
      * Grupos de reemplazo
      */
     public static String REPLACE = "${T0}${T1}${T2}${T3T4}${T5}${T6}${T7T8}${T9}${T10}${T11T12}${T13}${T14}";
+    public static String REPLACE_INV = "$1$3$5$6$8$10$12$13$15$17$19$20$22$24$26";
+
+    public static String[] INVARIANTES = new String[]{
+            "T0T1T3T5T7T10T12T13T14"    ,
+            "T0T1T3T5T7T9T11T13T14"     ,
+            "T0T1T3T6T8T10T12T13T14"    ,
+            "T0T1T3T6T8T9T11T13T14"     ,
+            "T0T2T4T5T7T10T12T13T14"    ,
+            "T0T2T4T5T7T9T11T13T14"     ,
+            "T0T2T4T6T8T10T12T13T14"    ,
+            "T0T2T4T6T8T9T11T13T14"
+    };
 
     /**
      * Devuelve la secuencia de disparo asignada a cada hilo, segun el algoritmo del paper.

@@ -123,13 +123,15 @@ public class Main {
     private static void logState(Thread[] threads, long startTime) {
         String  marcadoActual = Arrays.toString(rdp.getMarcadoActual());
         String  contadores    = Arrays.toString(rdp.getContadores());
-        int     invariantes   = rdp.getCuentaInvariantes();
+        int     invariantes   = rdp.getCuentaInvariantes()  ;
+        int[]   c_invariantes = rdp.getCuentasInvariantes() ;
         long    runningTime   = System.currentTimeMillis() - startTime;
 
         STATE_LOG("INFO", Thread.currentThread().getName(), "TIME"      , String.valueOf(runningTime)  );
         STATE_LOG("INFO", Thread.currentThread().getName(), "MARCADO"   , marcadoActual                );
         STATE_LOG("INFO", Thread.currentThread().getName(), "CONT TRANS", contadores                   );
         STATE_LOG("INFO", Thread.currentThread().getName(), "CONT INV"  , String.valueOf(invariantes)  );
+        STATE_LOG("INFO", Thread.currentThread().getName(), "CONTs INV" , Arrays.toString(c_invariantes));
         STATE_LOG("INFO", Thread.currentThread().getName(), "COLAS"     , Arrays.toString(Monitor.getMonitor().getCantidadEsperandoColas()));
 
         int aliveThreads = 0;

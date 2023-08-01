@@ -8,8 +8,10 @@ import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static Constants.Constants.INV_LOG_PATH;
+import static Constants.Constants.*;
 
 /**
  * Clase que representa la Red de Petri
@@ -22,9 +24,11 @@ public class RdP {
     private final int[]     marcado_actual              ;   // estado de la RdP
     private final int       invariantes_MAX             ;
     private int             cuenta_invariantes = 0      ;
+    private final int[]     cuentas_invariantes_individual = new int[INVARIANTES.length];
     private final int[]     trans_invariantes           ;
     private final int[][]   invariantes_plazas          ;
     private boolean         apagar                      ;
+    private String          secuencia_actual = ""       ;
     public final Logger     logger = new Logger(INV_LOG_PATH)   ;
     private final int[]     contadores                          ;   // cuenta la cantidad de veces que se disparo cada transicion
     private final ReadWriteLock         lock                    ;
@@ -45,6 +49,7 @@ public class RdP {
         vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
         contadores = new int[cantidad_transiciones];
         Arrays.fill(contadores, 0);
+        Arrays.fill(cuentas_invariantes_individual, 0);
     }
 
     /**
@@ -82,6 +87,8 @@ public class RdP {
         // log transicion
         String trans = "T"+ transicion;
         logger.log(trans);
+
+        secuencia_actual+=trans;
 
         contadores[transicion]++;
 
@@ -140,6 +147,26 @@ public class RdP {
                 continue;
 
             cuenta_invariantes++;
+
+            // obtengo el invariante
+            Pattern pattern = Pattern.compile(REGEX);               // creo el objeto de la regex
+            Matcher matcher = pattern.matcher(secuencia_actual);    // busco el invariante en la secuencia actual
+
+            String invariante   = matcher.replaceAll(REPLACE_INV);    // me quedo con el invariante
+
+            matcher = pattern.matcher(secuencia_actual);
+
+
+            secuencia_actual    = matcher.replaceAll(REPLACE);        // me quedo con lo que no forme parte del invariante
+
+            for (int i = 0; i < INVARIANTES.length; i++) {
+                if (invariante.equals(INVARIANTES[i])) {
+                    cuentas_invariantes_individual[i]++;
+                    break;
+                }
+            }
+
+
             break;
         }
     }
@@ -182,6 +209,9 @@ public class RdP {
 
     public int getCuentaInvariantes(){
         return cuenta_invariantes;
+    }
+    public int[] getCuentasInvariantes(){
+        return cuentas_invariantes_individual;
     }
 
     public int[] getContadores() {
