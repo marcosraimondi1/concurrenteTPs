@@ -1,17 +1,18 @@
 package RdP;
 
 import Monitor.Monitor;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class VectorSensibilizadas {
     private final boolean[] sensibilizadas              ;    // transiciones sensibilizadas
     private final boolean[] sensibilizadasAnterior      ;
-
     private final int[][]   plazas_entrada_transiciones ;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
     private final SensibilizadoConTiempo sensibilizadoConTiempo;
 
-    public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {
+    public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos ,int[] trans_fuente ) {
         sensibilizadas                      = new boolean[tiempos.length];
         sensibilizadasAnterior              = new boolean[tiempos.length];
         this.plazas_entrada_transiciones    = plazas_entrada_transiciones;
@@ -19,7 +20,9 @@ public class VectorSensibilizadas {
 
         Arrays.fill             (sensibilizadas         , false );
         Arrays.fill             (sensibilizadasAnterior , false );
-        actualizarSensibilizadas(marcado_inicial,0);
+        for(int fuente:trans_fuente) {
+            actualizarSensibilizadas(marcado_inicial,fuente); //actualizo el marcado inicial incluyendo al tiempo de las transiciones fuente
+        }
 
     }
 
@@ -31,7 +34,8 @@ public class VectorSensibilizadas {
         // para el caso de T0 el timeStamp correspondiente se actualiza siempre que se dispare esta transición
         for (int i = 0; i < sensibilizadas.length; i++) {
             sensibilizadas[i] = isSensibilizada(i, marcado); //verifico si es sensibilizado por tokens solamente
-            if (sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])|| transicion == 0) {
+            boolean isTransfuente = transicion == i; // condicion para setear el timeStamp de transición fuente
+            if (sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])|| isTransfuente) {
                 // se sensibilizo la transicion i, actualizo el timestamp de la transicion
                  sensibilizadoConTiempo.setTimeStamp(i);
             }
@@ -138,4 +142,7 @@ public class VectorSensibilizadas {
     public boolean[] getSensibilizadas (){
         return sensibilizadas;
     }
+
+
+
 }

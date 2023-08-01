@@ -71,8 +71,9 @@ public class Proceso implements Runnable {
 
         contadorSecuencia --;
         long timeFinal = System.currentTimeMillis();
-        tiempoConHandling = tiempoConHandling+(timeFinal-timeInicial);
-        System.out.println(Thread.currentThread().getName()+" \tFINALIZO, disparo: "+contadorDisparos+" \tTransiciones y "+ contadorSecuencia+" \tSecuencias, observando un" +" Tiempo promedio con Handling: "+(tiempoConHandling/contadorDisparos)+ "[ms]");
+        tiempoConHandling = (tiempoConHandling+(timeFinal-timeInicial))/contadorSecuencia;
+
+        System.out.println(Thread.currentThread().getName()+" \tFINALIZO, disparo: "+contadorDisparos+" \tTransiciones y "+ contadorSecuencia+" \tSecuencias, observando un" +" Tiempo promedio con Handling: "+tiempoConHandling+ "[ms]");
 
         try {
             barrier.await();

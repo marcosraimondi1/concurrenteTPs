@@ -3,6 +3,7 @@ package RdP;
 import Monitor.Monitor;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,11 +18,13 @@ class VectorSensibilizadasTest {
         int[][]     plazas_entrada_transiciones = W_MENOS_TP2   ;
         int[]       marcado_inicial             = MI_TP2        ;
         long[][]    tiempos                     = TIEMPOS       ;
+        int[] sin_trans_fuente = new int[] {};
 
         VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
                 marcado_inicial,
-                tiempos
+                tiempos,
+                sin_trans_fuente
         );
         boolean sensibilizada;
         long tic = System.currentTimeMillis();
@@ -67,7 +70,8 @@ class VectorSensibilizadasTest {
         vectorSensibilizadas = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
                 marcado_inicial,
-                tiempos
+                tiempos,
+                sin_trans_fuente
         );
         try {
             // pasan 100ms, no deberia tirar error
@@ -103,12 +107,15 @@ class VectorSensibilizadasTest {
                 {0L  ,  MAX_TIME    }, // T1
                 {0L  ,  MAX_TIME    }, // T2
         };
-
+        int[] sin_trans_fuente = new int[] {};
         VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
                 marcado_inicial,
-                tiempos
+                tiempos,
+                sin_trans_fuente
         );
+        ArrayList<Integer> transicions = new ArrayList<Integer>();
+        transicions.add(0);
 
         boolean sensibilizada;
         try {
@@ -120,8 +127,8 @@ class VectorSensibilizadasTest {
         assertFalse(sensibilizada);
 
         int[] nuevo_marcado = new int[] { 0, 1 }; // sensibilizo T0
-
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+  ;
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
 
         try {
             sensibilizada = vectorSensibilizadas.isSensibilizada(0);
@@ -134,7 +141,7 @@ class VectorSensibilizadasTest {
 
         nuevo_marcado = new int[] { 1, 0 }; // sensibilizo T1
 
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1 );
 
         try {
             assertFalse(vectorSensibilizadas.isSensibilizada(0));
@@ -147,7 +154,7 @@ class VectorSensibilizadasTest {
 
         nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T0,T1,T2
 
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1 );
 
         try {
             assertTrue(vectorSensibilizadas.isSensibilizada(0));
@@ -169,8 +176,12 @@ class VectorSensibilizadasTest {
         vectorSensibilizadas = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
                 marcado_inicial,
-                tiempos
+                tiempos,
+                sin_trans_fuente
+
         );
+
+        ArrayList<Integer> transicionesDisp= new ArrayList<Integer>();
 
         try {
             long tic = System.currentTimeMillis();
@@ -182,7 +193,8 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 0, 1 }; // sensibilizo T0
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        transicionesDisp.add(0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
 
         try {
             long tic = System.currentTimeMillis();
@@ -193,8 +205,10 @@ class VectorSensibilizadasTest {
             throw new RuntimeException(e);
         }
 
+        transicionesDisp.clear();
         nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T0, T1, T2
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
 
         try {
             // veo si T2 se sensibiliza
@@ -208,8 +222,9 @@ class VectorSensibilizadasTest {
 
 
         // verifico que se actualice el timestamp de la transicion
+        transicionesDisp.clear();
         nuevo_marcado = new int[] { 0, 0 };
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
         try {
             // veo si T2 se desensibiliza
             long tic = System.currentTimeMillis();
@@ -221,7 +236,7 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 1, 1 };
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
         try {
             // veo si T2 actualizo su timestamp
             long tic = System.currentTimeMillis();
@@ -235,9 +250,9 @@ class VectorSensibilizadasTest {
 
         // -------------------------------------------------------------------------------------
         nuevo_marcado = new int[] { 0, 0 };
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
         nuevo_marcado = new int[] { 1, 0 }; // sensibilizo T1
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
 
         try {
             Thread.sleep(tiempos[1][0]);
@@ -246,7 +261,7 @@ class VectorSensibilizadasTest {
         }
 
         nuevo_marcado = new int[] { 1, 1 }; // sensibilizo T1 de nuevo -> no debe cambiar el timestamp
-        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,0);
+        vectorSensibilizadas.actualizarSensibilizadas(nuevo_marcado,-1);
 
         try {
             long tic = System.currentTimeMillis();
@@ -282,16 +297,18 @@ class VectorSensibilizadasTest {
                 {1000L  ,  MAX_TIME    }, // T1
                 {2000L  ,  MAX_TIME    }, // T2
         };
+        int[] sin_trans_fuente = new int[] {};
         Monitor.resetMonitor();
         Monitor.getMonitor(
-                new RdP(plazas_salida_transiciones, plazas_entrada_transiciones, marcado_inicial, new int[] {1,2}, new int [][] {{1,1,2}}, tiempos, 500),
+                new RdP(plazas_salida_transiciones, plazas_entrada_transiciones, marcado_inicial, new int[] {1,2}, new int [][] {{1,1,2}}, tiempos, 500,sin_trans_fuente),
                 new Politica.Politica()
         );
 
         VectorSensibilizadas vectorSensibilizadas = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
                 marcado_inicial,
-                tiempos
+                tiempos,
+                sin_trans_fuente
         );
 
         CountDownLatch latch = new CountDownLatch(3);
@@ -327,7 +344,8 @@ class VectorSensibilizadasTest {
         VectorSensibilizadas vectorSensibilizadas2 = new VectorSensibilizadas(
                 plazas_entrada_transiciones,
                 marcado_inicial,
-                tiempos
+                tiempos,
+                sin_trans_fuente
         );
 
         threads = new Thread[3];

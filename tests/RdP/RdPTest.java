@@ -23,7 +23,8 @@ class RdPTest {
                 {   0   ,   MAX_TIME}  // T3
         };
         int invariante_MAX = 50;
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1},invariantes_plazas,tiempos,invariante_MAX);
+        int[] sin_trans_fuente = new int[] {};
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1},invariantes_plazas,tiempos,invariante_MAX,sin_trans_fuente);
 
         int[] marcado_actual = red.getMarcadoActual();
 
@@ -55,7 +56,7 @@ class RdPTest {
                 { 0, 1, 1, 1}
         };
 
-        RdP red2 = new RdP(plazas_salida2,plazas_entrada2,marcado_inicial2, new int[]{1,1},invariantes_plazas2,tiempos,invariante_MAX);
+        RdP red2 = new RdP(plazas_salida2,plazas_entrada2,marcado_inicial2, new int[]{1,1},invariantes_plazas2,tiempos,invariante_MAX,sin_trans_fuente);
 
         assertThrows(RuntimeException.class, ()->red2.disparar(1));
     }
@@ -73,7 +74,8 @@ class RdPTest {
         };
         int[][] invariantes_plazas = P_INV_PAPER;
         int invariante_MAX = 50;
-        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1}, invariantes_plazas,tiempos,invariante_MAX);
+        int[] sin_trans_fuente = new int[] {};
+        RdP red = new RdP(plazas_salida,plazas_entrada,marcado_inicial, new int[]{1,1}, invariantes_plazas,tiempos,invariante_MAX,sin_trans_fuente);
 
         // verificar sensibilizadas
         boolean[] sensibilizadas = red.getSensibilizadas();
@@ -92,7 +94,9 @@ class RdPTest {
 
         int[][] invariantes_plazas = P_INV_PAPER;
 
-        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas,tiempos,invariante_MAX);
+        int[] sin_trans_fuente = new int[] {};
+
+        RdP rdp = new RdP(plaza_salida,plaza_entrada,marcado, new int[]{5,9}, invariantes_plazas,tiempos,invariante_MAX,sin_trans_fuente);
 
         assertEquals(0,rdp.getCuentaInvariantes());
 

@@ -4,6 +4,8 @@ import Exceptions.InvariantePlazaException;
 import Logger.Logger;
 
 import Main.*;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -33,8 +35,9 @@ public class RdP {
     private final int[]     contadores                          ;   // cuenta la cantidad de veces que se disparo cada transicion
     private final ReadWriteLock         lock                    ;
     private final VectorSensibilizadas  vectorSensibilizadas    ;
+    private final ArrayList<Integer> trans_fuente               ;
 
-    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
+    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX, int[] trans_fuente) {
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
         this.marcado_actual = marcado_inicial;
@@ -43,10 +46,11 @@ public class RdP {
         this.trans_invariantes = trans_invariantes;
         this.invariantes_MAX = invariantes_MAX;
         this.invariantes_plazas = invariantes_plazas;
+        this.trans_fuente = arregloToArratList(trans_fuente);
 
         this.apagar = false;
         this.lock = new ReentrantReadWriteLock(); // creo lock para proteger variable apagar
-        vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
+        vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos,trans_fuente);
         contadores = new int[cantidad_transiciones];
         Arrays.fill(contadores, 0);
         Arrays.fill(cuentas_invariantes_individual, 0);
@@ -101,10 +105,17 @@ public class RdP {
             throw new RuntimeException(e.getMessage());
         }
 
-        vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,transicion);
+        ArrayList<Integer> trans_fuente = new ArrayList<>();
+
+        if(isTransicionFuente(transicion)){
+            vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,transicion);
+        }else{
+            vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,-1);
+        }
 
         return true;
     }
+
 
     /**
      * Verifica el cumplimiento de los invariantes de transicion debido a que previamente disparamos la transicion
@@ -199,6 +210,16 @@ public class RdP {
         lock.writeLock().unlock();
     }
 
+    private ArrayList<Integer> arregloToArratList(int[] Arreglo) {
+        ArrayList<Integer> array = new ArrayList<>();
+        for (int i = 0; i < Arreglo.length; i++) {
+            array.add(Arreglo[i]);
+        }
+        return array;
+    }
+    private boolean isTransicionFuente(int transicion) {
+        return trans_fuente.contains(transicion);
+    }
     public int[] getMarcadoActual() {
         return marcado_actual;
     }

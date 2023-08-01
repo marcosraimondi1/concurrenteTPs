@@ -7,6 +7,7 @@ import RdP.RdP;
 import Politica.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.BrokenBarrierException;
@@ -87,8 +88,9 @@ public class Main {
         int         invariantes_MAX     = INVARIANTES_MAX   ; // cantidad de invariantes a realizar
         int[]       trans_invariantes   = T_INV_TP2         ; // transiciones para contar invariantes (T14 marca una vuelta)
         int[][]     invariantes_plazas  = P_INV_TP2         ; // invariantes de plaza de la red
+        int[] transiciones_fuente       = TRANS_FUENTE      ;
 
-        rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
+        rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX,transiciones_fuente);
     }
 
     private static Politica getPolitica() {

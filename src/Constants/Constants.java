@@ -1,5 +1,7 @@
 package Constants;
 
+import java.util.ArrayList;
+
 public class Constants {
 
     public static String INV_LOG_PATH = ".\\data\\log.txt";
@@ -173,6 +175,7 @@ public class Constants {
         {0, 0, 1, 1, 1, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  1, 0,    3 },
     };
 
+    public static int [] TRANS_FUENTE = new int[] {0};
     /**
      * Expresion regular
      */
