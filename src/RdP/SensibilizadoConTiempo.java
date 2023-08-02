@@ -88,7 +88,7 @@ public class SensibilizadoConTiempo {
         long ahora = System.currentTimeMillis();
         long timeStamp = timeStamps[transicion];
 
-        if (timeStamp > ahora) return false; // todo: capaz tirar una excepcion
+        if (timeStamp > ahora) return false;
 
         return (ahora - timeStamp) < alfa;
     }
