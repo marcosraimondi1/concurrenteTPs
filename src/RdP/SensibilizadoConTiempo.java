@@ -5,17 +5,17 @@ import java.util.Arrays;
 import static Constants.Constants.MAX_TIME;
 
 public class SensibilizadoConTiempo {
-    long [] timeStamps;     // en ms
-    long [][] tiempos;      // en ms
-    boolean [] esperando;   // indica si hay hilos esperando para ingresar en la ventana de tiempo en cada transicion
+    long [] timeStamps;     // En ms
+    long [][] tiempos;      // En ms
+    boolean [] esperando;   // Indica si hay hilos esperando para ingresar en la ventana de tiempo en cada transicion
     public SensibilizadoConTiempo(long[][] tiempos) {
         timeStamps = new long[tiempos.length];
         esperando = new boolean[tiempos.length];
 
         this.tiempos = tiempos;
 
-        Arrays.fill(esperando, false); // Inicializo como que no hay nadie esperando
-        Arrays.fill(timeStamps, MAX_TIME); // inicializo el tiempo en el que las transiciones empiezan a estar sensibilizadas en el maximo
+        Arrays.fill(esperando, false); // Inicializa como que no hay hilos esperando
+        Arrays.fill(timeStamps, MAX_TIME); // Inicializa el tiempo en el que las transiciones empiezan a estar sensibilizadas en el maximo
     }
 
 

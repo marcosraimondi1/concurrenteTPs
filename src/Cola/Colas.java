@@ -2,7 +2,7 @@ package Cola;
 
 public class Colas {
     private final Cola[] colas;
-    private final int cantidad; //cantidad de Cola que tenemos. Sera el tamaño del vector colas.
+    private final int cantidad; // Cantidad de Cola que tendra. Sera el tamaño del vector colas.
     public Colas (int cantidad) {
         this.cantidad = cantidad;
         colas = new Cola[cantidad];

@@ -7,7 +7,7 @@ public class Constants {
 
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 
-    public static int INVARIANTES_MAX = 200; // cantidad de invariantes a realizar
+    public static int INVARIANTES_MAX = 200; // Cantidad de invariantes a realizar
 
     //------------------------------Constantes de TP2----------------------------------------------//
     public static boolean POLITICA1 = false;
@@ -17,9 +17,9 @@ public class Constants {
      * @return int[][] .
      */
     public static int[][] GET_SECUENCIAS_TP2(){
-//          return getSecuencias1(); // hilos del paper
-//          return getSecuencias2(); // se agrega secuencia para hilos para T9 y T10
-          return getSecuencias3(); // se agrega secuencia para hilos para cada transicion en conflicto
+//          return getSecuencias1(); // Secuencia para hilos del paper
+//          return getSecuencias2(); // Se agrega secuencia para hilos para T9 y T10
+         return getSecuencias3(); // Se agrega secuencia para hilos para cada transicion en conflicto
 
 //          return new int[][] {
 //                  {0,1,3,5,7,10,12,13,14},
@@ -32,7 +32,7 @@ public class Constants {
 //                  {0,1,3,6,8,9,11,13,14},
 //          };
 
-//            return new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
+//            return new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // Para secuencializado
 
     }
 
@@ -307,7 +307,7 @@ public class Constants {
     };
 
     /**
-     *  Matriz de incidencia positiva Paper
+     * Matriz de incidencia positiva Paper
      * Matriz de incidencia de salida, contiene el peso de los brazos que salen de las transiciones y van hacia las plazas.
      */
     public static int[][] W_MAS_PAPER = new int[][] {
@@ -369,7 +369,7 @@ public class Constants {
     /**
      * Transicion para contar invariantes (T6 y T10 marcan una vuelta)
      */
-    public static int[] T_INV_PAPER = new int[]{5,9}; // index respectivo de T6 = 5 y de T10 = 9
+    public static int[] T_INV_PAPER = new int[]{5,9}; // Index respectivo de T6 = 5 y de T10 = 9
 
     public static int[][] CONFLICTOS_PAPER = new int[][]{
             { 1, 2 }

@@ -30,7 +30,7 @@ public class Main {
 
         Monitor monitor = Monitor.getMonitor(rdp,politica);
 
-        //------------------------------Inicio de Prgrama -------------------------------------------------//
+        //------------------------------Inicio de Programa -------------------------------------------------//
 
         iniciarPrograma(monitor);
 
@@ -43,13 +43,13 @@ public class Main {
         }
     }
     private static void iniciarPrograma(Monitor monitor) {
-        int[][] secuencias  = GET_SECUENCIAS_TP2()      ;   // secuencias de disparo asignadas para cada hilo
-        long    time        = System.currentTimeMillis();   // tiempo al inicio del programa
+        int[][] secuencias  = GET_SECUENCIAS_TP2()      ;   // Secuencias de disparo asignadas para cada hilo
+        long    time        = System.currentTimeMillis();   // Tiempo al inicio del programa
 
         Thread[] threads    = new Thread[secuencias.length];
 
         CyclicBarrier barrier = new CyclicBarrier( threads.length + 1,() -> {
-            // al terminar el programa verifico que se cumplan los invariantes
+            // Al terminar el programa, verifica que se cumplan los invariantes
             System.out.println("\nTiempo Total: "+(System.currentTimeMillis()-time)+" ms\n");
             System.out.println("\nVerificando Invariantes...\n");
             rdp.logger.validateLog(REGEX,REPLACE);
@@ -77,7 +77,7 @@ public class Main {
 
         System.out.println("Hilos iniciados");
 
-        stateLogger(threads);             // inicio el logger de estado
+        stateLogger(threads);             // Inicia el logger de estado
 
         //----------------------------- Sincronizo Hilos al finalizar --------------------------------------//
 
@@ -89,13 +89,13 @@ public class Main {
     }
 
     private static void iniciarRdP() {
-        int[][]     plaza_salida        = W_MAS_TP2         ; // plazas a la salida de la transición (Matriz)
-        int[][]     plaza_entrada       = W_MENOS_TP2       ; // plazas a la entrada de la transición (Matriz)
-        int[]       marcado             = MI_TP2            ; // marcado inicial
-        long[][]    tiempos             = TIEMPOS           ; // tiempo de cada transicion
-        int         invariantes_MAX     = INVARIANTES_MAX   ; // cantidad de invariantes a realizar
-        int[]       trans_invariantes   = T_INV_TP2         ; // transiciones para contar invariantes (T14 marca una vuelta)
-        int[][]     invariantes_plazas  = P_INV_TP2         ; // invariantes de plaza de la red
+        int[][]     plaza_salida        = W_MAS_TP2         ; // Plazas a la salida de la transición (Matriz)
+        int[][]     plaza_entrada       = W_MENOS_TP2       ; // Plazas a la entrada de la transición (Matriz)
+        int[]       marcado             = MI_TP2            ; // Marcado inicial
+        long[][]    tiempos             = TIEMPOS           ; // Tiempo de cada transicion
+        int         invariantes_MAX     = INVARIANTES_MAX   ; // Cantidad de invariantes a realizar
+        int[]       trans_invariantes   = T_INV_TP2         ; // Transiciones para contar invariantes (T14 marca una vuelta)
+        int[][]     invariantes_plazas  = P_INV_TP2         ; // Invariantes de plaza de la red
 
         rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
     }
@@ -103,8 +103,8 @@ public class Main {
     private static Politica getPolitica() {
         boolean     usarPolitica1   = POLITICA1;
 
-        Politica    politica1   = new Politica1(CONFLICTOS_TP2); // politica1 es la de 50-50
-        Politica    politica2   = new Politica2(CONFLICTOS_TP2,CONFLICTOS_TP2_80); // politica2 es la de 80-20
+        Politica    politica1   = new Politica1(CONFLICTOS_TP2); // Politica1 es la de 50-50
+        Politica    politica2   = new Politica2(CONFLICTOS_TP2,CONFLICTOS_TP2_80); // Politica2 es la de 80-20
         return usarPolitica1 ? politica1 : politica2;
     }
 
@@ -158,10 +158,10 @@ public class Main {
     }
 
     private static String formatLog(String logLevel, String step, String caller, String message){
-        // Get the current date in the desired format
+        // Obtener la fecha actual en el formato deseado
         String date = new SimpleDateFormat("dd-MM-yy HH:mm:ss").format(new Date());
 
-        // Format the log message
+        // Dar formato al mensaje del log
         return String.format("[%1$-10s] %2$s [%3$-4s] %4$s: %5$s",
                 logLevel, date, step, caller, message);
     }

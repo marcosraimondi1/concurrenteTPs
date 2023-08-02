@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class VectorSensibilizadas {
-    private final boolean[] sensibilizadas              ;    // transiciones sensibilizadas
+    private final boolean[] sensibilizadas              ;    // Transiciones sensibilizadas
     private final boolean[] sensibilizadasAnterior      ;
-    private final int[][]   plazas_entrada_transiciones ;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
+    private final int[][]   plazas_entrada_transiciones ;     // Matriz de incidencia - (denota las plazas a la entrada de una transición)
     private final SensibilizadoConTiempo sensibilizadoConTiempo;
 
     public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {
@@ -21,13 +21,13 @@ public class VectorSensibilizadas {
         Arrays.fill             (sensibilizadasAnterior , false );
 
 
-        // actualizo sensibilizadas de transiciones fuente
+        // Actualiza sensibilizadas de transiciones fuente
         boolean seActualizo = false;
         for (int transicion = 0; transicion < plazas_entrada_transiciones[0].length; transicion++ ) {
 
             if (isTransicionFuente(transicion)){
                 seActualizo = true;
-                actualizarSensibilizadas(marcado_inicial, transicion); //actualizo el marcado inicial incluyendo al tiempo de las transiciones fuente
+                actualizarSensibilizadas(marcado_inicial, transicion); // Actualiza el marcado inicial incluyendo al tiempo de las transiciones fuente
             }
         }
         if(!seActualizo){
@@ -40,14 +40,14 @@ public class VectorSensibilizadas {
      * En caso de que haya cambiado el estado de la transicion, seteo el time stamp.
      */
     public void actualizarSensibilizadas(int[] marcado, int transicion) {
-        // para el caso de T0 el timeStamp correspondiente se actualiza siempre que se dispare esta transición
+        // Para el caso de T0 el timeStamp correspondiente se actualiza siempre que se dispare esta transición
 
         for (int i = 0; i < sensibilizadas.length; i++) {
-            sensibilizadas[i] = isSensibilizada(i, marcado); //verifico si es sensibilizado por tokens solamente
+            sensibilizadas[i] = isSensibilizada(i, marcado); // Verifica si es sensibilizado por tokens solamente
 
-            boolean isTransfuente = isTransicionFuente(transicion) && transicion == i; // condicion para setear el timeStamp de transición fuente (si no se dispara una transición fuente se manda el -1)
+            boolean isTransfuente = isTransicionFuente(transicion) && transicion == i; // Condicion para setear el timeStamp de transición fuente (si no se dispara una transición fuente se manda el -1)
             if ((sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])) || isTransfuente) {
-                // se sensibilizo la transicion i, actualizo el timestamp de la transicion
+                // Se sensibilizo la transicion i, actualizo el timestamp de la transicion
                  sensibilizadoConTiempo.setTimeStamp(i);
             }
 
@@ -67,7 +67,7 @@ public class VectorSensibilizadas {
     private boolean isSensibilizada(int transicion, int[] marcado) {
 
         for (int i = 0; i < marcado.length; i++) {
-            // verifico si la plaza i tiene los tokens necesarios en el marcada actual
+            // Verifica si la plaza i tiene los tokens necesarios en el marcada actual
             if (marcado[i] < plazas_entrada_transiciones[i][transicion]) {
                 return false;
             }
@@ -84,42 +84,42 @@ public class VectorSensibilizadas {
     public boolean isSensibilizada(int transicion) throws TimeoutException {
 
         if (!sensibilizadas[transicion]) {
-            // si no tiene los tokens necesarios, no esta sensibilizada
+            // Si no tiene los tokens necesarios, no esta sensibilizada
             return false;
         }
 
         if (sensibilizadoConTiempo.isInmediata(transicion)) {
-             // si es inmediata, esta sensibilizada solo con los tokens, lo cual se verifico arriba.
+             // Si es inmediata, esta sensibilizada solo con los tokens, lo cual se verifico arriba.
              return true;
         }
 
-        // verifico la ventana de tiempo
+        // Verifica la ventana de tiempo
         boolean ventana = sensibilizadoConTiempo.testVentana(transicion);
 
         if (ventana) {
-            // llego el hilo dentro de la ventana de tiempo
+            // Llega el hilo dentro de la ventana de tiempo
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
             if (!esperando) {
-                // nadie durmiendo, esta sensibilizada
-                sensibilizadoConTiempo.setTimeStamp(transicion); // si puedo disparar reseteo mi timesStamp al maximo como muestra de que se debe actualizar
+                // Nadie durmiendo, esta sensibilizada
+                sensibilizadoConTiempo.setTimeStamp(transicion); // Si puede disparar resetea su timesStamp al maximo como muestra de que se debe actualizar
                 return true;
             }
-            // esta sensibilizada pero hay alguien durmiendo(esperando = true)
-            // si alguien esta esperando, no esta sensibilizada
+            // Esta sensibilizada pero hay alguien durmiendo(esperando = true)
+            // Si alguien esta esperando, no esta sensibilizada
             return false;
         } else {
             // NO llego el hilo dentro de la ventana de tiempo
             boolean antes = sensibilizadoConTiempo.antesDeLaVentana(transicion);
             if (antes) {
-                // si es antes libero el mutex y me voy a dormir
-                sensibilizadoConTiempo.setEsperando(transicion);    // aviso que esta esperando
+                // Si es antes libera el mutex y se va a dormir
+                sensibilizadoConTiempo.setEsperando(transicion);    // Avisa que esta esperando
                 Monitor.getMonitor().getMutex().release();
 
                 long tiempoRestante = sensibilizadoConTiempo.getTiempoRestante(transicion);
                 try {
                     Thread.sleep(tiempoRestante);
                 } catch (InterruptedException e) {
-                    // no deberia ser interrumpido
+                    // No deberia ser interrumpido
                     throw new RuntimeException(e);
                 }
 
@@ -129,20 +129,20 @@ public class VectorSensibilizadas {
                     throw new RuntimeException(e);
                 }
 
-                sensibilizadoConTiempo.resetEsperando(transicion);  // aviso que ya no esta esperando
+                sensibilizadoConTiempo.resetEsperando(transicion);  // Avisa que ya no esta esperando
 
-                // verifico que siga sensibilizada despues de dormir
+                // Verifica que siga sensibilizada despues de dormir
                 if (!sensibilizadas[transicion]) {
-                    // si no tiene los tokens necesarios, no esta sensibilizada
+                    // Si no tiene los tokens necesarios, no esta sensibilizada
                     return false;
                 }
 
-                // esta en la ventana de tiempo y tiene los tokens,por lo tanto se puede disparar
+                // Esta en la ventana de tiempo y tiene los tokens, por lo tanto se puede disparar
                 return true;
 
             } else {
-                // si es despues, no esta sensibilizada y no va a poder dispararse
-                // lanzo excepcion
+                // Si es despues, no esta sensibilizada y no va a poder dispararse
+                // Lanza excepcion
                 throw new TimeoutException("La transicion " + transicion + " se paso del tiempo maximo y no se puede disparar");
             }
         }
@@ -160,7 +160,7 @@ public class VectorSensibilizadas {
         if (transicion < 0)
             return false;
 
-        // reviso que toda la columna de la transicion sea 0
+        // Revisa que toda la columna de la transicion sea 0
         for (int[] fila : plazas_entrada_transiciones)
             if (fila[transicion] != 0)
                 return false;

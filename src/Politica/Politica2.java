@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Politica2: para el conflicto de la Rdp del TP2
+ * Politica2: para el conflicto de la Rdp del TP Final
  * se dispara la transicion izquierda (T9) un 80% de las veces y (T10) un 20% de las veces
  * El resto de conflictos se dispara con una politica del 50%
  */
@@ -21,7 +21,7 @@ public class Politica2 extends Politica {
     public Politica2(int[][] conflictos, boolean[] conflictosProbabilisticos) {
         this.conflictos = conflictos;
         this.conflictosProbabilisticos = conflictosProbabilisticos;
-        // inicializa todas las banderas en false
+        // Inicializa todas las banderas en false
         flags = new boolean[conflictos.length];
         Arrays.fill(flags, false);
     }
@@ -39,9 +39,9 @@ public class Politica2 extends Politica {
             int ty = conflicto[1];
 
             if (index != tx && index != ty)
-                continue; // la transicion elegida no forma parte de este conflicto
+                continue; // La transicion elegida no forma parte de este conflicto
 
-            // verifico que ambas transiciones esten sensibilizadas y con algun hilo esperando
+            // Verifica que ambas transiciones esten sensibilizadas y con algun hilo esperando
             if (!transiciones[tx]) {
                 return ty;
             }
@@ -49,9 +49,9 @@ public class Politica2 extends Politica {
                 return tx;
             }
 
-            // hay conflicto efectivo y hay hilos esperando para disparar ambas transiciones -> aplico la politica
+            // Hay conflicto efectivo y hay hilos esperando para disparar ambas transiciones -> aplica la politica
 
-            // pregunto si al conflicto se le aplica una politica del 80 %
+            // Pregunta si al conflicto se le aplica una politica del 80 %
             if (conflicto80) {
                 // politica 80% hacia la izquierda
                 boolean trans_izquierda = definirProbabilidad();
@@ -61,16 +61,16 @@ public class Politica2 extends Politica {
                 return ty;
             }
 
-            // aplico politica 50% para el resto de los conflictos
-            flags[i] = !flags[i];           // cambio el valor de la bandera
-            return flags[i] ? tx : ty;      // elijo la transicion correspondiente
+            // Aplica politica 50% para el resto de los conflictos
+            flags[i] = !flags[i];           // Cambia el valor de la bandera
+            return flags[i] ? tx : ty;      // Elije la transicion correspondiente
         }
 
         return index;
     }
 
     /**
-     * metodo utilizado por el metodo cual para aplicar el 80-20
+     * Metodo utilizado por el metodo cual para aplicar el 80-20
      * @return boolean,
      */
     private boolean definirProbabilidad() {

@@ -23,7 +23,7 @@ public class Logger {
     }
 
     /**
-     * añade transicion disparada a log.
+     * Añade transicion disparada a log.
      * @param s . string de transicion a añadir.
      */
     public void log(String s){
@@ -52,21 +52,21 @@ public class Logger {
             return false;
         }
 
-        Pattern pattern = Pattern.compile(regex);   // creo el objeto de la regex
-        Matcher matcher = pattern.matcher(log);     // busco los patrones en el log
-        String out = matcher.replaceAll(replace);   // reemplazo los grupos
+        Pattern pattern = Pattern.compile(regex);   // Crea el objeto de la regex
+        Matcher matcher = pattern.matcher(log);     // Busca los patrones en el log
+        String out = matcher.replaceAll(replace);   // Reemplaza los grupos
         String prev = "";
         while (true){
-            // reemplazo y busco con la regex hasta que no se pueda mas
+            // Reemplaza y busca con la regex hasta que no se pueda mas
             matcher = pattern.matcher(out);
             out = matcher.replaceAll(replace);
-            // si la salida es igual a la anterior ==> no puedo reemplazar mas y corto el bucle
+            // Si la salida es igual a la anterior ==> no puede reemplazar mas y corta el bucle
             if (Objects.equals(out,prev))
                 break;
             prev = out;
         }
 
-        // verifico si sobraron transiciones
+        // Verifica si sobraron transiciones
         if (!Objects.equals(out, "")){
             System.out.println("LOG VALIDATION FAILED");
             System.out.println(out);
@@ -89,17 +89,17 @@ public class Logger {
         int[] cuentas = new int[INVARIANTES.length];
         Arrays.fill(cuentas, 0);
 
-        Pattern pattern = Pattern.compile(regex);   // creo el objeto de la regex
-        Matcher matcher = pattern.matcher(log);     // busco los patrones en el log
+        Pattern pattern = Pattern.compile(regex);   // Crea el objeto de la regex
+        Matcher matcher = pattern.matcher(log);     // Busca los patrones en el log
 
         while (true){
-            // reemplazo y busco con la regex hasta que no se pueda mas
+            // Reemplaza y busca con la regex hasta que no se pueda mas
 
-            String out = matcher.replaceAll(replace);   // reemplazo los grupos
+            String out = matcher.replaceAll(replace);   // Reemplaza los grupos
 
             String resto = procesar_resultado(out, cuentas);
 
-            // si la salida es igual a la anterior ==> no puedo reemplazar mas y corto el bucle
+            // Si la salida es igual a la anterior ==> no puede reemplazar mas y corta el bucle
             if (Objects.equals(out,resto))
                 break;
 
@@ -115,7 +115,7 @@ public class Logger {
 
         for (String inv : result_split) {
 
-            // verifico si es un invariante y aumento la cuenta
+            // Verifica si es un invariante y aumenta la cuenta
             boolean isInvariante = false;
 
             for (int i = 0; i<cuentas.length; i++){
@@ -127,7 +127,7 @@ public class Logger {
                 break;
             }
 
-            // si no es un invariante concateno al resto
+            // Si no es un invariante concatena al resto
             if (!isInvariante)
                 resto += inv;
         }

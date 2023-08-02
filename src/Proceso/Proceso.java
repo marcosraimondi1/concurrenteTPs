@@ -29,16 +29,16 @@ public class Proceso implements Runnable {
 
         while(continuar){
 
-            // disparo la secuencia invariante recientemente asignada
+            // Dispara la secuencia invariante recientemente asignada
             for (int k : secuencia) {
 
 
                 monitor.dispararTransicion(k);
 
-                // se puede avanzar. apagar es false
+                // Se puede avanzar. apagar es false
                 if (!monitor.seAvanza())
                 {
-                    // SE TERMINO EL PROGRAMA
+                    // Se termino el programa
                     continuar = false;
                     break;
                 }
@@ -60,7 +60,7 @@ public class Proceso implements Runnable {
 
             contadorSecuencia ++;
 
-            // para la secuencia 0 (T0), solo la disparo invariantes_MAX para que la rdp vuelva al marcado incial
+            // Para la secuencia 0 (T0), solo la disparo invariantes_MAX para que la rdp vuelva al marcado inicial
             // y se pueda usar la regex para validar el log
             if (contadorSecuencia == secuencias_MAX) {
                 contadorSecuencia ++;

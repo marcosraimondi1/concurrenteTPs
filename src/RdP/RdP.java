@@ -16,33 +16,34 @@ import static Constants.Constants.*;
  * Clase que representa la Red de Petri
  */
 public class RdP {
-    private final int[][]   plazas_salida_transiciones  ;   // matriz de incidencia + (denota las plazas a la salida de una transición)
-    private final int[][]   plazas_entrada_transiciones ;   // matriz de incidencia - (denota las plazas a la entrada de una transición)
-    private final int       cantidad_plazas             ;   // cantidad de plazas de la RdP
-    private final int       cantidad_transiciones       ;   // cantidad de transiciones de la RdP
-    private final int[]     marcado_actual              ;   // estado de la RdP
+    private final int[][]   plazas_salida_transiciones  ;   // Matriz de incidencia + (denota las plazas a la salida de una transición)
+    private final int[][]   plazas_entrada_transiciones ;   // Matriz de incidencia - (denota las plazas a la entrada de una transición)
+    private final int       cantidad_plazas             ;   // Cantidad de plazas de la RdP
+    private final int       cantidad_transiciones       ;   // Cantidad de transiciones de la RdP
+    private final int[]     marcado_actual              ;   // Estado de la RdP
     private final int       invariantes_MAX             ;
     private int             cuenta_invariantes = 0      ;
     private final int[]     trans_invariantes           ;
     private final int[][]   invariantes_plazas          ;
     private boolean         apagar                      ;
     public final Logger     logger = new Logger(INV_LOG_PATH)   ;
-    private final int[]     contadores                          ;   // cuenta la cantidad de veces que se disparo cada transicion
+    private final int[]     contadores                          ;   // Cuenta la cantidad de veces que se dispara cada transicion
     private final ReadWriteLock         lock                    ;
     private final VectorSensibilizadas  vectorSensibilizadas    ;
 
     public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
-        this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
+        this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.marcado_actual = marcado_inicial;
         this.cantidad_plazas = marcado_inicial.length;
-        this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
         this.trans_invariantes = trans_invariantes;
-        this.invariantes_MAX = invariantes_MAX;
         this.invariantes_plazas = invariantes_plazas;
+        this.cantidad_transiciones = plazas_entrada_transiciones[0].length; // Cantidad de columnas de la matriz
+        this.invariantes_MAX = invariantes_MAX;
+
 
         this.apagar = false;
-        this.lock = new ReentrantReadWriteLock(); // creo lock para proteger variable apagar
+        this.lock = new ReentrantReadWriteLock(); // Crea lock para proteger variable apagar
         vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
         contadores = new int[cantidad_transiciones];
         Arrays.fill(contadores, 0);
@@ -73,8 +74,8 @@ public class RdP {
         }
 
         // Se puede disparar la transicion
-        // actualizo el marcado actual
-        // saco tokens de las entradas y agrego a las salidas
+        // Actualiza el marcado actual
+        // Saca tokens de las entradas y agrega a las salidas
         for (int i = 0; i < cantidad_plazas; i++) {
             marcado_actual[i] -= plazas_entrada_transiciones[i][transicion];
             marcado_actual[i] += plazas_salida_transiciones[i][transicion];
@@ -105,22 +106,22 @@ public class RdP {
      * Verifica el cumplimiento de los invariantes de transicion debido a que previamente disparamos la transicion
      */
     private void verificarInvariantePlaza () throws InvariantePlazaException {
-        // la matriz de invariantes de plaza es una matriz que representa un conjunto de ecuaciones.A modo de ejemplo:
+        // La matriz de invariantes de plaza es una matriz que representa un conjunto de ecuaciones. A modo de ejemplo:
         /*
-        [ 0 1 1   1 ] -> P2 + P3 = 1
+        [ 0 1 1   1 ] -> P2 + P3      = 1
         [ 1 1 1   2 ] -> P1 + P2 + P3 = 2
-        [ 1 0 1   1 ] -> P1 + P3 = 1
+        [ 1 0 1   1 ] -> P1 + P3      = 1
          */
 
         for (int j = 0; j < invariantes_plazas.length; j++) {
-            // itero por la cantidad de invariantes de plaza
+            // Itera por la cantidad de invariantes de plaza
             int[] invariante = invariantes_plazas[j];
             int suma = 0;
             for (int i = 0; i < cantidad_plazas ; i++){
                 suma += marcado_actual[i] * invariante[i];
             }
 
-            // verifico la suma
+            // Verifica la suma
             if (suma == invariante[invariante.length - 1])
                 continue;
 
@@ -133,7 +134,7 @@ public class RdP {
     }
 
     /**
-     * verifica si se disparo la transicion T14, para aumentar la cuenta_invariantes(marca una vuelta mas)
+     * Verifica si se disparo la transicion T14, para aumentar el contador cuenta_invariantes (marca una vuelta mas)
      * @param transicion  transicion disparada
      */
     private void verificarInvarianteTransicion(int transicion) {
@@ -166,7 +167,8 @@ public class RdP {
     }
 
     /**
-     * seteamos apagar en true . con lock nos aseguramos que solamente haya un hilo escribiendo esa variable.
+     * Seteamos apagar en true,
+     * con lock nos aseguramos que solamente haya un hilo escribiendo esa variable.
      */
     private void setApagar() {
         lock.writeLock().lock();

@@ -20,13 +20,13 @@ public class Politica {
                 sensibilizadas.add(i);
         }
 
-        return getRandomElement(sensibilizadas); // seleccionamos una de sensibilizadas,de manera aleatoria
+        return getRandomElement(sensibilizadas); // Seleccionamos una de sensibilizadas, de manera aleatoria
     }
 
     /**
-     * Metodo utilizado por el metodo cual,que elije una sola transcion de manera aleatoria, que luego sera disapara
+     * Metodo utilizado por el metodo cual, que elije una sola transcion de manera aleatoria, que luego sera disparada
      * @param list, lista de transiciones sensibilizadas
-     * @retunr int . transicion elegida
+     * @return int . transicion elegida
      */
     protected int getRandomElement(ArrayList<Integer> list)
     {

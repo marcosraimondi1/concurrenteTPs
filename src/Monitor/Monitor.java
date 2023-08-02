@@ -16,7 +16,7 @@ public class Monitor {
     private final Semaphore mutex;
     private final Politica politica;
     private final RdP red;
-    private final Colas colas;  // tendremos una cola por cada transicion
+    private final Colas colas;  // Tendremos una cola por cada transicion
     private boolean k;
     private Monitor(RdP red, Politica politica){
         this.politica   = politica;
@@ -28,7 +28,7 @@ public class Monitor {
     }
 
     /**
-     * crea el monitor en caso de que no se lo haya hecho antes y lo retorna
+     * Crea el monitor en caso de que no se lo haya hecho antes y lo retorna
      * @param red red de petri a la que se le va a aplicar el monitor
      * @param politica politica a utilizar
      * @return monitor.
@@ -58,7 +58,7 @@ public class Monitor {
     public void dispararTransicion(int transicion){
 
         try {
-            mutex.acquire();                // si no puedo tomar el mutex me voy a esperar a la cola de entrada
+            mutex.acquire();                // Si no puede tomar el mutex, va a esperar a la cola de entrada
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +73,7 @@ public class Monitor {
             k = red.disparar(transicion);
 
             if (k) {
-                // se puede disparar la transicion
+                // Se puede disparar la transicion
                 boolean[] sensibilizadas        = red.getSensibilizadas();
                 boolean[] transicionesConEspera = colas.hayEsperando();
                 boolean[] transicionesConEsperaySensibilizadas = new boolean[sensibilizadas.length];
@@ -83,17 +83,18 @@ public class Monitor {
                 }
 
                 if (!seAvanza())
-                    // si no se avanza la red esta apagada saco todos los hilos que esten esperando sin importar si estan sensibilizados
+                    // Si no se avanza, la red esta apagada
+                    // Saca todos los hilos que esten esperando sin importar si estan sensibilizados
                     transicionesConEsperaySensibilizadas = transicionesConEspera;
 
                 if(!todoFalso(transicionesConEsperaySensibilizadas)){
-                    // hay transiciones que se pueden disparar, la politica elige una
+                    // Hay transiciones que se pueden disparar, la politica elige una
                     int indexDisparo = politica.cual(transicionesConEsperaySensibilizadas);
 
-                    colas.getCola(indexDisparo).sacar();      // debe liberar el hilo que va a disparar
-                    return;                                   // me vuelvo porque termine
+                    colas.getCola(indexDisparo).sacar();      // Debe liberar el hilo que va a disparar
+                    return;                                   // Vuelve porque termino
                 }else{
-                    k = false;                                // salgo del while para hacer el release del mutex e ingrese otro hilo
+                    k = false;                                // Sale del while para hacer el release del mutex e ingrese otro hilo
                 }
 
             } else{
@@ -102,7 +103,7 @@ public class Monitor {
                     throw new RuntimeException("Se corrompio el mutex de entrada");
                 }
 
-                // me voy a esperar a la cola correspondiente a la transicion que quiero disparar y libero mutex
+                // Va a esperar a la cola correspondiente a la transicion que quiere disparar y libera el mutex
                 mutex.release();
                 colas.getCola(transicion).esperar();    // acquire
             }
@@ -112,12 +113,12 @@ public class Monitor {
         //------------------------------------ Fin Seccion Critica -----------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
 
-        mutex.release(); // si no liberé a nadie, libero el mutex y me voy
+        mutex.release(); // Si no se libera a nadie, libera el mutex y se va
 
     }
 
     /**
-     * Devuelve true si en el array estan todos los elementos en falso, osea si no hay transiciones sensibilizadas
+     * Devuelve true si en el array estan todos los elementos en falso, o sea si no hay transiciones sensibilizadas
      * con algun hilo esperando
      * @return boolean
      */
@@ -131,7 +132,7 @@ public class Monitor {
     }
 
     /**
-     * lee el estado de la variable "apagar" de la red. Si apagar es true entonces NO seAvanza, sino si.
+     * Lee el estado de la variable "apagar" de la red. Si apagar es true entonces NO seAvanza, sino si.
      * @return boolean
      */
     public boolean seAvanza(){
