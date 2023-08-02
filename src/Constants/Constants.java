@@ -19,27 +19,21 @@ public class Constants {
     public static int[][] GET_SECUENCIAS_TP2(){
 //          return getSecuencias1(); // hilos del paper
 //          return getSecuencias2(); // se agrega secuencia para hilos para T9 y T10
-        return getSecuencias3(); // se agrega secuencia para hilos para cada transicion en conflicto
+          return getSecuencias3(); // se agrega secuencia para hilos para cada transicion en conflicto
 
-//        return new int[][] {
-//                {0,1,3,5,7,10,12,13,14},
-//                {0,1,3,5,7,9,11,13,14},
-//                {0,1,3,6,8,10,12,13,14},
-//                {0,1,3,6,8,9,11,13,14},
-//                {0,2,4,5,7,10,12,13,14},
-//                {0,2,4,5,7,9,11,13,14},
-//                {0,2,4,6,8,10,12,13,14},
-//                {0,1,3,6,8,9,11,13,14},
-//        };
-//      return new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
-//      return new int[][] {
-//                {0},
-//                {1, 3},
-//                {2, 4},
-//                {5, 7},
-//                {6, 8},
-//                {9, 11, 13, 14},
-//        }; // para semi secuencializado
+//          return new int[][] {
+//                  {0,1,3,5,7,10,12,13,14},
+//                  {0,1,3,5,7,9,11,13,14},
+//                  {0,1,3,6,8,10,12,13,14},
+//                  {0,1,3,6,8,9,11,13,14},
+//                  {0,2,4,5,7,10,12,13,14},
+//                  {0,2,4,5,7,9,11,13,14},
+//                  {0,2,4,6,8,10,12,13,14},
+//                  {0,1,3,6,8,9,11,13,14},
+//          };
+
+//            return new int[][] {{0, 1, 3, 5, 7, 9, 11, 13, 14}}; // para secuencializado
+
     }
 
     /**
@@ -64,6 +58,29 @@ public class Constants {
             {    10L,    MAX_TIME }  // T14
 
     };
+
+//    /**
+//     * Tiempos semisecuencializados (en ms) para cada transicion de la red del tp
+//     */
+//    public static long[][] TIEMPOS_SEMISECUENCIALIZADOS = new long[][] {
+//            // alfa ,       beta
+//            {    10L/2,    MAX_TIME }, // T0
+//            {       0L,    MAX_TIME }, // T1
+//            {       0L,    MAX_TIME }, // T2
+//            {    20L/2,    MAX_TIME }, // T3
+//            {    20L/2,    MAX_TIME }, // T4
+//            {       0L,    MAX_TIME }, // T5
+//            {       0L,    MAX_TIME }, // T6
+//            {    20L/2,    MAX_TIME }, // T7
+//            {    20L/2,    MAX_TIME }, // T8
+//            {       0L,    MAX_TIME }, // T9
+//            {       0L,    MAX_TIME }, // T10
+//            {      20L,    MAX_TIME }, // T11
+//            {      20L,    MAX_TIME }, // T12
+//            {       0L,    MAX_TIME }, // T13
+//            {      10L,    MAX_TIME }  // T14
+//
+//    };
 
     /**
      * Marcado inicial de la red del tp
@@ -142,7 +159,7 @@ public class Constants {
     };
 
     /**
-     * transicion para contar invariantes (T14 marca una vuelta)
+     * Transicion para contar invariantes (T14 marca una vuelta)
      */
     public static int [] T_INV_TP2 = new int[] {14};
 
@@ -350,7 +367,7 @@ public class Constants {
     };
 
     /**
-     * transicion para contar invariantes (T6 y T10 marcan una vuelta)
+     * Transicion para contar invariantes (T6 y T10 marcan una vuelta)
      */
     public static int[] T_INV_PAPER = new int[]{5,9}; // index respectivo de T6 = 5 y de T10 = 9
 
