@@ -5,7 +5,6 @@ import Logger.Logger;
 
 import Main.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -96,11 +95,7 @@ public class RdP {
             throw new RuntimeException(e.getMessage());
         }
 
-        if(isTransicionFuente(transicion)){
-            vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,transicion);
-        }else{
-            vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,-1);
-        }
+        vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,transicion);
 
         return true;
     }
@@ -179,13 +174,6 @@ public class RdP {
         lock.writeLock().unlock();
     }
 
-    private boolean isTransicionFuente(int transicion) {
-        // reviso que toda la columna de la transicion sea 0
-        for (int[] fila : plazas_entrada_transiciones)
-            if (fila[transicion] != 0)
-                return false;
-        return true;
-    }
     public int[] getMarcadoActual() {
         return marcado_actual;
     }

@@ -41,15 +41,19 @@ public class VectorSensibilizadas {
      */
     public void actualizarSensibilizadas(int[] marcado, int transicion) {
         // para el caso de T0 el timeStamp correspondiente se actualiza siempre que se dispare esta transición
+
         for (int i = 0; i < sensibilizadas.length; i++) {
             sensibilizadas[i] = isSensibilizada(i, marcado); //verifico si es sensibilizado por tokens solamente
-            boolean isTransfuente = transicion == i; // condicion para setear el timeStamp de transición fuente (si no se dispara una transición fuente se manda el -1)
+
+            boolean isTransfuente = isTransicionFuente(transicion) && transicion == i; // condicion para setear el timeStamp de transición fuente (si no se dispara una transición fuente se manda el -1)
             if ((sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])) || isTransfuente) {
                 // se sensibilizo la transicion i, actualizo el timestamp de la transicion
                  sensibilizadoConTiempo.setTimeStamp(i);
             }
+
             sensibilizadasAnterior[i] = sensibilizadas[i];
         }
+
     }
 
 
@@ -153,6 +157,9 @@ public class VectorSensibilizadas {
     }
 
     private boolean isTransicionFuente(int transicion) {
+        if (transicion < 0)
+            return false;
+
         // reviso que toda la columna de la transicion sea 0
         for (int[] fila : plazas_entrada_transiciones)
             if (fila[transicion] != 0)
