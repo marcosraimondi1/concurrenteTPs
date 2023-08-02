@@ -173,7 +173,6 @@ public class Constants {
         {0, 0, 1, 1, 1, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  1, 0,    3 },
     };
 
-    public static int [] TRANS_FUENTE = new int[] {0};
     /**
      * Expresion regular
      */

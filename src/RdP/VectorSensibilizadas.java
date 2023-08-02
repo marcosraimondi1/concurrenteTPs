@@ -2,7 +2,6 @@ package RdP;
 
 import Monitor.Monitor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
@@ -12,7 +11,7 @@ public class VectorSensibilizadas {
     private final int[][]   plazas_entrada_transiciones ;     // matriz de incidencia - (denota las plazas a la entrada de una transición)
     private final SensibilizadoConTiempo sensibilizadoConTiempo;
 
-    public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos ,int[] trans_fuente ) {
+    public VectorSensibilizadas (int[][] plazas_entrada_transiciones, int[] marcado_inicial, long[][] tiempos) {
         sensibilizadas                      = new boolean[tiempos.length];
         sensibilizadasAnterior              = new boolean[tiempos.length];
         this.plazas_entrada_transiciones    = plazas_entrada_transiciones;
@@ -20,9 +19,12 @@ public class VectorSensibilizadas {
 
         Arrays.fill             (sensibilizadas         , false );
         Arrays.fill             (sensibilizadasAnterior , false );
-        for(int fuente:trans_fuente) {
-            actualizarSensibilizadas(marcado_inicial,fuente); //actualizo el marcado inicial incluyendo al tiempo de las transiciones fuente
-        }
+
+
+        // actualizo sensibilizadas de transiciones fuente
+        for (int transicion = 0; transicion < plazas_entrada_transiciones[0].length; transicion++ )
+            if (isTransicionFuente(transicion))
+                actualizarSensibilizadas(marcado_inicial,transicion); //actualizo el marcado inicial incluyendo al tiempo de las transiciones fuente
 
     }
 
@@ -141,6 +143,14 @@ public class VectorSensibilizadas {
      */
     public boolean[] getSensibilizadas (){
         return sensibilizadas;
+    }
+
+    private boolean isTransicionFuente(int transicion) {
+        // reviso que toda la columna de la transicion sea 0
+        for (int[] fila : plazas_entrada_transiciones)
+            if (fila[transicion] != 0)
+                return false;
+        return true;
     }
 
 

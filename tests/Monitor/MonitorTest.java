@@ -21,9 +21,8 @@ class MonitorTest {
         //------------------------------Inicio RdP---------------------------------------------------//
 
         int invariantes_MAX = 200;
-        int[] sin_trans_fuente = new int[] {};
 
-        RdP rdp = new RdP(W_MAS_PAPER.clone(),W_MENOS_PAPER.clone(),MI_PAPER.clone(),T_INV_PAPER.clone(),P_INV_PAPER.clone(),TIEMPOS_PAPER.clone(),invariantes_MAX,sin_trans_fuente);
+        RdP rdp = new RdP(W_MAS_PAPER.clone(),W_MENOS_PAPER.clone(),MI_PAPER.clone(),T_INV_PAPER.clone(),P_INV_PAPER.clone(),TIEMPOS_PAPER.clone(),invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
         Monitor.resetMonitor();
@@ -108,9 +107,8 @@ class MonitorTest {
         int         invariantes_MAX     = 100               ; // cantidad de invariantes a realizar
         int[]       trans_invariantes   = T_INV_PAPER       ; // transiciones para contar invariantes (T14 marca una vuelta)
         int[][]     invariantes_plazas  = P_INV_PAPER       ; // invariantes de plaza de la red
-        int[] sin_trans_fuente = new int[] {};
 
-        RdP rdp = new RdP(plaza_salida, plaza_entrada, marcado, trans_invariantes, invariantes_plazas, tiempos,invariantes_MAX,sin_trans_fuente);
+        RdP rdp = new RdP(plaza_salida, plaza_entrada, marcado, trans_invariantes, invariantes_plazas, tiempos,invariantes_MAX);
 
         //------------------------------Inicio Monitor-----------------------------------------------//
 

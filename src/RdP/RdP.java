@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static Constants.Constants.*;
 
@@ -26,18 +24,15 @@ public class RdP {
     private final int[]     marcado_actual              ;   // estado de la RdP
     private final int       invariantes_MAX             ;
     private int             cuenta_invariantes = 0      ;
-    private final int[]     cuentas_invariantes_individual = new int[INVARIANTES.length];
     private final int[]     trans_invariantes           ;
     private final int[][]   invariantes_plazas          ;
     private boolean         apagar                      ;
-    private String          secuencia_actual = ""       ;
     public final Logger     logger = new Logger(INV_LOG_PATH)   ;
     private final int[]     contadores                          ;   // cuenta la cantidad de veces que se disparo cada transicion
     private final ReadWriteLock         lock                    ;
     private final VectorSensibilizadas  vectorSensibilizadas    ;
-    private final ArrayList<Integer> trans_fuente               ;
 
-    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX, int[] trans_fuente) {
+    public RdP (int[][] plazas_salida_transiciones, int[][] plazas_entrada_transiciones, int[] marcado_inicial, int[] trans_invariantes, int[][] invariantes_plazas, long[][] tiempos, int invariantes_MAX) {
         this.plazas_entrada_transiciones = plazas_entrada_transiciones;
         this.plazas_salida_transiciones  = plazas_salida_transiciones;
         this.marcado_actual = marcado_inicial;
@@ -46,14 +41,12 @@ public class RdP {
         this.trans_invariantes = trans_invariantes;
         this.invariantes_MAX = invariantes_MAX;
         this.invariantes_plazas = invariantes_plazas;
-        this.trans_fuente = arregloToArratList(trans_fuente);
 
         this.apagar = false;
         this.lock = new ReentrantReadWriteLock(); // creo lock para proteger variable apagar
-        vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos,trans_fuente);
+        vectorSensibilizadas = new VectorSensibilizadas(plazas_entrada_transiciones, marcado_inicial, tiempos);
         contadores = new int[cantidad_transiciones];
         Arrays.fill(contadores, 0);
-        Arrays.fill(cuentas_invariantes_individual, 0);
     }
 
     /**
@@ -92,8 +85,6 @@ public class RdP {
         String trans = "T"+ transicion;
         logger.log(trans);
 
-        secuencia_actual+=trans;
-
         contadores[transicion]++;
 
         verificarInvarianteTransicion(transicion);
@@ -104,8 +95,6 @@ public class RdP {
             Main.STATE_LOG("ERROR", "RdP", Thread.currentThread().getName(), e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
-
-        ArrayList<Integer> trans_fuente = new ArrayList<>();
 
         if(isTransicionFuente(transicion)){
             vectorSensibilizadas.actualizarSensibilizadas(marcado_actual,transicion);
@@ -158,26 +147,6 @@ public class RdP {
                 continue;
 
             cuenta_invariantes++;
-
-            // obtengo el invariante
-            Pattern pattern = Pattern.compile(REGEX);               // creo el objeto de la regex
-            Matcher matcher = pattern.matcher(secuencia_actual);    // busco el invariante en la secuencia actual
-
-            String invariante   = matcher.replaceAll(REPLACE_INV);    // me quedo con el invariante
-
-            matcher = pattern.matcher(secuencia_actual);
-
-
-            secuencia_actual    = matcher.replaceAll(REPLACE);        // me quedo con lo que no forme parte del invariante
-
-            for (int i = 0; i < INVARIANTES.length; i++) {
-                if (invariante.equals(INVARIANTES[i])) {
-                    cuentas_invariantes_individual[i]++;
-                    break;
-                }
-            }
-
-
             break;
         }
     }
@@ -210,15 +179,12 @@ public class RdP {
         lock.writeLock().unlock();
     }
 
-    private ArrayList<Integer> arregloToArratList(int[] Arreglo) {
-        ArrayList<Integer> array = new ArrayList<>();
-        for (int i = 0; i < Arreglo.length; i++) {
-            array.add(Arreglo[i]);
-        }
-        return array;
-    }
     private boolean isTransicionFuente(int transicion) {
-        return trans_fuente.contains(transicion);
+        // reviso que toda la columna de la transicion sea 0
+        for (int[] fila : plazas_entrada_transiciones)
+            if (fila[transicion] != 0)
+                return false;
+        return true;
     }
     public int[] getMarcadoActual() {
         return marcado_actual;
@@ -230,9 +196,6 @@ public class RdP {
 
     public int getCuentaInvariantes(){
         return cuenta_invariantes;
-    }
-    public int[] getCuentasInvariantes(){
-        return cuentas_invariantes_individual;
     }
 
     public int[] getContadores() {

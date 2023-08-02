@@ -7,7 +7,6 @@ import RdP.RdP;
 import Politica.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.BrokenBarrierException;
@@ -88,9 +87,8 @@ public class Main {
         int         invariantes_MAX     = INVARIANTES_MAX   ; // cantidad de invariantes a realizar
         int[]       trans_invariantes   = T_INV_TP2         ; // transiciones para contar invariantes (T14 marca una vuelta)
         int[][]     invariantes_plazas  = P_INV_TP2         ; // invariantes de plaza de la red
-        int[] transiciones_fuente       = TRANS_FUENTE      ;
 
-        rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX,transiciones_fuente);
+        rdp = new RdP(plaza_salida,plaza_entrada,marcado, trans_invariantes,invariantes_plazas,tiempos,invariantes_MAX);
     }
 
     private static Politica getPolitica() {
@@ -126,14 +124,12 @@ public class Main {
         String  marcadoActual = Arrays.toString(rdp.getMarcadoActual());
         String  contadores    = Arrays.toString(rdp.getContadores());
         int     invariantes   = rdp.getCuentaInvariantes()  ;
-        int[]   c_invariantes = rdp.getCuentasInvariantes() ;
         long    runningTime   = System.currentTimeMillis() - startTime;
 
         STATE_LOG("INFO", Thread.currentThread().getName(), "TIME"      , String.valueOf(runningTime)  );
         STATE_LOG("INFO", Thread.currentThread().getName(), "MARCADO"   , marcadoActual                );
         STATE_LOG("INFO", Thread.currentThread().getName(), "CONT TRANS", contadores                   );
         STATE_LOG("INFO", Thread.currentThread().getName(), "CONT INV"  , String.valueOf(invariantes)  );
-        STATE_LOG("INFO", Thread.currentThread().getName(), "CONTs INV" , Arrays.toString(c_invariantes));
         STATE_LOG("INFO", Thread.currentThread().getName(), "COLAS"     , Arrays.toString(Monitor.getMonitor().getCantidadEsperandoColas()));
 
         int aliveThreads = 0;
