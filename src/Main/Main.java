@@ -52,6 +52,15 @@ public class Main {
             // al terminar el programa verifico que se cumplan los invariantes
             System.out.println("\nTiempo Total: "+(System.currentTimeMillis()-time)+" ms\n");
             rdp.logger.validateLog(REGEX,REPLACE);
+
+            int[] cuentas = rdp.logger.contarInvariantes(REGEX,REPLACE_INV);
+            int total = 0;
+            System.out.println("\nCuentas de Invariantes: ");
+            for (int i = 0; i<cuentas.length; i++){
+                System.out.println(i+".\t"+INVARIANTES[i]+"\t= "+cuentas[i]);
+                total += cuentas[i];
+            }
+            System.out.println("TOTAL\t=\t"+total);
         });
 
         //----------------------------- Inicio Hilos ------------------------------------------------//
