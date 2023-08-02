@@ -1,7 +1,6 @@
 package Proceso;
 
 import Monitor.Monitor;
-import RdP.RdP;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -78,7 +77,7 @@ public class Proceso implements Runnable {
         try {
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error en la Barrera - "+Thread.currentThread().getName());
         }
     }
 }

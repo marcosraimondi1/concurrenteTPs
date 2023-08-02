@@ -10,7 +10,7 @@ public class Constants {
     public static int INVARIANTES_MAX = 200; // cantidad de invariantes a realizar
 
     //------------------------------Constantes de TP2----------------------------------------------//
-    public static boolean POLITICA1 = true;
+    public static boolean POLITICA1 = false;
 
     /**
      * Secuencias de disparo asignadas a cada hilo.
@@ -186,12 +186,12 @@ public class Constants {
 
     public static String[] INVARIANTES = new String[]{
             "T0T1T3T5T7T10T12T13T14"    ,
-            "T0T1T3T5T7T9T11T13T14"     ,
             "T0T1T3T6T8T10T12T13T14"    ,
-            "T0T1T3T6T8T9T11T13T14"     ,
-            "T0T2T4T5T7T10T12T13T14"    ,
-            "T0T2T4T5T7T9T11T13T14"     ,
             "T0T2T4T6T8T10T12T13T14"    ,
+            "T0T2T4T5T7T10T12T13T14"    ,
+            "T0T1T3T5T7T9T11T13T14"     ,
+            "T0T1T3T6T8T9T11T13T14"     ,
+            "T0T2T4T5T7T9T11T13T14"     ,
             "T0T2T4T6T8T9T11T13T14"
     };
 

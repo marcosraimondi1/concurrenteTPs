@@ -51,6 +51,7 @@ public class Main {
         CyclicBarrier barrier = new CyclicBarrier( threads.length + 1,() -> {
             // al terminar el programa verifico que se cumplan los invariantes
             System.out.println("\nTiempo Total: "+(System.currentTimeMillis()-time)+" ms\n");
+            System.out.println("\nVerificando Invariantes...\n");
             rdp.logger.validateLog(REGEX,REPLACE);
 
             int[] cuentas = rdp.logger.contarInvariantes(REGEX,REPLACE_INV);
@@ -83,9 +84,8 @@ public class Main {
         try {
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            throw new RuntimeException(e);
+            System.out.println("NO SE PUDO VALIDAR LOG, PROBAR CON PYTHON");
         }
-
     }
 
     private static void iniciarRdP() {

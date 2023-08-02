@@ -56,7 +56,6 @@ public class Logger {
         Matcher matcher = pattern.matcher(log);     // busco los patrones en el log
         String out = matcher.replaceAll(replace);   // reemplazo los grupos
         String prev = "";
-
         while (true){
             // reemplazo y busco con la regex hasta que no se pueda mas
             matcher = pattern.matcher(out);
