@@ -7,7 +7,7 @@ public class Constants {
 
     public static long MAX_TIME = 253370764800000L; // 9999-01-01 00:00:00 en ms
 
-    public static int INVARIANTES_MAX = 1000; // cantidad de invariantes a realizar
+    public static int INVARIANTES_MAX = 200; // cantidad de invariantes a realizar
 
     //------------------------------Constantes de TP2----------------------------------------------//
     public static boolean POLITICA1 = true;

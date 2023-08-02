@@ -22,10 +22,17 @@ public class VectorSensibilizadas {
 
 
         // actualizo sensibilizadas de transiciones fuente
-        for (int transicion = 0; transicion < plazas_entrada_transiciones[0].length; transicion++ )
-            if (isTransicionFuente(transicion))
-                actualizarSensibilizadas(marcado_inicial,transicion); //actualizo el marcado inicial incluyendo al tiempo de las transiciones fuente
+        boolean seActualizo = false;
+        for (int transicion = 0; transicion < plazas_entrada_transiciones[0].length; transicion++ ) {
 
+            if (isTransicionFuente(transicion)){
+                seActualizo = true;
+                actualizarSensibilizadas(marcado_inicial, transicion); //actualizo el marcado inicial incluyendo al tiempo de las transiciones fuente
+            }
+        }
+        if(!seActualizo){
+            actualizarSensibilizadas(marcado_inicial, -1);
+        }
     }
 
     /**
@@ -36,8 +43,8 @@ public class VectorSensibilizadas {
         // para el caso de T0 el timeStamp correspondiente se actualiza siempre que se dispare esta transición
         for (int i = 0; i < sensibilizadas.length; i++) {
             sensibilizadas[i] = isSensibilizada(i, marcado); //verifico si es sensibilizado por tokens solamente
-            boolean isTransfuente = transicion == i; // condicion para setear el timeStamp de transición fuente
-            if (sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])|| isTransfuente) {
+            boolean isTransfuente = transicion == i; // condicion para setear el timeStamp de transición fuente (si no se dispara una transición fuente se manda el -1)
+            if ((sensibilizadas[i] && (sensibilizadas[i] != sensibilizadasAnterior[i])) || isTransfuente) {
                 // se sensibilizo la transicion i, actualizo el timestamp de la transicion
                  sensibilizadoConTiempo.setTimeStamp(i);
             }
@@ -90,7 +97,7 @@ public class VectorSensibilizadas {
             boolean esperando = sensibilizadoConTiempo.isEsperando(transicion);
             if (!esperando) {
                 // nadie durmiendo, esta sensibilizada
-                sensibilizadoConTiempo.setTimeStampReset(transicion); // si puedo disparar reseteo mi timesStamp al maximo como muestra de que se debe actualizar
+                sensibilizadoConTiempo.setTimeStamp(transicion); // si puedo disparar reseteo mi timesStamp al maximo como muestra de que se debe actualizar
                 return true;
             }
             // esta sensibilizada pero hay alguien durmiendo(esperando = true)

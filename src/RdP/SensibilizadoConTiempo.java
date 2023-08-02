@@ -27,10 +27,7 @@ public class SensibilizadoConTiempo {
 
         timeStamps[transicion] = System.currentTimeMillis();
     }
-    public void setTimeStampReset(int transicion) {
 
-        timeStamps[transicion] = MAX_TIME;
-    }
     /**
      * Verifica si una transicion es inmediata (alfa == 0)
      * @param transicion transicion a verificar

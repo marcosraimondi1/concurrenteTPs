@@ -1,0 +1,1 @@
+[ERROR     ] 02-08-23 10:35:07 [RdP ] main: No se cumplio el invariante 0 en el marcado [1, 1, 0]
