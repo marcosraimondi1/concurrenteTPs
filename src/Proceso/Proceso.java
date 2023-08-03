@@ -43,17 +43,6 @@ public class Proceso implements Runnable {
                     break;
                 }
 
-                // ACA HAGO LO QUE TENGA QUE HACER (TRABAJO FUERA DEL MONITOR)
-                // --------------- TRABAJO ------------------
-                //for (int j = 0; j < 10000; j++)
-                //{
-                //    int trabajo_duro = 0;
-                //    for (int p = 0; p < 10000; p++)
-                //    {
-                //        trabajo_duro ++;
-                //    }
-                //}
-                // --------------------------------------------
                 contadorDisparos++;
             }
 
